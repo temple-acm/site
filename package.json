@@ -1,0 +1,23 @@
+{
+  "name": "tuacm-site",
+  "version": "0.0.0",
+  "description": "The Temple University ACM Website",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:temple-acm/site.git"
+  },
+  "keywords": [
+    "temple",
+    "acm",
+    "site"
+  ],
+  "author": "Temple ACM",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/temple-acm/site/issues"
+  }
+}
