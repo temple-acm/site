@@ -10,16 +10,17 @@ var winston = require("winston"); // A popular logging adapter
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
-var config = require("./config.js"); // Server configuration script
+var config = require("../config/config"); // Server configuration script
 
-/******************************************** SCRIPT **********************************************/
+/******************************************** MODULE **********************************************/
 
 // Module Constants
 const DEBUG_LOG_NAME = "debug.log";
 const ERROR_LOG_NAME = "error.log";
+const DEFAULT_LOGS_FOLDER_NAME = "logs";
 
 // Lets first ensure that our log path exists
-var logPath = config.logPath || _dirname;
+var logPath = config.logPath || path.join(_dirname, DEFAULT_LOGS_FOLDER_NAME);
 if (!fs.statSync(logPath).isDirectory()) {
     // Log path doesn't exist, so we need to create it
     console.log("UH OH: Log folder path '" + logPath + "' isn't a thing - fixing that.");
@@ -33,7 +34,8 @@ if (!fs.statSync(logPath).isDirectory()) {
         exit(1);
     }
 }
-// We're globalizing the winston logger here
+// We're asking winston to write to log files in addition to the command line. Also, we want errors
+// to have their own log.
 var logger = new(winston.Logger)({
     transports: [
         new(winston.transports.Console)({

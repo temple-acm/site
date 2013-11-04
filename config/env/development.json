@@ -1,0 +1,6 @@
+{
+    "db": "mongodb://dev:dev@ds053728.mongolab.com:53728/acmdb-dev", // user: dev, pass: dev
+    "app": {
+        "name": "Temple ACM Site"
+    }
+}
