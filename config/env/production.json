@@ -3,6 +3,9 @@
     "app": {
         "name": "MEAN - A Modern Stack - Production"
     },
+    "airbrake": {
+        "apiKey": "637689ef4946163f0c4241d70dc71be5cb89cc12"
+    },
     "facebook": {
         "clientID": "APP_ID",
         "clientSecret": "APP_SECRET",

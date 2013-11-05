@@ -2,12 +2,12 @@
 # The humans responsible & technology colophon
 
 # TEAM
-
+    Sandile Keswa -- Superman - @skeswa
     <name> -- <role> -- <twitter>
 
 # THANKS
 
-    <name>
+    mean.io
 
 # TECHNOLOGY COLOPHON
 

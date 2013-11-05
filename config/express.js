@@ -8,8 +8,8 @@ var express = require('express'),
     config = require('./config');
 
 module.exports = function(app, passport, db) {
-    app.set('showStackError', true);    
-    
+    app.set('showStackError', true);
+
     //Prettify HTML
     app.locals.pretty = true;
 
@@ -24,6 +24,12 @@ module.exports = function(app, passport, db) {
     //Setting the fav icon and static folder
     app.use(express.favicon());
     app.use(express.static(config.root + '/public'));
+
+    // Our fatal error logging mechanism
+    if (config.airbrake && config.airbrake.apiKey) {
+        var airbrake = require("airbrake").createClient(config.airbrake.apiKey);
+        app.use(airbrake.expressHandler());
+    }
 
     //Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
@@ -41,8 +47,9 @@ module.exports = function(app, passport, db) {
         //cookieParser should be above session
         app.use(express.cookieParser());
 
-        //bodyParser should be above methodOverride
-        app.use(express.bodyParser());
+        // body parsing should be above methodOverride
+        app.use(express.json());
+        app.use(express.urlencoded());
         app.use(express.methodOverride());
 
         //express/mongo session storage

@@ -1,6 +1,9 @@
 {
-    "db": "mongodb://dev:dev@ds053728.mongolab.com:53728/acmdb-dev", // user: dev, pass: dev
+    "db": "mongodb://dev:dev@ds053728.mongolab.com:53728/acmdb-dev",
     "app": {
         "name": "Temple ACM Site"
+    },
+    "airbrake": {
+        "apiKey": "637689ef4946163f0c4241d70dc71be5cb89cc12"
     }
 }

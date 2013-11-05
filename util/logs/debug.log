@@ -1,0 +1,59 @@
+2013-11-05T00:33:42.245Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:33:42.258Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:33:42.693Z - info: Server started on port 3000.
+2013-11-05T00:35:35.470Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:35:35.481Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:35:35.917Z - info: Server started on port 3000.
+2013-11-05T00:35:50.844Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:35:50.855Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:35:51.277Z - info: Server started on port 3000.
+2013-11-05T00:37:47.570Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:37:47.582Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:37:48.025Z - info: Server started on port 3000.
+2013-11-05T00:39:51.858Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:39:51.870Z - info: Loading model in file 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:39:52.289Z - info: Server started on port 3000.
+2013-11-05T00:44:32.287Z - info: Loading schema models:
+2013-11-05T00:44:32.289Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:44:32.299Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:44:32.304Z - info: Schema model loading complete.
+2013-11-05T00:44:32.725Z - info: Server started on port 3000.
+2013-11-05T00:48:58.582Z - info: Loading schema models:
+2013-11-05T00:48:58.584Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:48:58.594Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:48:58.600Z - info: Schema model loading complete.
+2013-11-05T00:48:58.985Z - info: Express configuration bootstrap complete.
+2013-11-05T00:48:58.986Z - info: Bootstrapping server HTTP routes:
+2013-11-05T00:48:58.995Z - info: HTTP route bootstrap complete.
+2013-11-05T00:48:59.000Z - info: Server started on port 3000.
+2013-11-05T00:49:33.165Z - info: Loading schema models:
+2013-11-05T00:49:33.167Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:49:33.178Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:49:33.183Z - info: Schema model loading complete.
+2013-11-05T00:49:33.623Z - info: Express configuration bootstrap complete.
+2013-11-05T00:49:33.624Z - info: Bootstrapping server HTTP routes:
+2013-11-05T00:49:33.634Z - info: HTTP route bootstrap complete.
+2013-11-05T00:49:33.639Z - info: Server started on port 3000.
+2013-11-05T00:56:09.249Z - info: Bootstrapping mongoose db connection.
+2013-11-05T00:56:09.262Z - info: Mongoose db connection bootstrapping complete.
+2013-11-05T00:56:09.263Z - info: Loading schema models:
+2013-11-05T00:56:09.266Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:56:09.277Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:56:09.284Z - info: Schema model loading complete.
+2013-11-05T00:56:09.720Z - info: Express configuration bootstrapping complete.
+2013-11-05T00:56:09.721Z - info: Bootstrapping server HTTP routes:
+2013-11-05T00:56:09.734Z - info: HTTP route bootstrapping complete.
+2013-11-05T00:56:09.745Z - info: Server started on port 3000.
+2013-11-05T00:58:14.531Z - info: Bootstrapping mongoose db connection.
+2013-11-05T00:58:14.540Z - info: Mongoose db connection bootstrapping complete.
+2013-11-05T00:58:14.541Z - info: Loading schema models:
+2013-11-05T00:58:14.545Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-05T00:58:14.553Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-05T00:58:14.557Z - info: Schema model loading complete.
+2013-11-05T00:58:14.933Z - info: Express configuration bootstrapping complete.
+2013-11-05T00:58:14.933Z - info: Bootstrapping server HTTP routes:
+2013-11-05T00:58:14.942Z - info: 	Registering user routes.
+2013-11-05T00:58:14.943Z - info: 	Registering article routes.
+2013-11-05T00:58:14.945Z - info: 	Registering root routes.
+2013-11-05T00:58:14.948Z - info: HTTP route bootstrapping complete.
+2013-11-05T00:58:14.957Z - info: Server started on port 3000.

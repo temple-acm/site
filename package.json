@@ -34,7 +34,8 @@
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-env": "latest",
-        "winston": "latest"
+        "winston": "latest",
+        "airbrake": "latest"
     },
     "devDependencies": {
         "supertest": "latest",
