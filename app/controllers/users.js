@@ -1,32 +1,46 @@
-/**
- * Module dependencies.
- */
-var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+/*************************************** FILE DESCRIPTION *****************************************/
+
+// This script describes routes concerning articles.
+
+/*************************************** EXTERNAL IMPORTS *****************************************/
+
+var mongoose = require("mongoose"); // The Mongo DB ORM we're using
+var passport = require("passport"); // A popular authentication library
+var async = require("async"); // An asynchronous flow utility
+var _ = require("underscore");
+
+/*************************************** INTERNAL IMPORTS *****************************************/
+
+var logger = require("./util/log"); // Our custom logging utility
+
+/******************************************** MODULE **********************************************/
+
+// Firstly, load the model
+var User = mongoose.model("User");
 
 /**
  * Auth callback
  */
-exports.authCallback = function(req, res, next) {
-    res.redirect('/');
+var authCallback = function(req, res, next) {
+    res.redirect("/");
 };
 
 /**
  * Show login form
  */
-exports.signin = function(req, res) {
-    res.render('users/signin', {
-        title: 'Signin',
-        message: req.flash('error')
+var signin = function(req, res) {
+    res.render("users/signin", {
+        title: "Signin",
+        message: req.flash("error")
     });
 };
 
 /**
  * Show sign up form
  */
-exports.signup = function(req, res) {
-    res.render('users/signup', {
-        title: 'Sign up',
+var signup = function(req, res) {
+    res.render("users/signup", {
+        title: "Sign up",
         user: new User()
     });
 };
@@ -34,35 +48,37 @@ exports.signup = function(req, res) {
 /**
  * Logout
  */
-exports.signout = function(req, res) {
+var signout = function(req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect("/");
 };
 
 /**
  * Session
  */
-exports.session = function(req, res) {
-    res.redirect('/');
+var session = function(req, res) {
+    res.redirect("/");
 };
 
 /**
  * Create user
  */
-exports.create = function(req, res) {
+var create = function(req, res) {
+    // Make a new user
     var user = new User(req.body);
-
-    user.provider = 'local';
+    // Mongoose setting
+    user.provider = "local";
+    // Put it in the db
     user.save(function(err) {
         if (err) {
-            return res.render('users/signup', {
+            return res.render("users/signup", {
                 errors: err.errors,
                 user: user
             });
         }
         req.logIn(user, function(err) {
             if (err) return next(err);
-            return res.redirect('/');
+            return res.redirect("/");
         });
     });
 };
@@ -70,10 +86,10 @@ exports.create = function(req, res) {
 /**
  *  Show profile
  */
-exports.show = function(req, res) {
+var show = function(req, res) {
     var user = req.profile;
-
-    res.render('users/show', {
+    // Send back an html view
+    res.render("users/show", {
         title: user.name,
         user: user
     });
@@ -82,22 +98,69 @@ exports.show = function(req, res) {
 /**
  * Send User
  */
-exports.me = function(req, res) {
+var me = function(req, res) {
+    // We get the user from authentication middleware
     res.jsonp(req.user || null);
 };
 
 /**
  * Find user by id
  */
-exports.user = function(req, res, next, id) {
-    User
-        .findOne({
-            _id: id
-        })
-        .exec(function(err, user) {
-            if (err) return next(err);
-            if (!user) return next(new Error('Failed to load User ' + id));
-            req.profile = user;
-            next();
-        });
+var user = function(req, res, next, id) {
+    User.findOne({
+        _id: id
+    }).exec(function(err, user) {
+        // Pass down the error if there was one
+        if (err) return next(err);
+        // User was missing, throw a tantrum
+        if (!user) return next(new Error("Failed to load User " + id));
+        // Define this "profile" parameter of the request
+        req.profile = user;
+        // Goes to the next request handler
+        next();
+    });
 };
+
+/******************************************* EXPORTS **********************************************/
+
+// This controller's HTTP routes
+module.exports.routes = {
+    "/signin": {
+        method: "GET",
+        handler: signin
+    },
+    "/signup": {
+        method: "GET",
+        handler: signup
+    },
+    "/signout": {
+        method: "GET",
+        handler: signin
+    },
+    "/users/me": {
+        method: "GET",
+        handler: me
+    },
+    "/users/:userId": {
+        method: "GET",
+        handler: show
+    },
+    "/users": {
+        method: "POST",
+        handler: create
+    },
+    "/users/session": {
+        method: "POST",
+        handlers: [
+            passport.authenticate("local", {
+                failureRedirect: "/signin",
+                failureFlash: "Invalid email or password."
+            }),
+            session
+        ]
+    }
+};
+// This controller's parameter adapters
+module.exports.params = {
+    userId: user
+}
