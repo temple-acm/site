@@ -83,8 +83,7 @@ If you are using node instead of grunt, it is very similar:
 > NOTE: Running Node.js applications in the __production__ environment enables caching, which is disabled by default in all other environments.
 
 ## Credits
-Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/)
-And made possible by the good people at [linnovate](http://www.linnovate.net/)
+Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/).
 
 ## License
 (The MIT License)
