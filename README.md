@@ -1,6 +1,6 @@
 # Temple ACM Site
 
-Temple ACM's site is built off of the [MEAN](mean.io) stack, which excentuates JS as the primary language of execution. The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
+Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which excentuates JS as the primary language of execution. The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Prerequisites
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/). You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm
