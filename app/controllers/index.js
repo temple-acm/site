@@ -6,6 +6,7 @@
 
 var fs = require("fs"); // Node.js internal filesystem module
 var path = require("path"); // Node.js internal pathing utility module
+var _ = require("underscore"); // The it-does-everything library
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
@@ -14,11 +15,11 @@ var logger = require("../../util/log"); // Our custom logging utility
 /******************************************** MODULE **********************************************/
 
 // Module Constants
-const HTTP_METHOD_GET = "get";
-const HTTP_METHOD_POST = "post";
-const HTTP_METHOD_PUT = "put";
-const HTTP_METHOD_DELETE = "del";
-const HTTP_METHOD_PATCH = "patch";
+var HTTP_METHOD_GET = "get";
+var HTTP_METHOD_POST = "post";
+var HTTP_METHOD_PUT = "put";
+var HTTP_METHOD_DELETE = "del";
+var HTTP_METHOD_PATCH = "patch";
 
 var normalizeHTTPMethod = function(method) {
     var lowercaseMethod = method.toLowerCase();
@@ -35,7 +36,7 @@ var normalizeHTTPMethod = function(method) {
     } else {
         throw new Error("Invalid method '" + method + "' specified when registering route.");
     }
-}
+};
 
 var walk = function(_path, app) {
     fs.readdirSync(_path).forEach(function(file) {
@@ -48,33 +49,52 @@ var walk = function(_path, app) {
                 logger.info("\tLoading controller '%s'.", newPath);
                 // Load the routes
                 var controller = require(newPath);
-                if (controller.routes) {
-                    for (var route in controller.routes) {
+                if (controller.routes && _.isArray(controller.routes)) {
+                    var route;
+                    for (var i = 0; i < controller.routes.length; i++) {
+                        route = controller.routes[i];
                         try {
-                            var method = normalizeHTTPMethod((controller.routes[route]).method);
+                            if (!_.isString(route.path)) throw new Error("Route path '" + route.path + "' was not a valid string");
+
+                            var method = normalizeHTTPMethod(route.method);
                             // TODO permissions
                             // TODO requires auth
-                            if ((controller.routes[route]).handler) {
-                                (app[method])(route, (controller.routes[route]).handler);
-                                logger.info("\t\tRoute '%s %s' registered successfully.", (controller.routes[route]).method, route);
-                            } else if ((controller.routes[route]).handlers) {
-                                for (var i = 0; i < (controller.routes[route]).handlers.length; i++) {
-                                    (app[method])(route, (controller.routes[route]).handlers[i]);
-                                    logger.info("\t\tRoute '%s %s' registered successfully.", (controller.routes[route]).method, route);
+                            if (_.isFunction(route.handler)) {
+                                (app[method])(route.path, route.handler);
+                                logger.info("\t\tRoute '%s %s' registered successfully.", route.method, route.path);
+                            } else if (_.isArray(route.handlers)) {
+                                var handlerRegistered = false;
+                                var handler;
+                                for (var j = 0; j < route.handlers.length; j++) {
+                                    handler = route.handlers[j];
+                                    if (_.isFunction(handler)) {
+                                        (app[method])(route.path, handler);
+                                        handlerRegistered = true;
+                                    } else {
+                                        logger.warn("\t\tRoute '%s %s' provided a handler that was not a function in its handlers list.", route.method, route.path);
+                                    }
                                 }
+                                if (handlerRegistered) logger.info("\t\tRoute '%s %s' registered successfully.", route.method, route.path);
+                                else logger.error("\t\tRoute '%s %s' NOT registered successfully.", route.method, route.path);
+                            } else {
+                                throw new Error("No valid handlers were provided.");
                             }
                         } catch (err) {
-                            logger.error("\t\tCould not register route '%s %s' in controller '%s': %s.", (controller.routes[route]).method, route, newPath, (err.message ? err.message : "Error had no description."));
+                            logger.error("\t\tCould not register route '%s %s' in controller '%s': %s.", route.method, route.path, newPath, (err.message ? err.message : "Error had no description."));
                         }
                     }
+                } else {
+                    logger.warn("\t\tNo routes were registered.");
                 }
                 // Load the parameter adpaters
-                if (controller.params) {
+                if (controller.params && _.isObject(controller.params)) {
                     for (var param in controller.params) {
                         try {
-                            if ((controller.params[param])) {
+                            if (_.isFunction(controller.params[param])) {
                                 app.param(param, controller.params[param]);
-                                logger.info("\t\tParameter adapter '%s' registered successfully.", route);
+                                logger.info("\t\tParameter adapter for parameter '%s' registered successfully.", param);
+                            } else {
+                                throw new Error("Parameter adapter for parameter '" + param + "' was not a function.");
                             }
                         } catch (err) {
                             logger.error("\t\tCould not register parameter adapter '%s' in controller '%s': %s.", param, newPath, (err.message ? err.message : "Error had no description."));
@@ -94,7 +114,7 @@ var walk = function(_path, app) {
 var route = function(app, passport, auth) {
     // All we do is walk
     walk(__dirname, app);
-}
+};
 
 /******************************************* EXPORTS **********************************************/
 

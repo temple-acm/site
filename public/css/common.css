@@ -23,3 +23,18 @@ footer {
 footer p {
     padding:5px 0 12px 10px
 }
+
+div.sidebar {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+
+    width: 50px;
+    background: #000;
+}
+div.sidebar div.sidebar-inner {
+    width: 100%;
+    height: auto;
+    background: red;
+}

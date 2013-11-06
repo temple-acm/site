@@ -1,0 +1,10 @@
+<div class="sidebar-inner" data-ng-controller="SidebarController">
+    <ul class="nav">
+        <li>
+            <a class="sidebar-logo" href="/">logo goes here</a>
+        </li>
+        <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
+            <a href="#!/{{item.link}}">{{item.title}}</a>
+        </li>
+    </ul>
+</div>

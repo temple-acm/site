@@ -104,32 +104,31 @@ var all = function(req, res) {
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
-module.exports.routes = {
-    "/articles": {
-        method: "GET",
-        handler: all
-    },
-    "/articles": {
-        method: "POST",
-        permissions: [/* Can create articles */ "articleCreator"], // Implies requiresAuth
-        handler: create
-    },
-    "/articles/:articleId": {
-        method: "GET",
-        handler: show
-    },
-    "/articles/:articleId": {
-        method: "PUT",
-        permissions: ["creator", /* Can edit articles */ "articleEditor"], // Implies requiresAuth
-        handler: update
-    },
-    "/articles/:articleId": {
-        method: "DELETE",
-        permissions: ["creator", /* Can edit articles */ "articleDestroyer"], // Implies requiresAuth
-        handler: destroy
-    }
-};
+module.exports.routes = [{
+    path: "/articles",
+    method: "GET",
+    handler: all
+}, {
+    path: "/articles",
+    method: "POST",
+    permissions: [ /* Can create articles */ "articleCreator"], // Implies requiresAuth
+    handler: create
+}, {
+    path: "/articles/:articleId",
+    method: "GET",
+    handler: show
+}, {
+    path: "/articles/:articleId",
+    method: "PUT",
+    permissions: ["creator", /* Can edit articles */ "articleEditor"], // Implies requiresAuth
+    handler: update
+}, {
+    path: "/articles/:articleId",
+    method: "DELETE",
+    permissions: ["creator", /* Can edit articles */ "articleDestroyer"], // Implies requiresAuth
+    handler: destroy
+}];
 // This controller's parameter adapters
 module.exports.params = {
     articleId: article
-}
+};

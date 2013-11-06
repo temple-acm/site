@@ -17,9 +17,8 @@ var render = function(req, res) {
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
-module.exports.routes = {
-    "/": {
-        method: "GET",
-        handler: render
-    }
-};
+module.exports.routes = [{
+    path: "/",
+    method: "GET",
+    handler: render
+}];

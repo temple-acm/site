@@ -124,47 +124,46 @@ var user = function(req, res, next, id) {
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
-module.exports.routes = {
-    "/signin": {
-        method: "GET",
-        handler: signin
-    },
-    "/signup": {
-        method: "GET",
-        handler: signup
-    },
-    "/signout": {
-        method: "GET",
-        requiresAuth: true,
-        handler: signin
-    },
-    "/users/me": {
-        method: "GET",
-        requiresAuth: true,
-        handler: me
-    },
-    "/users/:userId": {
-        method: "GET",
-        requiresAuth: true,
-        handler: show
-    },
-    "/users": {
-        method: "POST",
-        permissions: [/* Can create users */ "userCreator"], // Implies requiresAuth
-        handler: create
-    },
-    "/users/session": {
-        method: "POST",
-        handlers: [
-            passport.authenticate("local", {
-                failureRedirect: "/signin",
-                failureFlash: "Invalid email or password."
-            }),
-            session
-        ]
-    }
-};
+module.exports.routes = [{
+    path: "/signin",
+    method: "GET",
+    handler: signin
+}, {
+    path: "/signup",
+    method: "GET",
+    handler: signup
+}, {
+    path: "/signout",
+    method: "GET",
+    requiresAuth: true,
+    handler: signin
+}, {
+    path: "/users/me",
+    method: "GET",
+    requiresAuth: true,
+    handler: me
+}, {
+    path: "/users/:userId",
+    method: "GET",
+    requiresAuth: true,
+    handler: show
+}, {
+    path: "/users",
+    method: "POST",
+    permissions: [ /* Can create users */ "userCreator"], // Implies requiresAuth
+    handler: create
+}, {
+    path: "/users/session",
+    method: "POST",
+    handlers: [
+        passport.authenticate("local", {
+            failureRedirect: "/signin",
+            failureFlash: "Invalid email or password."
+        }),
+        session
+    ]
+}];
 // This controller's parameter adapters
 module.exports.params = {
     userId: user
-}
+};
