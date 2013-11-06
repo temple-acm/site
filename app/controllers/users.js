@@ -11,7 +11,7 @@ var _ = require("underscore");
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
-var logger = require("./util/log"); // Our custom logging utility
+var logger = require("../../util/log"); // Our custom logging utility
 
 /******************************************** MODULE **********************************************/
 
@@ -135,18 +135,22 @@ module.exports.routes = {
     },
     "/signout": {
         method: "GET",
+        requiresAuth: true,
         handler: signin
     },
     "/users/me": {
         method: "GET",
+        requiresAuth: true,
         handler: me
     },
     "/users/:userId": {
         method: "GET",
+        requiresAuth: true,
         handler: show
     },
     "/users": {
         method: "POST",
+        permissions: [/* Can create users */ "userCreator"], // Implies requiresAuth
         handler: create
     },
     "/users/session": {

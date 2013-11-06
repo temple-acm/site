@@ -10,7 +10,7 @@ var _ = require("underscore");
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
-var logger = require("./util/log"); // Our custom logging utility
+var logger = require("../../util/log"); // Our custom logging utility
 
 /******************************************** MODULE **********************************************/
 
@@ -111,8 +111,7 @@ module.exports.routes = {
     },
     "/articles": {
         method: "POST",
-        requiresAuth: true,
-        permissions: [/* Can create articles */ "articleCreator"],
+        permissions: [/* Can create articles */ "articleCreator"], // Implies requiresAuth
         handler: create
     },
     "/articles/:articleId": {
@@ -121,12 +120,12 @@ module.exports.routes = {
     },
     "/articles/:articleId": {
         method: "PUT",
-        requiresAuth: true,
-        permissions: ["creator", /* Can edit articles */ "articleEditor"],
+        permissions: ["creator", /* Can edit articles */ "articleEditor"], // Implies requiresAuth
         handler: update
     },
     "/articles/:articleId": {
         method: "DELETE",
+        permissions: ["creator", /* Can edit articles */ "articleDestroyer"], // Implies requiresAuth
         handler: destroy
     }
 };

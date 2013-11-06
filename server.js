@@ -16,7 +16,7 @@ var mongoose = require("mongoose"); // The Mongo DB ORM we're using
 var config = require("./config/config"); // Our server-wide configuration module
 var logger = require("./util/log"); // Our custom logging utility
 var expressConfig = require("./config/express"); // Our express configuration 
-var routes = require("./app/routes.js");
+var controllers = require("./app/controllers");
 
 /******************************************** MODULE **********************************************/
 
@@ -58,7 +58,7 @@ expressConfig(app, passport, db);
 logger.info("Express configuration bootstrapping complete.");
 // Bootstrap the application routes
 logger.info("Bootstrapping server HTTP routes:");
-routes.bootstrap(app, passport, auth);
+controllers.route(app, passport, auth);
 logger.info("HTTP route bootstrapping complete.");
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
