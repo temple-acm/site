@@ -1,6 +1,6 @@
 {
-    "name": "mean",
-    "version": "0.1.0",
+    "name": "tuacm-site",
+    "version": "0.0.1",
     "dependencies": {
         "bootstrap": "2.3.2",
         "angular": "1.0.6",
