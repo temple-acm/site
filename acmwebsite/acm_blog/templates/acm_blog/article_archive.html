@@ -1,0 +1,8 @@
+<!-- For anybody who stumbles upon this: This isn't used, I don't even know where it came from.  -->
+<!-- Update: holy shit i just realized django made this itself, probably because "blog" is in the name. I'm not used to this level of handholding o_O -->
+
+<ul>
+	{% for article in latest %}
+		<li> {{ article.created }}: {{ article.title }}</li>
+		{% endfor %}
+</ul>

@@ -1,0 +1,43 @@
+{% if auth_form.non_field_errors %}
+
+    {% block message %}
+
+        <div id="error_msg">
+
+        {{ auth_form.non_field_errors }}
+
+        </div>
+
+    {% endblock %}
+
+{% endif %}
+
+
+{% block content-body %}
+
+    <form action="{% url  %}" method="POST"> //Something goes here, and I don't know what, because webdev is silly. 
+
+    {% csrf_token %}
+
+
+        {% for field in auth_form %}
+
+            <div class="fieldWrapper">
+
+                {{ field.errors }}
+
+                {{ field.label_tag }} {{ field }}
+
+            </div>
+
+        {%  endfor %}
+
+    <input type="submit" value="Login" />
+
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    </form>
+
+    {{ ct }}
+
+{%  endblock %}

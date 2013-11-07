@@ -1,0 +1,9 @@
+{% if blog_list %}
+    <ul>
+    {% for blog in blog_list %}
+        <li><a href="{% url 'acm_blog:individualPost' blog.slug %}">{{ blog.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No blogs are available.</p>
+{% endif %}

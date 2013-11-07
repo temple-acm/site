@@ -1,0 +1,43 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href='{% static 'lib/bootstrap/docs/assets/css/bootstrap.css' %}'>
+        <link rel="stylesheet" href='{% static 'css/common.css' %}'>
+        <link rel="stylesheet" href='{% static 'css/views/articles.css' %}'>
+    </head>
+
+    <link href="static/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <body>
+        <section class="content">
+            <section data-ng-view></section>
+            <script type="text/javascript">window.user = null;console.log("Hi, at least this loads.")</script>
+        </section>
+        {% verbatim %}
+        <div data-ng-include= "'/static/views/sidebar.html'" data-role="navigation" class="sidebar"></div>
+        <div data-ng-include= "'/static/views/header.html'" data-role="session" class="header"></div>
+        {% endverbatim %}
+        <script type="text/javascript" src='{% static 'lib/angular/angular.js' %}'></script>
+
+        <script type='text/javascript' src='{% static 'lib/angular/angular.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-cookies/angular-cookies.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-resource/angular-resource.js' %}'></script>
+
+        <script type='text/javascript' src='{% static 'lib/angular-bootstrap/ui-bootstrap-tpls.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-bootstrap/ui-bootstrap.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-ui-utils/modules/route/route.js' %}'></script>
+
+        <script type='text/javascript' src='{% static 'js/app.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/config.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/directives.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/filters.js' %}'></script>
+
+        <script type='text/javascript' src='{% static 'js/services/global.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/services/articles.js' %}'></script>
+
+        <script type='text/javascript' src='{% static 'js/controllers/articles.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/index.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/header.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/sidebar.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/init.js' %}'></script>
+    </body>
+</html>
