@@ -70,8 +70,9 @@ div.header .header-logo {
     bottom: 0px;
 }
 div.header .header-logo a {
-    height: 100%;
     display: inline-block;
+    width: 200px;
+    height: 40px;
 }
 div.header .header-logo a span#acm-logo {
     display: inline-block;
@@ -98,7 +99,7 @@ section.content {
 }
 section.content section {
     position: absolute;
-    top: 50px;
+    top: 0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
