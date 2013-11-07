@@ -86,6 +86,13 @@ div.header .header-logo a span#acm-logo {
 div.header .header-logo a:hover span#acm-logo {
     background-position: 0px -40px;
 }
+div.header .header-session-panel {
+    position: absolute;
+    right: 12px;
+    top: 0px;
+
+    margin-top: 10px;
+}
 /****************************************** CONTENT AREA ******************************************/
 
 section.content {
