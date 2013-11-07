@@ -88,11 +88,19 @@ div.header .header-logo a:hover span#acm-logo {
 }
 div.header .header-session-panel {
     position: absolute;
-    right: 12px;
+    right: 10px;
     top: 0px;
 
     margin-top: 10px;
 }
+div.header .header-session-panel .header-session-button {
+    text-transform: uppercase;
+    border-radius: 0px;
+    font-size: 12px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
 /****************************************** CONTENT AREA ******************************************/
 
 section.content {
