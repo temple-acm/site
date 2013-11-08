@@ -1,8 +1,8 @@
-angular.module('mean.system').controller('HeaderController', ['$scope', 'Global', function ($scope, Global) {
+angular.module("mean.system").controller("HeaderController", ["$scope", "Global", function ($scope, Global) {
     $scope.global = Global;
 
     $scope.doRegister = function() {
-        alert("reg");
+        console.log("swagger");
     };
 
     $scope.doSignIn = function() {

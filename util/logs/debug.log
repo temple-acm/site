@@ -803,3 +803,96 @@
 2013-11-07T13:29:16.147Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js' loaded successfully.
 2013-11-07T13:29:16.147Z - info: HTTP route bootstrapping complete.
 2013-11-07T13:29:16.157Z - info: Server started on port 3000.
+2013-11-07T17:45:08.289Z - info: Bootstrapping mongoose db connection.
+2013-11-07T17:45:08.304Z - info: Mongoose db connection bootstrapping complete.
+2013-11-07T17:45:08.305Z - info: Loading schema models:
+2013-11-07T17:45:08.308Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-07T17:45:08.320Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-07T17:45:08.327Z - info: Schema model loading complete.
+2013-11-07T17:45:08.991Z - info: Express configuration bootstrapping complete.
+2013-11-07T17:45:08.993Z - info: Bootstrapping server HTTP routes:
+2013-11-07T17:45:09.000Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js'.
+2013-11-07T17:45:09.008Z - info: 		Route 'GET /articles' registered successfully.
+2013-11-07T17:45:09.009Z - info: 		Route 'POST /articles' registered successfully.
+2013-11-07T17:45:09.012Z - info: 		Route 'GET /articles/:articleId' registered successfully.
+2013-11-07T17:45:09.017Z - info: 		Route 'PUT /articles/:articleId' registered successfully.
+2013-11-07T17:45:09.018Z - info: 		Route 'DELETE /articles/:articleId' registered successfully.
+2013-11-07T17:45:09.020Z - info: 		Parameter adapter for parameter 'articleId' registered successfully.
+2013-11-07T17:45:09.022Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js' loaded successfully.
+2013-11-07T17:45:09.024Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js'.
+2013-11-07T17:45:09.026Z - info: 		Route 'GET /' registered successfully.
+2013-11-07T17:45:09.027Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js' loaded successfully.
+2013-11-07T17:45:09.030Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js'.
+2013-11-07T17:45:09.036Z - info: 		Route 'GET /signin' registered successfully.
+2013-11-07T17:45:09.037Z - info: 		Route 'GET /signup' registered successfully.
+2013-11-07T17:45:09.039Z - info: 		Route 'GET /signout' registered successfully.
+2013-11-07T17:45:09.041Z - info: 		Route 'GET /users/me' registered successfully.
+2013-11-07T17:45:09.043Z - info: 		Route 'GET /users/:userId' registered successfully.
+2013-11-07T17:45:09.045Z - info: 		Route 'POST /users' registered successfully.
+2013-11-07T17:45:09.050Z - info: 		Route 'POST /users/session' registered successfully.
+2013-11-07T17:45:09.052Z - info: 		Parameter adapter for parameter 'userId' registered successfully.
+2013-11-07T17:45:09.054Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js' loaded successfully.
+2013-11-07T17:45:09.056Z - info: HTTP route bootstrapping complete.
+2013-11-07T17:45:09.069Z - info: Server started on port 3000.
+2013-11-07T21:22:43.346Z - info: Bootstrapping mongoose db connection.
+2013-11-07T21:22:43.360Z - info: Mongoose db connection bootstrapping complete.
+2013-11-07T21:22:43.360Z - info: Loading schema models:
+2013-11-07T21:22:43.362Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-07T21:22:43.373Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-07T21:22:43.379Z - info: Schema model loading complete.
+2013-11-07T21:22:44.031Z - info: Express configuration bootstrapping complete.
+2013-11-07T21:22:44.031Z - info: Bootstrapping server HTTP routes:
+2013-11-07T21:22:44.033Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js'.
+2013-11-07T21:22:44.041Z - info: 		Route 'GET /articles' registered successfully.
+2013-11-07T21:22:44.042Z - info: 		Route 'POST /articles' registered successfully.
+2013-11-07T21:22:44.043Z - info: 		Route 'GET /articles/:articleId' registered successfully.
+2013-11-07T21:22:44.043Z - info: 		Route 'PUT /articles/:articleId' registered successfully.
+2013-11-07T21:22:44.044Z - info: 		Route 'DELETE /articles/:articleId' registered successfully.
+2013-11-07T21:22:44.045Z - info: 		Parameter adapter for parameter 'articleId' registered successfully.
+2013-11-07T21:22:44.045Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js' loaded successfully.
+2013-11-07T21:22:44.046Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js'.
+2013-11-07T21:22:44.048Z - info: 		Route 'GET /' registered successfully.
+2013-11-07T21:22:44.048Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js' loaded successfully.
+2013-11-07T21:22:44.049Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js'.
+2013-11-07T21:22:44.054Z - info: 		Route 'GET /signin' registered successfully.
+2013-11-07T21:22:44.054Z - info: 		Route 'GET /signup' registered successfully.
+2013-11-07T21:22:44.055Z - info: 		Route 'GET /signout' registered successfully.
+2013-11-07T21:22:44.056Z - info: 		Route 'GET /users/me' registered successfully.
+2013-11-07T21:22:44.056Z - info: 		Route 'GET /users/:userId' registered successfully.
+2013-11-07T21:22:44.057Z - info: 		Route 'POST /users' registered successfully.
+2013-11-07T21:22:44.057Z - info: 		Route 'POST /users/session' registered successfully.
+2013-11-07T21:22:44.058Z - info: 		Parameter adapter for parameter 'userId' registered successfully.
+2013-11-07T21:22:44.058Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js' loaded successfully.
+2013-11-07T21:22:44.059Z - info: HTTP route bootstrapping complete.
+2013-11-07T21:22:44.072Z - info: Server started on port 3000.
+2013-11-08T03:54:42.977Z - info: Bootstrapping mongoose db connection.
+2013-11-08T03:54:42.988Z - info: Mongoose db connection bootstrapping complete.
+2013-11-08T03:54:42.988Z - info: Loading schema models:
+2013-11-08T03:54:42.994Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\article.js'.
+2013-11-08T03:54:43.002Z - info: 	Loading model 'C:\dev\repos\github\temple-acm-site\app\models\user.js'.
+2013-11-08T03:54:43.007Z - info: Schema model loading complete.
+2013-11-08T03:54:43.758Z - info: Express configuration bootstrapping complete.
+2013-11-08T03:54:43.760Z - info: Bootstrapping server HTTP routes:
+2013-11-08T03:54:43.762Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js'.
+2013-11-08T03:54:43.768Z - info: 		Route 'GET /articles' registered successfully.
+2013-11-08T03:54:43.769Z - info: 		Route 'POST /articles' registered successfully.
+2013-11-08T03:54:43.771Z - info: 		Route 'GET /articles/:articleId' registered successfully.
+2013-11-08T03:54:43.777Z - info: 		Route 'PUT /articles/:articleId' registered successfully.
+2013-11-08T03:54:43.779Z - info: 		Route 'DELETE /articles/:articleId' registered successfully.
+2013-11-08T03:54:43.781Z - info: 		Parameter adapter for parameter 'articleId' registered successfully.
+2013-11-08T03:54:43.783Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\articles.js' loaded successfully.
+2013-11-08T03:54:43.786Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js'.
+2013-11-08T03:54:43.788Z - info: 		Route 'GET /' registered successfully.
+2013-11-08T03:54:43.794Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\root.js' loaded successfully.
+2013-11-08T03:54:43.796Z - info: 	Loading controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js'.
+2013-11-08T03:54:43.799Z - info: 		Route 'GET /signin' registered successfully.
+2013-11-08T03:54:43.800Z - info: 		Route 'GET /signup' registered successfully.
+2013-11-08T03:54:43.802Z - info: 		Route 'GET /signout' registered successfully.
+2013-11-08T03:54:43.804Z - info: 		Route 'GET /users/me' registered successfully.
+2013-11-08T03:54:43.810Z - info: 		Route 'GET /users/:userId' registered successfully.
+2013-11-08T03:54:43.812Z - info: 		Route 'POST /users' registered successfully.
+2013-11-08T03:54:43.814Z - info: 		Route 'POST /users/session' registered successfully.
+2013-11-08T03:54:43.816Z - info: 		Parameter adapter for parameter 'userId' registered successfully.
+2013-11-08T03:54:43.818Z - info: 	Controller 'C:\dev\repos\github\temple-acm-site\app\controllers\users.js' loaded successfully.
+2013-11-08T03:54:43.820Z - info: HTTP route bootstrapping complete.
+2013-11-08T03:54:43.829Z - info: Server started on port 3000.

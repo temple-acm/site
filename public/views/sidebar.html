@@ -1,10 +1,7 @@
 <div class="sidebar-inner" data-ng-controller="SidebarController">
-    <ul class="nav">
-        <li>
-            <a class="sidebar-logo" href="/">logo goes here</a>
-        </li>
-        <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
-            <a href="#!/{{item.link}}">{{item.title}}</a>
-        </li>
-    </ul>
+    <div id="sidebar-icon-home" class="sidebar-icon"></div>
+    <div id="sidebar-icon-about" class="sidebar-icon"></div>
+    <div id="sidebar-icon-calendar" class="sidebar-icon"></div>
+    <div id="sidebar-icon-blog" class="sidebar-icon"></div>
+    <div id="sidebar-icon-contact" class="sidebar-icon"></div>
 </div>
