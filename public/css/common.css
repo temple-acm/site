@@ -120,10 +120,14 @@ div.sidebar .sidebar-icon {
     height: 50px;
     margin-left: 5px;
 
-    background-position: 0px 0px;
+    opacity: 0.2;
 }
 div.sidebar .sidebar-icon:hover {
-    background-position: 0px -50px;
+    opacity: 0.5;
+}
+div.sidebar .sidebar-icon.current,
+div.sidebar .sidebar-icon.current:hover {
+    opacity: 1.0;
 }
 
 /****************************************** CONTENT AREA ******************************************/
