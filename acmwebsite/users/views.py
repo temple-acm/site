@@ -6,6 +6,8 @@ from .serializers import UserSerializer, GroupSerializer
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
+
+    For now, unrestricted, though that will change soon.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -14,6 +16,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
+
+    For now, unrestricted, though that will change soon.
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
