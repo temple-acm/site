@@ -1,6 +1,6 @@
 var express = require('express');
 var http = require('http');
-var QRCode = require('qrcode-npm');
+var qrcode = require('qrcode-npm').qrcode;
 var md5 = require('MD5');
 var path = require('path');
 
@@ -21,7 +21,8 @@ app.use(express.bodyParser());
 app.get('/generateqr', function(req, res){
 	var gameId = md5('gId' + (new Date()).getTime() + Math.floor((Math.random() * 100) + 1));
 	var qr = qrcode(4, 'M');
-	qr.addData(app.get('host') + '/game/' + gameId);
+    console.log('http://' + req.get('host') + '/game/' + gameId);
+	qr.addData(req.get('host') + '/game/' + gameId);
 	qr.make();
 	res.send(200, qr.createImgTag());
 });
