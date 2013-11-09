@@ -23,7 +23,7 @@ app.use(express.bodyParser());
 app.get('/generateqr', function(req, res){
 	var gameId = md5('gId' + (new Date()).getTime() + Math.floor((Math.random() * 100) + 1));
 	var qr = qrcode(4, 'M');
-	qr.addData(SERVER_ADDR + '/game/' + gameId);
+	qr.addData(app.get('host') + '/game/' + gameId);
 	qr.make();
 	res.send(200, qr.createImgTag());
 });
