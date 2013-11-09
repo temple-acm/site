@@ -145,9 +145,14 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'acm_blog',
     'acm_homepage',
-    'login',
     'djangobower',
+    'rest_framework',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',),
+    'PAGINATE_BY': 10
+}
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
