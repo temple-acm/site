@@ -3,10 +3,8 @@ var http = require('http');
 var QRCode = require('qrcode-npm');
 var md5 = require('MD5');
 var path = require('path');
-var engines = require('consolidate');
 
 var app = express();
-app.engine('haml', engines.haml);
 app.engine('html', require('ejs').renderFile);
 
 const SERVER_ADDR = 'localhost:7373'
