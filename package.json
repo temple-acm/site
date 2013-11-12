@@ -1,9 +1,9 @@
 {
-    "name": "tuacm-site",
-    "description": "The revamped all-improved Temple University ACM website written with MEAN stack.",
+    "name": "tendo.io",
+    "description": "Wintendo just like mama used to make.",
     "version": "0.0.1",
     "private": true,
-    "author": "Sandile Keswa",
+    "author": "Sandile Keswa, Tom Caputi, Yaw Asabere",
     "repository": {
         "type": "git",
         "url": "git@github.com:temple-acm/site.git"
@@ -35,7 +35,8 @@
         "grunt-cli": "latest",
         "grunt-env": "latest",
         "winston": "latest",
-        "airbrake": "latest"
+        "peer": "latest",
+        "MD5": "latest"
     },
     "devDependencies": {
         "supertest": "latest",

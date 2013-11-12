@@ -26,10 +26,10 @@ module.exports = function(app, passport, db) {
     app.use(express.static(config.root + '/public'));
 
     // Our fatal error logging mechanism
-    if (config.airbrake && config.airbrake.apiKey) {
-        var airbrake = require("airbrake").createClient(config.airbrake.apiKey);
-        app.use(airbrake.expressHandler());
-    }
+    //if (config.airbrake && config.airbrake.apiKey) {
+    //    var airbrake = require("airbrake").createClient(config.airbrake.apiKey);
+    //    app.use(airbrake.expressHandler());
+    //}
 
     //Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
