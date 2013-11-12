@@ -3,3 +3,6 @@ section.content .carousel-control {
     font-size: 60px;
     cursor: pointer;
 }
+section.content .carousel-inner {
+    height: 350px;
+}

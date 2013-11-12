@@ -1,4 +1,4 @@
-angular.module("mean.system").controller("CarouselDemoCtrl", function($scope) {
+angular.module("mean.system").controller("SliderController", function($scope) {
     $scope.myInterval = 5000;
     var slides = $scope.slides = [];
     $scope.addSlide = function() {
