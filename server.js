@@ -15,8 +15,7 @@ var mongoose = require("mongoose"); // The Mongo DB ORM we're using
 
 var config = require("./config/config"); // Our server-wide configuration module
 var logger = require("./util/log"); // Our custom logging utility
-var expressConfig = require("./config/express"); // Our express configuration 
-var peerConfig = require("./config/peer");
+var expressConfig = require("./config/express"); // Our express configuration
 var controllers = require("./app/controllers");
 
 /******************************************** MODULE **********************************************/
@@ -52,8 +51,6 @@ var walk = function(_path) {
 logger.info("Loading schema models:");
 walk(path.join(__dirname, "/app/models"));
 logger.info("Schema model loading complete.");
-// DAT WEBRTC DOE
-peerConfig.boostrap(3333);
 // Define the express app
 var app = express();
 // Stuff the express configuration
