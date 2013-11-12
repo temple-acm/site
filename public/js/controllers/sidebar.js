@@ -1,18 +1,16 @@
 angular.module("mean.system").controller("SidebarController", ["$scope", "Global",
     function($scope, Global) {
         $scope.global = Global;
-
-        $scope.menu = [{
-            "title": "Home",
-            "link": "/"
-        }, {
-            "title": "Contact Us",
-            "link": "contact"
-        }, {
-            "title": "About Us",
-            "link": "about"
-        }];
-
-        $scope.isCollapsed = true;
+        
+        var windowRef = $(window);
+        var sidebarInner = $(".sidebar-inner");
+        var SIDEBAR_PADDING_TOP = "paddingTop";
+        var ZERO_PX = "0px";
+        var PX = "px";
+        windowRef.scroll(function() {
+            var scrollY = windowRef.scrollTop();
+            if (scrollY >= 50) sidebarInner.css(SIDEBAR_PADDING_TOP, ZERO_PX);
+            else sidebarInner.css(SIDEBAR_PADDING_TOP, (50 - scrollY) + PX);
+        });
     }
 ]);

@@ -7,7 +7,7 @@ angular.module("mean.system").controller("CarouselDemoCtrl", function($scope) {
             image: 'http://placehold.it/' + ($("section.content section").width() || 500) + 'x350/ADD8E6/FFFFFF',
             text: ['More', 'Extra', 'Lots of', 'Surplus'][slides.length % 4] + ' ' + ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
         });
-    }
+    };
     for (var i = 0; i < 4; i++) {
         $scope.addSlide();
     }
