@@ -88,7 +88,7 @@ var getOrCreateSlides = function(callback) {
             callback(null, slidesAlreadyInDb);
         }
     });
-}
+};
 
 /**
  * Get all slides

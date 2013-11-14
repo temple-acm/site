@@ -9,6 +9,7 @@ section.content #home-expose .carousel-inner {
 section.content #home-expose .carousel-caption {
     text-align: left;
     padding-bottom: 110px;
+    z-index: 100;
 }
 section.content #home-expose .carousel-caption h4 {
     font-size: 32px;
@@ -21,6 +22,9 @@ section.content #home-expose .carousel-caption p {
     text-overflow: ellipsis;
     overflow: hidden;
     height: 40px;
+}
+section.content #home-expose ol.carousel-indicators {
+    bottom: 10px;
 }
 section.content #home-expose ol.carousel-indicators li {
     background: #fff;
