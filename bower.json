@@ -9,6 +9,7 @@
         "angular-cookies": "1.2.0",
         "angular-bootstrap": "0.6.0",
         "angular-ui-utils": "0.0.4",
-        "peerjs": "0.3.1"
+        "peerjs": "0.3.1",
+        "holderjs": "2.2.0"
     }
 }
