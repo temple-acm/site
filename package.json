@@ -1,9 +1,9 @@
 {
-    "name": "tendo.io",
-    "description": "Wintendo just like mama used to make.",
+    "name": "tuacm-site",
+    "description": "Temple ACM Site.",
     "version": "0.0.1",
     "private": true,
-    "author": "Sandile Keswa, Tom Caputi, Yaw Asabere",
+    "author": "Temple ACM",
     "repository": {
         "type": "git",
         "url": "git@github.com:temple-acm/site.git"
@@ -36,7 +36,8 @@
         "grunt-env": "latest",
         "winston": "latest",
         "peer": "latest",
-        "MD5": "latest"
+        "MD5": "latest",
+        "request": "latest"
     },
     "devDependencies": {
         "supertest": "latest",

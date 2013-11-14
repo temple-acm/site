@@ -31,7 +31,7 @@ module.exports = function(app, passport, db) {
     //    app.use(airbrake.expressHandler());
     //}
 
-    //Don't use logger for test env
+    // Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
         app.use(express.logger('dev'));
     }
@@ -73,6 +73,11 @@ module.exports = function(app, passport, db) {
 
         //routes should be at the last
         app.use(app.router);
+
+        app.use(express.errorHandler({
+            dumpExceptions: true,
+            showStack: true
+        }));
 
         //Assume "not found" in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
         app.use(function(err, req, res, next) {

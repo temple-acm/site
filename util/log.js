@@ -48,16 +48,18 @@ var logger = new(winston.Logger)({
         })
     ],
     exceptionHandlers: [
-        new(winston.transports.Console)({
-            json: false,
-            timestamp: true
-        }),
         new winston.transports.File({
             filename: path.join(logPath, ERROR_LOG_NAME),
             json: false
         })
     ],
     exitOnError: false
+});
+logger.cli();
+// Handle process errors
+process.on("uncaughtException", function(err) {
+    logger.error("UNCAUGHT EXCEPTION - message: \t%s", err.message);
+    logger.error("UNCAUGHT EXCEPTION - trace:\t%s", err.stack);
 });
 
 /******************************************* EXPORTS **********************************************/

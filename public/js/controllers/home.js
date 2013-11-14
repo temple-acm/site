@@ -1,14 +1,27 @@
-angular.module("mean.system").controller("SliderController", function($scope) {
-    $scope.myInterval = 5000;
-    var slides = $scope.slides = [];
-    $scope.addSlide = function() {
-        var newWidth = 200 + ((slides.length + (25 * slides.length)) % 150);
-        slides.push({
-            image: 'http://placehold.it/' + ($("section.content section").width() || 500) + 'x350/ADD8E6/FFFFFF',
-            text: ['More', 'Extra', 'Lots of', 'Surplus'][slides.length % 4] + ' ' + ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
-        });
+angular.module("mean.system").controller("SliderController", function($scope, $http) {
+    // A utility method for basic boiler plate slides
+    var generateRandomColor = function() {
+        var letters = "0123456789ABCDEF".split('');
+        var color = "";
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+        return color;
     };
-    for (var i = 0; i < 4; i++) {
-        $scope.addSlide();
-    }
+    // Define the slides array (TODO: this should be fetched via HTTP)
+    var slides = $scope.slides = [];
+    // Get the slides from the database
+    $http({
+        method: "GET",
+        url: "/slides"
+    }).success(function(data, status, headers, config) {
+        console.log("Slide fetch successful.");
+        data.forEach(function(slide) {
+            slides.push(slide);
+        });
+    }).error(function(data, status, headers, config) {
+        console.log("Could not get slides: " + arguments);
+    });
+    // Other config
+    $scope.myInterval = 5000;
 });
