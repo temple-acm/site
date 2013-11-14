@@ -25,6 +25,7 @@ section.content #home-expose .carousel-caption p {
 }
 section.content #home-expose ol.carousel-indicators {
     bottom: 10px;
+    z-index: 201;
 }
 section.content #home-expose ol.carousel-indicators li {
     background: #fff;
