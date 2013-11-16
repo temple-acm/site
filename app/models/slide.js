@@ -27,6 +27,7 @@ var SlideSchema = new Schema({
     bgImageUrl: String,
     link: String,
     bgColor: String,
+    fontColor: String,
     updatedAt: { type: Date, default: Date.now },
     createdAt: Date,
     updatedBy: {

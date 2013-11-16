@@ -1,5 +1,14 @@
 angular.module("mean.system").controller("SliderController", function($scope, $http) {
     // A utility method for basic boiler plate slides
+    var generateSlideId = function() {
+        var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+        var id = "slide-";
+        for (var i = 0; i < 16; i++) {
+            id += letters[Math.round(Math.random() * 1000000) % letters.length];
+        }
+        return id;
+    };
+    // A utility method for basic boiler plate slides
     var generateRandomColor = function() {
         var letters = "0123456789ABCDEF".split('');
         var color = "";
@@ -8,7 +17,7 @@ angular.module("mean.system").controller("SliderController", function($scope, $h
         }
         return color;
     };
-    // Define the slides array (TODO: this should be fetched via HTTP)
+    // Define the slides array
     var slides = $scope.slides = [];
     // Get the slides from the database
     $http({
@@ -17,8 +26,31 @@ angular.module("mean.system").controller("SliderController", function($scope, $h
     }).success(function(data, status, headers, config) {
         console.log("Slide fetch successful.");
         data.forEach(function(slide) {
+            // Making modifications to the slides for 
+            // view purposes
+            slide.slideId = generateSlideId();
+            slide.bgColor = slide.bgColor || "transparent";
             slides.push(slide);
+            // Image loading logic
+            $(document).ready(function() {
+                if (slide.bgImageUrl) {
+                    // Invisbly load the image
+                    var image = new Image();
+                    image.onload = function() {
+                        // Hide the loader first
+                        $("div#home-expose #" + slide.slideId + " img.slide-loader").fadeOut(200);
+                        // Set and fade in the loaded image
+                        var el = $("div#home-expose #" + slide.slideId + " img.slide-bg");
+                        el.get(0).src = image.src;
+                        el.fadeIn(1200);
+                        // Show the text too
+                        $("div#home-expose #" + slide.slideId + " div.carousel-caption").fadeTo(400, 1.0);
+                    };
+                    image.src = slide.bgImageUrl;
+                }
+            });
         });
+
     }).error(function(data, status, headers, config) {
         console.log("Could not get slides: " + arguments);
     });

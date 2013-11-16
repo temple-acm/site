@@ -45,11 +45,11 @@ var getOrCreateSlides = function(callback) {
             var includeImageUrl = true; // For image alternation
             async.each(testSlides, function(testSlide, done) {
                 // Give the slide an image and a bg
-                testSlide.bgColor = generateRandomColor();
                 if (includeImageUrl) {
-                    includeImageUrl = false;
+                    // includeImageUrl = false;
                     testSlide.bgImageUrl = "http://lorempixel.com/1600/350/food";
                 } else {
+                    testSlide.bgColor = generateRandomColor();
                     testSlide.link = "http://brojsimpson.com/wordpress/wp-content/uploads/2011/04/rick-rolled-links-header.jpg";
                     includeImageUrl = true;
                 }

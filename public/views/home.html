@@ -1,15 +1,16 @@
 <div id="home-expose" ng-controller="SliderController">
     <carousel interval="8000">
-        <slide ng-repeat="slide in slides" active="slide.active" style="background: {{slide.bgColor}}">
-            <img ng-src="{{slide.image}}" style="margin:auto; height: 350px;"/>
-            <div class="carousel-caption">
+        <slide ng-repeat="slide in slides" id="{{slide.slideId}}" active="slide.active" style="background: {{slide.bgColor}}; height: 350px;">
+            <img class="slide-bg" style="margin:auto; height: 350px; display: none;"/>
+            <img ng-if="slide.bgImageUrl" class="slide-loader rotating" src="img/loaders/loader.png" />
+            <div class="carousel-caption {{slide.bgImageUrl ? 'subdued' : ''}}">
                 <h4>{{slide.title}}</h4>
                 <p>{{slide.subtitle}}</p>
             </div>
         </slide>
     </carousel>
 </div>
-<div class="container marketing">
+<div id="home-content" class="container marketing">
     <!-- Three columns of text below the carousel -->
     <div class="row">
         <div class="col-lg-4">
@@ -49,33 +50,32 @@
         <div class="col-md-5">
             <img class="featurette-image img-responsive" src="http://placehold.it/500x500/auto" alt="500x500">
         </div>
-    <div class="col-md-7">
-        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <div class="col-md-7">
+            <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
     </div>
-</div>
 
-<hr class="featurette-divider">
+    <hr class="featurette-divider">
 
-<div class="row featurette">
-    <div class="col-md-7">
-      <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-  </div>
-  <div class="col-md-5">
-      <img class="featurette-image img-responsive" src="http://placehold.it/500x500/auto" alt="500x500">
-  </div>
-</div>
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5">
+            <img class="featurette-image img-responsive" src="http://placehold.it/500x500/auto" alt="500x500">
+        </div>
+    </div>
 
-<hr class="featurette-divider">
+    <hr class="featurette-divider">
 
-<!-- /END THE FEATURETTES -->
+    <!-- /END THE FEATURETTES -->
 
-
-<!-- FOOTER -->
-<footer>
-    <p class="pull-right"><a href="#">Back to top</a></p>
-    <p>© 2013 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-</footer>
+    <!-- FOOTER -->
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2013 Temple University ACM, Student Chapter · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
 
 </div>

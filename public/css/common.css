@@ -3,22 +3,6 @@
     margin-left:0
 }
 
-footer {
-    position:fixed;
-    left:0px;
-    bottom:0px;
-    height:30px;
-    width:100%;
-    background:#ddd;
-    -webkit-box-shadow:0 8px 6px 6px black;
-    -moz-box-shadow:0 8px 6px 6px black;
-    box-shadow:0 8px 6px 6px black
-}
-
-footer p {
-    padding:5px 0 12px 10px
-}
-
 /******************************************* BASELINING *******************************************/
 
 html, body {
@@ -37,6 +21,20 @@ html, body {
     src: url(/fonts/OpenSans-Semibold.ttf) format("truetype");
     font-weight: bold;
     font-style: normal
+}
+@-webkit-keyframes rotating {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+.rotating {
+    -webkit-animation: rotating 1s linear infinite;
+}
+.subdued {
+    opacity: 0;    
 }
 
 /************************************** NAVIGATION & SIDEBAR **************************************/
