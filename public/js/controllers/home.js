@@ -25,6 +25,11 @@ angular.module("mean.system").controller("SliderController", function($scope, $h
         url: "/slides"
     }).success(function(data, status, headers, config) {
         console.log("Slide fetch successful.");
+        // Okay, now we can justify the width of the indicators panel
+        $(document).ready(function() {
+            $("div#home-expose ol.carousel-indicators").css("marginLeft", (((data.length * 18) + 12) / -2) + "px");
+        });
+        // Now to add the slides to slider ;D
         data.forEach(function(slide) {
             // Making modifications to the slides for 
             // view purposes
@@ -38,13 +43,17 @@ angular.module("mean.system").controller("SliderController", function($scope, $h
                     var image = new Image();
                     image.onload = function() {
                         // Hide the loader first
-                        $("div#home-expose #" + slide.slideId + " img.slide-loader").fadeOut(200);
+                        $("div#home-expose #" + slide.slideId + " img.slide-loader").fadeOut(200, function() {
+                            this.remove();
+                        });
                         // Set and fade in the loaded image
                         var el = $("div#home-expose #" + slide.slideId + " img.slide-bg");
                         el.get(0).src = image.src;
                         el.fadeIn(1200);
                         // Show the text too
-                        $("div#home-expose #" + slide.slideId + " div.carousel-caption").fadeTo(400, 1.0);
+                        $("div#home-expose #" + slide.slideId + " div.carousel-caption").fadeTo(400, 1.0, function() {
+                            $("div#home-expose #" + slide.slideId + " div.carousel-caption").removeClass("subdued");
+                        });
                     };
                     image.src = slide.bgImageUrl;
                 }

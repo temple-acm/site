@@ -1,9 +1,3 @@
-// Preloading immediately visible images
-(function() {
-    // The header logo
-    new Image().src = "../img/acm-logo.png";
-})();
-
 window.bootstrap = function() {
     angular.bootstrap(document, ['mean']);
 };
