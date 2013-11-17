@@ -1,6 +1,6 @@
 section.content #home-expose {
-    background: url(../../img/bg-slider.png) repeat;
-    border-bottom: 1px solid #aaa;
+    background: url(/../../img/bg-slider.png) repeat;
+    border-bottom: 1px solid #f0f0f0;
 }
 section.content #home-expose .carousel-control {
     padding-top: 120px;
