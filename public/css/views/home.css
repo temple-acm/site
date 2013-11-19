@@ -96,16 +96,10 @@ section.content #home-content .featurette .btn {
 }
 
 /* Center align the text within the three columns below the carousel */
-section.content #home-content .col-lg-4 {
-  text-align: left;
+section.content #home-content .featurette {
   margin-bottom: 20px;
 }
-section.content #home-content .col-lg-4 img {
-  float: left;
-  margin-right: 25px;
-  margin-bottom: 15px;
-}
-section.content #home-content .col-lg-4 h2 {
+section.content #home-content .featurette h2 {
   margin-top: 0px;
   text-align: center;
   font-family: 'Roboto Condensed', sans-serif;
@@ -114,13 +108,33 @@ section.content #home-content h2 {
   font-weight: normal;
   text-shadow: -1px -1px 1px #efefef;
 }
-section.content #home-content .col-lg-4 p {
+section.content #home-content .featurette p {
   margin-left: 10px;
   margin-right: 10px;
   font-size: 14px;
   text-align: justify;
   text-shadow: -1px -1px 1px #efefef;
   color: #444;
+}
+section.content #home-content .featurette .btn {
+  transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s; /* Safari */
+}
+section.content #home-content .featurette .btn:hover {
+  background: #428bca;
+  border-color: #357ebd;
+  color: #fefefe;
+}
+section.content #home-content .featurette .btn:active {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3) inset;
+}
+section.content #home-content .separator {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #fefefe;
+  width: 100%;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 25px;
 }
 
 @media (min-width: 768px) {
