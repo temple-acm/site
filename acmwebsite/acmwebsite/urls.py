@@ -21,11 +21,13 @@ urlpatterns = patterns('',
     url(r'^$', 'acm_homepage.views.home', name='home'),
     # url(r'^calendar/', include('acm_calendar.urls', namespace="acm_calendar")),
     # url(r'^acmwebsite/', include('acmwebsite.foo.urls')),
-    url(r'api/', include(router.urls)),
+    url(r'^api/', include(router.urls), name='api'),
     # url(r'api/blog/getPost/(?P<slug>\w+)/$', blogViews.IndividualBlogView.as_view()),
+    # This line enables browseable API auth
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

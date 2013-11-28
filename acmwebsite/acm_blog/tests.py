@@ -5,27 +5,40 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
+from rest_framework import status
 from django.core.urlresolvers import reverse
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2. I like this, it helps to detect if we have unshielded hardware in space.
-        """
-        self.assertEqual(1 + 1, 2)
+from django.test import TestCase
+from django.contrib.auth.models import User
+# from acm_blog.views import views as blogViews
 
 # I desperately need more tests here, but I also don't know how to
 # use Django, so I'm not quite sure how to instantiate rich content
 # like a blog post to do testing against with a function. 
 
-class ViewTests(TestCase):
+class BasicReturn (APITestCase):
+    def test_blogs_return_always_resolves(self):
+        """
+        Ensure that a basic return completes. 
+        """
+        response = self.client.get('/api/blogs/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_BlogListView_with_no_blogs(self):
+    def test_blog_creation(self):
         """
-        If we have no blogs, display an error message.
+        Ensure we can make a blog post.
         """
-        response = self.client.get(reverse('acm_blog:index'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No blogs are available")
-        self.assertQuerySetEqual(response.context['blog_list'], [])
+        print User.objects.all()
+
+        data = {'title': 'Test framework test',
+                'content': 'This is a test post to test the testing',
+                'author': User.objects.get(username='sri')
+                }
+
+        self.client.login(username='sri', password='testpass')
+        response = self.client.post('/api/blogs/', data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, data)
+
+
