@@ -19,6 +19,7 @@ router.register(r'groups', usersViews.GroupViewSet)
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'acm_homepage.views.home', name='home'),
+    url('^login/', 'login.views.login', name='login'),
     # url(r'^calendar/', include('acm_calendar.urls', namespace="acm_calendar")),
     # url(r'^acmwebsite/', include('acmwebsite.foo.urls')),
     url(r'^api/', include(router.urls), name='api'),
