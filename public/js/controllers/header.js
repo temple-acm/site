@@ -1,12 +1,12 @@
-angular.module("mean.system").controller("HeaderController", ["$scope", "Global", function ($scope, Global) {
+angular.module("mean.system").controller("HeaderController", ["$scope", "$location", "Global", function ($scope, $location, Global) {
     $scope.global = Global;
 
     $scope.doRegister = function() {
-        console.log("swagger");
+        $location.path("/register");
     };
 
     $scope.doSignIn = function() {
-        alert("sign");
+        alert("signin");
     };
 
     $scope.menu = [{

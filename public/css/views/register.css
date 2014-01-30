@@ -1,0 +1,34 @@
+section.content #register-header {
+  margin-top: 50px;
+}
+section.content #register-form .form-group div {
+  margin-top: 10px;
+}
+section.content #register-form div.separator {
+  float: left;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+section.content #register-form .upload-label {
+  float: left;
+  display: inline-block;
+}
+section.content #register-form .upload-button {
+  float: left;
+  display: inline-block;
+  width: 100%;
+}
+section.content #register-form h2 {
+  margin-top: 15px;
+  float: left;
+  width: 100%;
+  font-family: 'Roboto Condensed', sans-serif; 
+}
+section.content #register-form .btn-submit {
+  text-transform: uppercase;
+  border-radius: 0px;
+  font-size: 12px;
+  padding: 10px 20px;
+  margin-bottom: 30px;
+  outline: none;
+}

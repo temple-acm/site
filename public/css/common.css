@@ -167,6 +167,9 @@ div.sidebar .sidebar-title {
     width: 120px;
     text-shadow: 0px 0px #000;
 }
+div.no-sidebar {
+    width: 0px;
+}
 
 /****************************************** CONTENT AREA ******************************************/
 
@@ -180,4 +183,12 @@ section.content {
     overflow-x: hidden;
 }
 section.content section {
+}
+section.content .separator {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #fefefe;
+  width: 100%;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 25px;
 }
