@@ -3,19 +3,16 @@
  */
 var express = require('express'),
     mongoStore = require('connect-mongo')(express),
-    flash = require('connect-flash'),
+    busboy = require('connect-busboy'),
     helpers = require('view-helpers'),
     config = require('./config');
 
-module.exports = function(app, passport, db) {
+module.exports = function (app, passport, db) {
     app.set('showStackError', true);
-
-    //Prettify HTML
-    app.locals.pretty = true;
 
     //Should be placed before express.static
     app.use(express.compress({
-        filter: function(req, res) {
+        filter: function (req, res) {
             return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
         },
         level: 9
@@ -23,14 +20,6 @@ module.exports = function(app, passport, db) {
 
     //Setting the fav icon and static folder
     app.use(express.favicon());
-    app.use(express.static(config.root + '/public'));
-
-    // Our fatal error logging mechanism
-    //if (config.airbrake && config.airbrake.apiKey) {
-    //    var airbrake = require("airbrake").createClient(config.airbrake.apiKey);
-    //    app.use(airbrake.expressHandler());
-    //}
-
     // Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
         app.use(express.logger('dev'));
@@ -43,14 +32,20 @@ module.exports = function(app, passport, db) {
     //Enable jsonp
     app.enable("jsonp callback");
 
-    app.configure(function() {
+    app.configure(function () {
         //cookieParser should be above session
         app.use(express.cookieParser());
 
         // body parsing should be above methodOverride
         app.use(express.json());
+        // Handles url variables
         app.use(express.urlencoded());
+        // Handles route handler stacking
         app.use(express.methodOverride());
+        // Busboy enables file upload etc.
+        app.use(busboy());
+        // Indicates that client side src is in the '/public' dir
+        app.use(express.static(config.root + '/public'));
 
         //express/mongo session storage
         app.use(express.session({
@@ -61,15 +56,8 @@ module.exports = function(app, passport, db) {
             })
         }));
 
-        //connect flash for flash messages
-        app.use(flash());
-
         //dynamic helpers
         app.use(helpers(config.app.name));
-
-        //use passport session
-        app.use(passport.initialize());
-        app.use(passport.session());
 
         //routes should be at the last
         app.use(app.router);
@@ -80,7 +68,7 @@ module.exports = function(app, passport, db) {
         }));
 
         //Assume "not found" in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
-        app.use(function(err, req, res, next) {
+        app.use(function (err, req, res, next) {
             //Treat as 404
             if (~err.message.indexOf('not found')) return next();
 
@@ -94,7 +82,7 @@ module.exports = function(app, passport, db) {
         });
 
         //Assume 404 since no middleware responded
-        app.use(function(req, res, next) {
+        app.use(function (req, res, next) {
             res.status(404).render('404', {
                 url: req.originalUrl,
                 error: 'Not found'

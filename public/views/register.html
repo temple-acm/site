@@ -1,4 +1,15 @@
-<div id="register-form" ng-controller="RegisterFormController" class="container">
+<div id="register-header">
+    <div class="col-md-12 container">
+        <h3>Temple ACM Registration Form</h3>
+        <div class="separator"></div>
+        <p>Come join the Temple ACM family! All you have to do is fill out the form details below and you'll be on your way. 
+        Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter.
+        With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and 
+        a a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best
+        decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
+    </div>
+</div>
+<div id="register-form" ng-controller="RegisterFormController" class="container" novalidate>
     <form role="form">
         <div class="form-group">
             <div class="col-md-12">
@@ -6,16 +17,16 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-4">
-                <label for="firstNameText">First Name</label>
-                <input type="text" class="form-control" id="firstNameText" placeholder="e.g. John">
+                <label for="firstNameText">First Name<span class="red-asterisk">*</span></label>
+                <input type="text" class="form-control" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
             </div>
             <div class="col-md-4">
-                <label for="lastNameText">Last Name</label>
-                <input type="text" class="form-control" id="lastNameText" placeholder="e.g. Smith">
+                <label for="lastNameText">Last Name<span class="red-asterisk">*</span></label>
+                <input type="text" class="form-control" id="lastNameText" ng-model="user.lastName" placeholder="e.g. Smith" required>
             </div>
             <div class="col-md-4">
-                <label for="emailText">Temple Email Address</label>
-                <input type="email" class="form-control" id="emailText" placeholder="e.g. jsmith@temple.edu">
+                <label for="emailText">Temple Email Address<span class="red-asterisk">*</span></label>
+                <input type="email" class="form-control" id="emailText" ng-model="user.templeEmail" placeholder="e.g. jsmith@temple.edu" required>
             </div>
         </div>
         <div class="form-group">
@@ -25,23 +36,23 @@
             </div>
             <div class="col-md-4">
                 <label for="gitHubText">Github Id</label>
-                <input type="text" class="form-control" id="gitHubText" placeholder="e.g. jsmith">
+                <input type="text" class="form-control" id="gitHubText" ng-model="user.github" placeholder="e.g. jsmith">
             </div>
             <div class="col-md-4">
                 <label for="twitterText">Twitter Handle</label>
-                <input type="text" class="form-control" id="twitterText" placeholder="e.g. @somebody">
+                <input type="text" class="form-control" id="twitterText" ng-model="user.twitter" placeholder="e.g. @somebody">
             </div>
             <div class="col-md-4">
                 <label for="facebookText">Facebook Profile Url</label>
-                <input type="url" class="form-control" id="facebookText" placeholder="e.g. https://www.facebook.com/john">
+                <input type="text" class="form-control" id="facebookText" ng-model="user.facebook" placeholder="e.g. https://www.facebook.com/john" ng-pattern="/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/">
             </div>
             <div class="col-md-8">
-                <label for="bioText">Who are you?</label>
-                <textarea class="form-control" rows="5" id="bioText" placeholder="Drop a few lines here about who you are, and what you love about computing."></textarea>
+                <label for="bioText">Who are you?<span class="red-asterisk">*</span></label>
+                <textarea class="form-control" rows="5" id="bioText" ng-model="user.bio" placeholder="Drop a few lines here about who you are, what you do, how you do it, and computing means to you." required></textarea>
             </div>
             <div class="col-md-4">
-                <label for="majorSelect">Temple University Major</label>
-                <select class="form-control" id="majorSelect">
+                <label for="majorSelect">Temple University Major<span class="red-asterisk">*</span></label>
+                <select class="form-control" ng-model="user.major" id="majorSelect" required>
                     <option>Information Science &amp; Technology</option>
                     <option>Computer Science</option>
                     <option>Computer Science &amp; Mathematics</option>
@@ -50,12 +61,14 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label for="studentLevelSelect">Student Level</label>
-                <select class="form-control" id="studentLevelSelect">
+                <label for="studentLevelSelect">Student Level<span class="red-asterisk">*</span></label>
+                <select class="form-control" ng-model="user.studentLevel" id="studentLevelSelect" required>
                     <option>Freshman</option>
                     <option>Sophomore</option>
                     <option>Junior</option>
                     <option>Senior</option>
+                    <option>Senior+</option>
+                    <option>Graduate</option>
                 </select>
             </div>
         </div>
@@ -65,16 +78,16 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-4">
-                <label for="userIdText">Your New User Id</label>
-                <input type="text" class="form-control" id="userIdText" placeholder="Choose a User Id">
+                <label for="userIdText">Temple ACM User Id<span class="red-asterisk">*</span></label>
+                <input type="text" class="form-control" id="userIdText" ng-model="user.userId" placeholder="Choose a User Id" required>
             </div>
             <div class="col-md-4">
-                <label for="passwordText">Password</label>
-                <input type="password" class="form-control" id="passwordText" placeholder="Password">
+                <label for="passwordText">Password<span class="red-asterisk">*</span></label>
+                <input type="password" class="form-control" id="passwordText" ng-model="user.password" placeholder="Password" required>
             </div>
             <div class="col-md-4">
-                <label for="confirmPasswordText">Confirm Password</label>
-            <input type="password" class="form-control" id="confirmPasswordText" placeholder="Password confirmation">
+                <label for="confirmPasswordText">Confirm Password<span class="red-asterisk">*</span></label>
+            <input type="password" class="form-control" id="confirmPasswordText" ng-model="user.confirmPassword" placeholder="Password confirmation" required>
             </div>
         </div>
         <div class="form-group">
@@ -83,8 +96,10 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-12">
-                <label class="upload-label" for="fileUpload">Resume File Upload</label>
-                <input class="upload-button" type="file" id="fileUpload">
+                <label class="upload-label">Resume File Upload<span class="red-asterisk">*</span></label>
+                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 0px;">Submit a file 1MB or less in a *.pdf, *.doc or *.docx format.</p>
+                <input class="upload-button" ng-file-drop-available="dropSupported=true" ng-show="!dropSupported" type="file" ng-file-select="selectFile($files, user)" id="fileUpload">
+                <div class="upload-drop" ng-class="dragDropStyle" ng-file-drop="selectFile($files, user)" ng-file-drag-over-class="on-drag" ng-show="dropSupported">{{dragDropMessage}}</div>
                 <p class="upload-label help-block">We need your resume to help us determine what companies to present at meetings.</br>It really helps us understand your strengths and weaknesses.</p>
             </div>
         </div>
@@ -93,7 +108,7 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-12" style="float: left; text-align: center;">
-                <button type="submit" class="btn btn-success btn-submit">Continue Registration</button>
+                <button type="submit" ng-click="submit(user)" class="btn btn-success btn-submit">Continue Registration</button>
             </div>
         </div>
     </form>

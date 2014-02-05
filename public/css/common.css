@@ -52,7 +52,7 @@ div.sidebar {
     overflow: hidden;
     background: #2c2c2d;
     box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2) inset;
-    transition: width 0.25s ease;
+    transition: width 0.25s ease, left 0.25s ease;
 }
 div.sidebar:hover {
     width: 200px;
@@ -168,7 +168,7 @@ div.sidebar .sidebar-title {
     text-shadow: 0px 0px #000;
 }
 div.no-sidebar {
-    width: 0px;
+    left: -60px;
 }
 
 /****************************************** CONTENT AREA ******************************************/

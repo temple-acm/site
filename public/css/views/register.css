@@ -1,13 +1,40 @@
 section.content #register-header {
-  margin-top: 50px;
+  text-align: center;
+}
+section.content #register-header h3 {
+  margin-top: 40px;
+  font-size: 36px;
+  font-family: 'Roboto Condensed', sans-serif; 
+}
+section.content #register-header p {
+  text-align: justify;
+  margin-top: 15px;
+  padding: 0 15px;
+  text-shadow: -1px -1px 1px #efefef;
+  color: #444;
+}
+section.content #register-header div.separator {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 section.content #register-form .form-group div {
   margin-top: 10px;
+}
+section.content #register-form .form-group span.red-asterisk {
+  color: red;
+  padding-left: 3px;
 }
 section.content #register-form div.separator {
   float: left;
   margin-top: 0px;
   margin-bottom: 15px;
+}
+section.content #register-form form .ng-invalid {
+  border-color: #a94442;
+}
+section.content #register-form form .ng-invalid:focus {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(169, 68, 66, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(169, 68, 66, 0.6);
 }
 section.content #register-form .upload-label {
   float: left;
@@ -17,6 +44,48 @@ section.content #register-form .upload-button {
   float: left;
   display: inline-block;
   width: 100%;
+}
+section.content #register-form .upload-drop-preview {
+  float: left;
+  display: block;
+  font-style: italic;
+  color: #4cae4c;
+}
+section.content #register-form .upload-label {
+  width: 100%;
+}
+section.content #register-form .upload-drop {
+  float: left;
+  display: inline-block;
+  width: 100%;
+  border: 1px solid #cccccc;
+  padding: 30px 15px;
+  background: #efefef;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #666;
+}
+section.content #register-form .upload-drop.on-drag {
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+section.content #register-form .upload-drop.dropped {
+  color: #ffffff;
+  background-color: #47a447;
+  border-color: #4cae4c;
+}
+section.content #register-form .upload-drop.wrong {
+  color: #ffffff;
+  background-color: #a21e32;
+  border-color: #a94442;
 }
 section.content #register-form h2 {
   margin-top: 15px;
