@@ -65,7 +65,7 @@ section.content #home-expose ol.carousel-indicators li.active {
     margin: 0px 4px;
 }
 section.content #home-expose {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 section.content .featurette-divider {
@@ -143,7 +143,7 @@ section.content #home-content .featurette .pictures .picture {
   margin: 5px; 
 }
 section.content #home-content .featurette .pictures .picture.square {
-  height: 130px;
+  height: 100px;
 }
 @media (min-width: 768px) {
 
