@@ -70,6 +70,7 @@ section.content #register-form .upload-drop {
   font-weight: bold;
   text-transform: uppercase;
   font-size: 14px;
+  border-color: #a94442;
   color: #666;
 }
 section.content #register-form .upload-drop.on-drag {
@@ -100,4 +101,17 @@ section.content #register-form .btn-submit {
   padding: 10px 20px;
   margin-bottom: 30px;
   outline: none;
+}
+section.content #register-modal .modal-content {
+  width: 500px;
+}
+section.content #register-modal .modal-dialog {
+  padding: 0px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -250px;
+  margin-right: 0px;
+  margin-top: -100px;
+  margin-bottom: 0px;
 }

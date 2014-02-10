@@ -37,6 +37,9 @@ html, body {
 .subdued {
     opacity: 0;    
 }
+.modal {
+    overflow-y: hidden;
+}
 
 /************************************** NAVIGATION & SIDEBAR **************************************/
 

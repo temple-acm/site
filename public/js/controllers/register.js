@@ -14,23 +14,25 @@ angular.module("mean.system").controller("RegisterFormController", function ($sc
 	$scope.dragDropStyle = DRAG_DROP_STYLE_NEUTRAL;
 
 	$scope.submit = function (user) {
-		console.log("test() was fired:");
 		console.log(user);
-		if ($scope.pendingFile) {
-			$scope.upload = $upload.upload({
-				url: SUBMIT_URL,
-				method: "POST",
-				data: user,
-				file: $scope.pendingFile,
-				fileFormDataName: "resume"
-			}).progress(function (evt) {
-				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-			}).success(function (data, status, headers, config) {
-				// file is uploaded successfully
-				console.log("Much success.");
-				console.log(data);
-			});
-		}
+		$('#register-modal').modal("show");
+		// console.log("test() was fired:");
+		// console.log(user);
+		// if ($scope.pendingFile) {
+		// 	$scope.upload = $upload.upload({
+		// 		url: SUBMIT_URL,
+		// 		method: "POST",
+		// 		data: user,
+		// 		file: $scope.pendingFile,
+		// 		fileFormDataName: "resume"
+		// 	}).progress(function (evt) {
+		// 		console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		// 	}).success(function (data, status, headers, config) {
+		// 		// file is uploaded successfully
+		// 		console.log("Much success.");
+		// 		console.log(data);
+		// 	});
+		// }
 	};
 
 	$scope.selectFile = function ($files, user) {

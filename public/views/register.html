@@ -9,8 +9,27 @@
         decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
     </div>
 </div>
-<div id="register-form" ng-controller="RegisterFormController" class="container" novalidate>
-    <form role="form">
+<!-- Modal -->
+<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="register-modal-label">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                This is some text yo.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Registration Form -->
+<div id="register-form" ng-controller="RegisterFormController" class="container">
+    <form role="form" novalidate>
         <div class="form-group">
             <div class="col-md-12">
                 <h2>Basic Information</h2>
@@ -108,7 +127,7 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-12" style="float: left; text-align: center;">
-                <button type="submit" ng-click="submit(user)" class="btn btn-success btn-submit">Continue Registration</button>
+                <button ng-click="submit(user)" class="btn btn-success btn-submit">Continue Registration</button>
             </div>
         </div>
     </form>

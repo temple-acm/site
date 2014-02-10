@@ -77,6 +77,8 @@ section.content .featurette-divider {
 -------------------------------------------------- */
 section.content #home-content footer {
     padding-top: 15px;
+    color: #888;
+  text-shadow: 1px 1px 1px #fff;
 }
 section.content #home-content footer p {
     margin: 0 0 30px;
