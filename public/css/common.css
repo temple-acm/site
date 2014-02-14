@@ -195,3 +195,13 @@ section.content .separator {
   margin-top: 15px;
   margin-bottom: 25px;
 }
+section.content .featurette .separator {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #fefefe;
+  width: 95%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}

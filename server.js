@@ -8,7 +8,6 @@
 var express = require("express"); // The web server implementation we're using
 var fs = require("fs"); // Node.js internal filesystem module
 var path = require("path"); // Node.js internal pathing utility module
-var passport = require("passport"); // A popular authentication library
 var mongoose = require("mongoose"); // The Mongo DB ORM we're using
 
 /*************************************** INTERNAL IMPORTS *****************************************/
@@ -16,7 +15,7 @@ var mongoose = require("mongoose"); // The Mongo DB ORM we're using
 var config = require("./config/config"); // Our server-wide configuration module
 var logger = require("./util/log"); // Our custom logging utility
 var expressConfig = require("./config/express"); // Our express configuration
-var controllers = require("./app/controllers");
+var services = require("./backend/services");
 
 /******************************************** MODULE **********************************************/
 
@@ -30,8 +29,8 @@ var db = mongoose.connect(config.db);
 logger.info("Mongoose db connection bootstrapping complete.");
 // Walk iterates through every file in the models folder and requires it
 // WARNING: explosive runtime, try not to have too deep a directory structure
-var walk = function(_path) {
-    fs.readdirSync(_path).forEach(function(file) {
+var walk = function (_path) {
+    fs.readdirSync(_path).forEach(function (file) {
         var newPath = path.join(_path, file);
         // Get information on the file
         var stat = fs.statSync(newPath);
@@ -49,16 +48,16 @@ var walk = function(_path) {
 };
 // Walk the models path
 logger.info("Loading schema models:");
-walk(path.join(__dirname, "/app/models"));
+walk(path.join(__dirname, "/backend/models"));
 logger.info("Schema model loading complete.");
 // Define the express app
 var app = express();
 // Stuff the express configuration
-expressConfig(app, passport, db);
+expressConfig(app, db);
 logger.info("Express configuration bootstrapping complete.");
 // Bootstrap the application routes
 logger.info("Bootstrapping server HTTP routes:");
-controllers.route(app, passport, auth);
+services.route(app, auth);
 logger.info("HTTP route bootstrapping complete.");
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;

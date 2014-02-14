@@ -8,17 +8,18 @@
 
 /******************************************** MODULE **********************************************/
 
-var render = function(req, res) {
-    res.render("index", {
-        user: req.user ? JSON.stringify(req.user) : "null"
-    });
+// Renders the main page, which has the SPA inside it
+var render = function (req, res) {
+	res.render("main", {
+		user: req.user ? JSON.stringify(req.user) : "null"
+	});
 };
 
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
 module.exports.routes = [{
-    path: "/",
-    method: "GET",
-    handler: render
+	path: "/",
+	method: "GET",
+	handler: render
 }];

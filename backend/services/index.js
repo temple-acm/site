@@ -21,7 +21,7 @@ var HTTP_METHOD_PUT = "put";
 var HTTP_METHOD_DELETE = "del";
 var HTTP_METHOD_PATCH = "patch";
 
-var normalizeHTTPMethod = function(method) {
+var normalizeHTTPMethod = function (method) {
     var lowercaseMethod = method.toLowerCase();
     if (lowercaseMethod.indexOf(HTTP_METHOD_PATCH) !== -1) {
         return HTTP_METHOD_PATCH;
@@ -38,8 +38,8 @@ var normalizeHTTPMethod = function(method) {
     }
 };
 
-var walk = function(_path, app) {
-    fs.readdirSync(_path).forEach(function(file) {
+var walk = function (_path, app) {
+    fs.readdirSync(_path).forEach(function (file) {
         var newPath = path.join(_path, file);
         // Get information on the file
         var stat = fs.statSync(newPath);
@@ -111,7 +111,7 @@ var walk = function(_path, app) {
     });
 };
 
-var route = function(app, passport, auth) {
+var route = function (app, auth) {
     // All we do is walk
     walk(__dirname, app);
 };

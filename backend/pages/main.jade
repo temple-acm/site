@@ -1,0 +1,79 @@
+!!! 5
+html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.facebook.com/2008/fbml', itemscope='itemscope', itemtype='http://schema.org/Product')
+  // Beginning of head element ---------------------------------------------------------------------------
+  
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    meta(name='viewport', content='width=device-width,initial-scale=1')
+
+    title!='Temple University ACM'
+    meta(http-equiv='Content-type', content='text/html;charset=UTF-8')
+    meta(name="keywords", content="temple, acm, computer, science, college, university")
+    meta(name="description", content="The official website of Temple University's Association of Computing Machinery (ACM) student chapter.")
+
+    link(href='/img/icons/favicon.ico', rel='shortcut icon', type='image/x-icon')
+  
+    meta(property='og:title', content='#{appName} - #{title}')
+    meta(property='og:description', content='MEAN - A Modern Stack: MongoDB, ExpressJS, AngularJS, NodeJS. (BONUS: Passport User Support).')
+    meta(property='og:type', content='website')
+    meta(property='og:url', content='APP_URL')
+    meta(property='og:image', content='APP_LOGO')
+    meta(property='og:site_name', content='MEAN - A Modern Stack')
+    meta(property='fb:admins', content='APP_ADMIN')
+
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300')
+    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.css')
+    //- link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap-responsive.css')
+    link(rel='stylesheet', href='/css/common.css')
+    link(rel='stylesheet', href='/css/views/home.css')
+    link(rel='stylesheet', href='/css/views/register.css')
+
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+
+  // End of head element ---------------------------------------------------------------------------------
+
+  // Main section ----------------------------------------------------------------------------------------
+
+  body(data-ng-controller="PageController")
+    section.content
+        section(data-ng-view, data-ng-contoller='PageController', data-ng-init='onReady()')
+    div.sidebar(data-ng-include="'views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()")
+    div.header(data-ng-include="'views/header.html'", data-role="session")
+
+    // Footer section ------------------------------------------------------------------------------------
+
+    // jQuery
+    script(type='text/javascript', src='/lib/jquery/jquery.js')
+    // Bootstrap
+    script(type='text/javascript', src='/lib/bootstrap/dist/js/bootstrap.min.js')
+    // AngularJS
+    script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload-shim.min.js')
+    script(type='text/javascript', src='/lib/angular/angular.min.js')
+    script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload.min.js')
+    script(type='text/javascript', src='/lib/angular-route/angular-route.js')
+    script(type='text/javascript', src='/lib/angular-cookies/angular-cookies.js')
+    script(type='text/javascript', src='/lib/angular-resource/angular-resource.js')
+    // Angular UI
+    script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap.js')
+    script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap-tpls.js')
+    script(type='text/javascript', src='/lib/angular-ui-utils/modules/route/route.js')
+    // Application Init
+    script(type='text/javascript', src='/js/app.js')
+    script(type='text/javascript', src='/js/config.js')
+    script(type='text/javascript', src='/js/directives.js')
+    script(type='text/javascript', src='/js/filters.js')
+    // Application Services
+    script(type='text/javascript', src='/js/services/global.js')
+    // Application Controllers
+    script(type='text/javascript', src='/js/controllers/page.js')
+    script(type='text/javascript', src='/js/controllers/home.js')
+    script(type='text/javascript', src='/js/controllers/header.js')
+    script(type='text/javascript', src='/js/controllers/sidebar.js')
+    script(type='text/javascript', src='/js/controllers/register.js')
+    script(type='text/javascript', src='/js/init.js')
+    // Dev scripts
+    if (req.host='localhost')
+        // Livereload script rendered 
+        script(type='text/javascript', src='http://localhost:35729/livereload.js')

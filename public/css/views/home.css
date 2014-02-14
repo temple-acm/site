@@ -35,12 +35,12 @@ section.content #home-expose ol.carousel-indicators {
     margin-left: 0px;
 }
 section.content #home-expose .carousel-caption h4 {
-    font-size: 32px;
-    font-family: "Open Sans", sans-serif;
+    font-size: 38px;
+    font-family: 'Roboto Condensed', sans-serif;
     text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
     filter: dropshadow(color=#000000, offx=0, offy=0);
 
-    height: 40px;
+    height: 43px;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -99,6 +99,17 @@ section.content #home-content .featurette .btn {
 /* Center align the text within the three columns below the carousel */
 section.content #home-content .featurette {
   margin-bottom: 20px;
+}
+section.content #home-content .featurette span.pullout {
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+  float: left;
+  margin-left: -100px;
+}
+section.content #home-content .featurette span.pullout span {
+  width: 350px;
+  position: absolute;
 }
 section.content #home-content .featurette h2 {
   margin-top: 0px;

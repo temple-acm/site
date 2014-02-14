@@ -7,7 +7,7 @@ var express = require('express'),
     helpers = require('view-helpers'),
     config = require('./config');
 
-module.exports = function (app, passport, db) {
+module.exports = function (app, db) {
     app.set('showStackError', true);
 
     //Should be placed before express.static
@@ -26,7 +26,7 @@ module.exports = function (app, passport, db) {
     }
 
     //Set views path, template engine and default layout
-    app.set('views', config.root + '/app/views');
+    app.set('views', config.root + '/backend/pages');
     app.set('view engine', 'jade');
 
     //Enable jsonp
