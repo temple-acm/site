@@ -5,7 +5,6 @@
 /*************************************** EXTERNAL IMPORTS *****************************************/
 
 var mongoose = require("mongoose"); // The Mongo DB ORM we're using
-var passport = require("passport"); // A popular authentication library
 var async = require("async"); // An asynchronous flow utility
 var _ = require("underscore");
 
@@ -28,7 +27,10 @@ var SlideSchema = new Schema({
     link: String,
     bgColor: String,
     fontColor: String,
-    updatedAt: { type: Date, default: Date.now },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
     createdAt: Date,
     updatedBy: {
         type: Schema.ObjectId,
