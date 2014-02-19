@@ -5,7 +5,6 @@
 /*************************************** EXTERNAL IMPORTS *****************************************/
 
 var mongoose = require("mongoose"); // The Mongo DB ORM we're using
-var passport = require("passport"); // A popular authentication library
 var async = require("async"); // An asynchronous flow utility
 var fs = require("fs");
 var path = require("path");
