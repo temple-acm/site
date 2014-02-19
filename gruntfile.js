@@ -1,16 +1,16 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     // Project Configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         watch: {
             jade: {
-                files: ['app/views/**'],
+                files: ['backend/views/**'],
                 options: {
                     livereload: true,
                 },
             },
             js: {
-                files: ['public/js/**', 'app/**/*.js'],
+                files: ['public/js/**', 'backend/**/*.js'],
                 tasks: ['jshint'],
                 options: {
                     livereload: true,
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            all: ['gruntfile.js', 'public/js/**/*.js', 'test/**/*.js', 'app/**/*.js']
+            all: ['gruntfile.js', 'public/js/**/*.js', 'test/**/*.js', 'backend/**/*.js']
         },
         nodemon: {
             dev: {
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
             }
         },
         concurrent: {
-            tasks: ['nodemon', 'watch'], 
+            tasks: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }

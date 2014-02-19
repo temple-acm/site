@@ -28,9 +28,9 @@
     "view-helpers": "latest",
     "forever": "latest",
     "bower": "latest",
-    "grunt": "latest",
-    "grunt-cli": "latest",
-    "grunt-env": "latest",
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.11",
+    "grunt-env": "~0.4.1",
     "winston": "latest",
     "peer": "latest",
     "MD5": "latest",
@@ -42,7 +42,7 @@
     "should": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-contrib-jshint": "latest",
-    "grunt-nodemon": "latest",
+    "grunt-nodemon": "0.2.0",
     "grunt-concurrent": "latest",
     "grunt-mocha-test": "latest"
   }

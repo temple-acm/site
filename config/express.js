@@ -22,7 +22,8 @@ module.exports = function (app, db) {
     app.use(express.favicon());
     // Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
-        app.use(express.logger('dev'));
+        // Don't use the logger - period
+        // app.use(express.logger('dev'));
     }
 
     //Set views path, template engine and default layout
