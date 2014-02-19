@@ -5,7 +5,6 @@
 /*************************************** EXTERNAL IMPORTS *****************************************/
 
 var mongoose = require("mongoose"); // The Mongo DB ORM we're using
-var passport = require("passport"); // A popular authentication library
 var request = require("request"); // Ze coolest REST client ever
 var async = require("async"); // An asynchronous flow utility
 var _ = require("underscore");
@@ -20,15 +19,15 @@ var logger = require("../../util/log"); // Our custom logging utility
 var Slide = mongoose.model("Slide");
 
 // A test data generation method for slides
-var getOrCreateSlides = function(callback) {
+var getOrCreateSlides = function (callback) {
     // Look and see if any slides are in the db
-    Slide.find({}, function(err, slidesAlreadyInDb) {
+    Slide.find({}, function (err, slidesAlreadyInDb) {
         if (err) {
             callback(err);
             return;
         } else if (slidesAlreadyInDb.length <= 0) {
             // A utility method for basic boiler plate slides
-            var generateRandomColor = function() {
+            var generateRandomColor = function () {
                 var letters = "0123456789ABCDEF".split('');
                 var color = "#";
                 for (var i = 0; i < 6; i++) {
@@ -43,7 +42,7 @@ var getOrCreateSlides = function(callback) {
             for (var i = 0; i < slideCount; i++) testSlides.push(new Slide());
             // Now we stuff in the data
             var includeImageUrl = true; // For image alternation
-            async.each(testSlides, function(testSlide, done) {
+            async.each(testSlides, function (testSlide, done) {
                 // Give the slide an image and a bg
                 if (includeImageUrl) {
                     // includeImageUrl = false;
@@ -60,7 +59,7 @@ var getOrCreateSlides = function(callback) {
                         type: "all-meat",
                         paras: 1
                     }
-                }, function(err, response, body) {
+                }, function (err, response, body) {
                     if (err) {
                         testSlide.title = "This is a title";
                         testSlide.subtitle = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -76,7 +75,7 @@ var getOrCreateSlides = function(callback) {
                     // We're done here
                     done();
                 });
-            }, function(err) {
+            }, function (err) {
                 // Called when all the slides have been initialized
                 if (err) callback(err);
                 else {
@@ -93,8 +92,8 @@ var getOrCreateSlides = function(callback) {
 /**
  * Get all slides
  */
-var getAll = function(req, res) {
-    getOrCreateSlides(function(err, slides) {
+var getAll = function (req, res) {
+    getOrCreateSlides(function (err, slides) {
         if (err) res.json(500, err);
         else res.json(slides);
     });

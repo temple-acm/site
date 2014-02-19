@@ -14,14 +14,17 @@ var _ = require("underscore");
 /*************************************** INTERNAL IMPORTS *****************************************/
 
 var logger = require("../../util/log"); // Our custom logging utility
+var fsUtil = require("../../util/fs"); // Our custom filesystem utility
 var config = require("../../config/config");
 
 /******************************************** MODULE **********************************************/
 
+// Constants
 var RANDOM_STR_LEN = 16;
 var RANDOM_STR_CHARS = "abcdefghijklmnopqrstuvwxyz";
-// Firstly, load the model
+// Some instance variables
 var User = mongoose.model("User");
+var resumePathAsserted = false; // Boolean that keeps track of whether we have a resume folder or not
 // Some helper methods
 var randomString = function () {
 	// Return a string X characters long with random letters
@@ -35,18 +38,30 @@ var randomString = function () {
  * Show login form
  */
 var register = function (req, res) {
-	// Register the new member
-	logger.info("Some data:");
-	console.log(req.body);
+	// Internally defined function to do user creation
+	var createUser = function (resumePath) {
+		// TODO do mongoose create based on req.body
+	};
 	// Start piping for busboy
 	req.pipe(req.busboy);
 	// Busboy events for file
 	req.busboy.on("file", function (fieldName, file, fileName) {
 		var generatedFileName = randomString() + "" + (new Date()).getTime() + "." + fileName.split(".").pop();
 		logger.info("New resume being uploaded via member registration: \"" + fileName + "\" -> \"" + generatedFileName + "\"");
-		file.pipe(path.join(fs.createWriteStream(config.fs.resumePath, generatedFileName)));
-		console.log("On:file");
-		console.log(arguments);
+		// Ensure that we have a place to put the file
+		fsUtil.assertPath(config.fs.resumePath, function (err) {
+			if (err) {
+				logger.error("Resume '" + generatedFileName + "' could not be uploaded - there was an exception.");
+				logger.error(err);
+				res.send(500, err);
+			} else {
+				var resumePath = path.join(config.fs.resumePath, generatedFileName);
+				file.pipe(fs.createWriteStream(resumePath));
+				logger.info("Upload of resume '" + generatedFileName + "' now completed.");
+				// Finish create
+				createUser(resumePath);
+			}
+		});
 	});
 	res.json(200, {});
 };

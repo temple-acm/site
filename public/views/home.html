@@ -1,7 +1,7 @@
 <div id="home-expose" ng-controller="SliderController">
     <carousel interval="8000">
         <slide ng-repeat="slide in slides" id="{{slide.slideId}}" active="slide.active" style="background: {{slide.bgColor}}; height: 350px;">
-            <img class="slide-bg" style="margin:auto; height: 350px; display: none;"/>
+            <img class="slide-bg" style="margin:auto; width: 100%; display: none;"/>
             <img ng-if="slide.bgImageUrl" class="slide-loader rotating" src="img/loaders/loader.png" />
             <div class="carousel-caption {{slide.bgImageUrl ? 'subdued' : ''}}" style="color: {{slide.fontColor ? slide.fontColor : '#fff'}}">
                 <h4>{{slide.title}}</h4>
