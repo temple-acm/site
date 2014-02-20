@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         watch: {
             jade: {
-                files: ['backend/views/**'],
+                files: ['backend/pages/**'],
                 options: {
                     livereload: true,
                 },
@@ -34,12 +34,12 @@ module.exports = function (grunt) {
         },
         nodemon: {
             dev: {
+                script: 'server.js',
                 options: {
-                    file: 'server.js',
                     args: [],
                     ignoredFiles: ['README.md', 'node_modules/**', '.DS_Store'],
                     watchedExtensions: ['js'],
-                    watchedFolders: ['app', 'config'],
+                    watchedFolders: ['backend', 'config'],
                     debug: true,
                     delayTime: 1,
                     env: {

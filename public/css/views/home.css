@@ -11,9 +11,12 @@ section.content #home-expose .carousel-inner {
     height: 350px;
 }
 section.content #home-expose .carousel-caption {
-    text-align: left;
-    margin-bottom: 70px;
-    z-index: 100;
+  text-align: left;
+  z-index: 100;
+  top: 50%;
+  bottom: auto;
+  padding: 0px;
+  margin-top: -68px;
 }
 section.content #home-expose .slide-loader {
     position: absolute;
@@ -40,16 +43,19 @@ section.content #home-expose .carousel-caption h4 {
     text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
     filter: dropshadow(color=#000000, offx=0, offy=0);
 
-    height: 43px;
+    height: 45px;
     text-overflow: ellipsis;
     overflow: hidden;
+    margin: 0px;
 }
 section.content #home-expose .carousel-caption p {
     font-family: "Open Sans", sans-serif;
     text-overflow: ellipsis;
     overflow: hidden;
-    height: 40px;
     font-size: 14px;
+    height: 80px;
+    margin-bottom: 0px;
+    margin-top: 10px;
 }
 section.content #home-expose ol.carousel-indicators {
     bottom: 10px;

@@ -23,8 +23,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     meta(property='fb:admins', content='APP_ADMIN')
 
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300')
-    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.css')
-    //- link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap-responsive.css')
+    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/css/common.css')
     link(rel='stylesheet', href='/css/views/home.css')
     link(rel='stylesheet', href='/css/views/register.css')
@@ -75,5 +74,4 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     script(type='text/javascript', src='/js/init.js')
     // Dev scripts
     if (req.host='localhost')
-        // Livereload script rendered 
         script(type='text/javascript', src='http://localhost:35729/livereload.js')
