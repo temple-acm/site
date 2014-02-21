@@ -38,8 +38,8 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
   body(data-ng-controller="PageController")
     section.content
         section(data-ng-view, data-ng-contoller='PageController', data-ng-init='onReady()')
-    div.sidebar(data-ng-include="'views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()")
-    div.header(data-ng-include="'views/header.html'", data-role="session")
+    div.sidebar(data-ng-include="'views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()", ng-cloak)
+    div.header(data-ng-include="'views/header.html'", data-role="session", ng-cloak)
 
     // Footer section ------------------------------------------------------------------------------------
 
@@ -51,9 +51,10 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload-shim.min.js')
     script(type='text/javascript', src='/lib/angular/angular.min.js')
     script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload.min.js')
-    script(type='text/javascript', src='/lib/angular-route/angular-route.js')
-    script(type='text/javascript', src='/lib/angular-cookies/angular-cookies.js')
-    script(type='text/javascript', src='/lib/angular-resource/angular-resource.js')
+    script(type='text/javascript', src='/lib/angular-route/angular-route.min.js')
+    script(type='text/javascript', src='/lib/angular-cookies/angular-cookies.min.js')
+    script(type='text/javascript', src='/lib/angular-resource/angular-resource.min.js')
+    script(type='text/javascript', src='/lib/angular-animate/angular-animate.min.js')
     // Angular UI
     script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap.js')
     script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap-tpls.js')

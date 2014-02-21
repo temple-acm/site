@@ -2,6 +2,9 @@ section.content #home-expose {
     background: url(/../../img/bg-slider.png) repeat;
     border-bottom: 1px solid #f0f0f0;
 }
+section.content #home-expose div.linked {
+  cursor: pointer;
+}
 section.content #home-expose .carousel-control {
     padding-top: 120px;
     font-size: 60px;
@@ -47,6 +50,12 @@ section.content #home-expose .carousel-caption h4 {
     text-overflow: ellipsis;
     overflow: hidden;
     margin: 0px;
+}
+section.content #home-expose .carousel-caption h4.sharp {
+  text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
+}
+section.content #home-expose .carousel-caption p.sharp {
+  text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
 }
 section.content #home-expose .carousel-caption p {
     font-family: "Open Sans", sans-serif;

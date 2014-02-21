@@ -1,4 +1,4 @@
-angular.module("mean.system").controller("SliderController", function ($scope, $http) {
+angular.module("mean.system").controller("SliderController", function ($scope, $http, $window) {
     // A utility method for basic boiler plate slides
     var generateSlideId = function () {
         var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
@@ -27,7 +27,6 @@ angular.module("mean.system").controller("SliderController", function ($scope, $
                 // Invisbly load the image
                 var image = new Image();
                 image.onload = function () {
-                    console.log(image.clientWidth);
                     // Hide the loader first
                     $("div#home-expose #" + slide.slideId + " img.slide-loader").fadeOut(200, function () {
                         this.remove();
@@ -81,6 +80,12 @@ angular.module("mean.system").controller("SliderController", function ($scope, $
             slideLoadCount++;
             // The slides are ready
             onSlidesReady();
+        }
+    };
+    // Goes to a link (if it exists)
+    $scope.gotoLink = function (link) {
+        if (link) {
+            $window.location.href = link;
         }
     };
 });
