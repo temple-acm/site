@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import BannerPicture
+from .models import Banner
 
 class BannerSerializer(serializers.HyperlinkedModelSerializer):
 
-    image_link = "/banner_pics/" + BannerPicture.name
+    image_link = serializers.CharField(source='get_image_link')
 
     class Meta:
-        model = BannerPicture
-        fields = ('image_link', 'created', 'blurb')
+        model = Banner
+        fields = ('image_link', 'created', 'title', 'subtitle',)

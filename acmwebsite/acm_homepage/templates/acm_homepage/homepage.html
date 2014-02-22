@@ -1,7 +1,7 @@
 {% load static %}
 <html>
     <head>
-        <link rel="stylesheet" href='{% static 'lib/bootstrap/docs/assets/css/bootstrap.css' %}'>
+        <link rel="stylesheet" href='{% static 'lib/bootstrap/dist/css/bootstrap.css' %}'>
         <link rel="stylesheet" href='{% static 'css/common.css' %}'>
         <link rel="stylesheet" href='{% static 'css/views/articles.css' %}'>
     </head>
@@ -17,7 +17,8 @@
         {% endverbatim %}
         <script type="text/javascript" src='{% static 'lib/angular/angular.js' %}'></script>
 
-        <script type='text/javascript' src='{% static 'lib/angular/angular.js' %}'></script>
+        <script type="text/javascript" src='{% static 'lib/angular-route/angular-route.js' %}'></script>
+
         <script type='text/javascript' src='{% static 'lib/angular-cookies/angular-cookies.js' %}'></script>
         <script type='text/javascript' src='{% static 'lib/angular-resource/angular-resource.js' %}'></script>
 
@@ -37,6 +38,7 @@
         <script type='text/javascript' src='{% static 'js/controllers/index.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/controllers/header.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/controllers/sidebar.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/home.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/init.js' %}'></script>
     </body>
 </html>

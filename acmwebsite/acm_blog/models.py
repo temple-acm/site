@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from users.models import Profile
 # Create your models here.
 
 class Post(models.Model):
@@ -13,7 +13,7 @@ class Post(models.Model):
         return self.title
 
     title = models.CharField(max_length=1000)
-    author = models.ForeignKey(User, related_name='posts')
+    author = models.ForeignKey(Profile, related_name='posts')
     created = models.DateTimeField(u'Date Created', blank=False, null=False,
                                    default=timezone.now())
     modified = models.DateTimeField(u'Last Modified', auto_now=True)

@@ -1,13 +1,17 @@
 from django.db import models
 from django.utils import timezone
+import os.path
 
 # Create your models here.
 # 
 class Banner(models.Model):
-    image = models.ImageField(upload_to="banner_pics", blank=False)
+    image = models.ImageField(upload_to="banner", blank=False)
     created = models.DateTimeField(u'Date Created', blank=False, null=False,
                                    default=timezone.now())
-    name = models.CharField(max_length=200)
-    blurb = models.TextField(max_length=500)
+    title = models.TextField()
+    subtitle = models.TextField()
+
+    def get_image_link(self):
+        return self.image.url
 
     ordering = ['-created']
