@@ -35,7 +35,8 @@
     "peer": "latest",
     "MD5": "latest",
     "request": "latest",
-    "connect-busboy": "0.0.1"
+    "connect-busboy": "0.0.1",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "supertest": "latest",
