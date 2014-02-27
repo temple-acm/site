@@ -10,19 +10,6 @@ html, body {
     background: url(/img/bg-tile-light-gray.png) repeat;
 }
 
-@font-face {
-    font-family: "Open Sans";
-    src: url(/fonts/OpenSans-Regular.ttf) format("truetype");
-    font-weight: normal;
-    font-style: normal
-}
-
-@font-face {
-    font-family: "Open Sans";
-    src: url(/fonts/OpenSans-Semibold.ttf) format("truetype");
-    font-weight: bold;
-    font-style: normal
-}
 @-webkit-keyframes rotating {
     from{
         -webkit-transform: rotate(0deg);
@@ -170,7 +157,7 @@ div.sidebar .sidebar-title {
     width: 120px;
     text-shadow: 0px 0px #000;
 }
-div.no-sidebar {
+div.sidebar.no-sidebar {
     left: -60px;
 }
 
@@ -184,6 +171,7 @@ section.content {
     bottom: 0px;
     overflow-y: auto;
     overflow-x: hidden;
+    transition: left 0.28s ease;
 }
 section.content section {
 }
@@ -204,4 +192,39 @@ section.content .featurette .separator {
   margin-right: auto;
   margin-top: 10px;
   margin-bottom: 15px;
+}
+section.content.no-sidebar {
+    left: 0px;
+}
+
+/*************************************************************************************************/
+
+#coming-soon-modal .modal-content {
+  width: 450px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -225px;
+  margin-top: -75px;
+  border-radius: 0px;
+}
+#coming-soon-modal .modal-header {
+  padding: 10px 15px;
+  border-bottom-width: 0px;
+}
+#coming-soon-modal .modal-header h4 {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 26px;
+  padding-bottom: 5px;
+}
+#coming-soon-modal .modal-header .separator {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #dfdfdf;
+}
+#coming-soon-modal .modal-body {
+    padding: 5px 20px 20px 20px;
+}
+#coming-soon-modal .modal-header .close {
+    margin-top: 8px;
+    margin-right: 4px;
 }

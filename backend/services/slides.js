@@ -21,7 +21,9 @@ var Slide = mongoose.model("Slide");
 // A test data generation method for slides
 var getOrCreateSlides = function (callback) {
     // Look and see if any slides are in the db
-    Slide.find({}, function (err, slidesAlreadyInDb) {
+    Slide.find().sort({
+        updatedAt: "desc"
+    }).exec(function (err, slidesAlreadyInDb) {
         if (err) {
             callback(err);
             return;

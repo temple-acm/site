@@ -1,6 +1,6 @@
 //Setting up route
 window.app.config(['$routeProvider',
-    function($routeProvider) {
+    function ($routeProvider) {
         $routeProvider.
         when('/articles', {
             templateUrl: 'views/articles/list.html'
@@ -28,8 +28,8 @@ window.app.config(['$routeProvider',
 
 //Setting HTML5 Location Mode
 window.app.config(['$locationProvider',
-    function($locationProvider) {
-        // $locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix("!");
+    function ($locationProvider) {
+        $locationProvider.html5Mode(true);
+        //$locationProvider.hashPrefix("!");
     }
 ]);

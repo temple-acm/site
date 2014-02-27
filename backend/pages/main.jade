@@ -23,6 +23,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     meta(property='fb:admins', content='APP_ADMIN')
 
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400,600')
     link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/css/common.css')
     link(rel='stylesheet', href='/css/views/home.css')
@@ -36,7 +37,15 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
   // Main section ----------------------------------------------------------------------------------------
 
   body(data-ng-controller="PageController")
-    section.content
+    #coming-soon-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='coming-soon-modal-label', aria-hidden='true')
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                h4#coming-soon-modal-label.modal-title Coming Soon!
+                .separator
+            .modal-body
+                | This site is still under construction. New features will be rolling in on a daily basis for the next few weeks, so keep checking back to see if the feature you wanted is available yet.
+    section.content(data-ng-class="sidebarClass()")
         section(data-ng-view, data-ng-contoller='PageController', data-ng-init='onReady()')
     div.sidebar(data-ng-include="'views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()", ng-cloak)
     div.header(data-ng-include="'views/header.html'", data-role="session", ng-cloak)

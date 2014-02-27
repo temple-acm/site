@@ -11,25 +11,24 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="register-modal-label">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                This is some text yo.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="register-modal-label">Form Incomplete</h4>
+            <div class="separator"></div>
+        </div>
+        <div class="modal-body">
+            Check that every required field in the form is filled out. After you have provided the missing information, submit the form again.
+        </div>
+        <div class="modal-footer-custom">
+            <div class="separator"></div>
+            <button type="button" class="btn" data-dismiss="modal">Return to Form</button>
         </div>
     </div>
 </div>
 <!-- Registration Form -->
 <div id="register-form" ng-controller="RegisterFormController" class="container">
-    <form role="form" novalidate>
+    <form role="form" name="registrationForm" novalidate>
         <div class="form-group">
             <div class="col-md-12">
                 <h2>Basic Information</h2>
@@ -37,15 +36,15 @@
             </div>
             <div class="col-md-4">
                 <label for="firstNameText">First Name<span class="red-asterisk">*</span></label>
-                <input type="text" class="form-control" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
+                <input type="text" class="form-control" name="firstName" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
             </div>
             <div class="col-md-4">
                 <label for="lastNameText">Last Name<span class="red-asterisk">*</span></label>
-                <input type="text" class="form-control" id="lastNameText" ng-model="user.lastName" placeholder="e.g. Smith" required>
+                <input type="text" class="form-control" name="lastName" id="lastNameText" ng-model="user.lastName" placeholder="e.g. Smith" required>
             </div>
             <div class="col-md-4">
-                <label for="emailText">Temple Email Address<span class="red-asterisk">*</span></label>
-                <input type="email" class="form-control" id="emailText" ng-model="user.templeEmail" placeholder="e.g. jsmith@temple.edu" required>
+                <label for="emailText">Email Address<span class="red-asterisk">*</span></label>
+                <input type="email" class="form-control" name="email" id="emailText" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" required>
             </div>
         </div>
         <div class="form-group">
@@ -55,23 +54,23 @@
             </div>
             <div class="col-md-4">
                 <label for="gitHubText">Github Id</label>
-                <input type="text" class="form-control" id="gitHubText" ng-model="user.github" placeholder="e.g. jsmith">
+                <input type="text" class="form-control" name="github" id="gitHubText" ng-model="user.github" placeholder="e.g. jsmith">
             </div>
             <div class="col-md-4">
                 <label for="twitterText">Twitter Handle</label>
-                <input type="text" class="form-control" id="twitterText" ng-model="user.twitter" placeholder="e.g. @somebody">
+                <input type="text" class="form-control" name="twitter" id="twitterText" ng-model="user.twitter" placeholder="e.g. @somebody">
             </div>
             <div class="col-md-4">
-                <label for="facebookText">Facebook Profile Url</label>
-                <input type="text" class="form-control" id="facebookText" ng-model="user.facebook" placeholder="e.g. https://www.facebook.com/john" ng-pattern="/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/">
+                <label for="facebookText">Facebook Username</label>
+                <input type="text" class="form-control" name="facebook" id="facebookText" ng-model="user.facebook" placeholder="e.g. john">
             </div>
             <div class="col-md-8">
                 <label for="bioText">Who are you?<span class="red-asterisk">*</span></label>
-                <textarea class="form-control" rows="5" id="bioText" ng-model="user.bio" placeholder="Drop a few lines here about who you are, what you do, how you do it, and computing means to you." required></textarea>
+                <textarea class="form-control" rows="5" name="bio" id="bioText" ng-model="user.bio" placeholder="Drop a few lines here about who you are, what you do, how you do it, and computing means to you." required></textarea>
             </div>
             <div class="col-md-4">
                 <label for="majorSelect">Temple University Major<span class="red-asterisk">*</span></label>
-                <select class="form-control" ng-model="user.major" id="majorSelect" required>
+                <select class="form-control" name="major" ng-model="user.major" id="majorSelect" required>
                     <option>Information Science &amp; Technology</option>
                     <option>Computer Science</option>
                     <option>Computer Science &amp; Mathematics</option>
@@ -81,7 +80,7 @@
             </div>
             <div class="col-md-4">
                 <label for="studentLevelSelect">Student Level<span class="red-asterisk">*</span></label>
-                <select class="form-control" ng-model="user.studentLevel" id="studentLevelSelect" required>
+                <select class="form-control" name="studentLevel" ng-model="user.studentLevel" id="studentLevelSelect" required>
                     <option>Freshman</option>
                     <option>Sophomore</option>
                     <option>Junior</option>
@@ -97,16 +96,21 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-4">
-                <label for="userIdText">Temple ACM User Id<span class="red-asterisk">*</span></label>
-                <input type="text" class="form-control" id="userIdText" ng-model="user.userId" placeholder="Choose a User Id" required>
+                <label for="userIdText" style="margin-bottom: 0px;">Temple ACM User Id<span class="red-asterisk">*</span></label>
+                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px; padding-left: 2px;">User Id must be an alphanumeric string that is 5 - 15 characters long. This user id will be used only to identify you on the Temple ACM website.</p>
+                <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.userId" ng-text-change="onUserIdChanged()" placeholder="Choose a User Id" ng-text-change-delay="100" required>
+                <span class="indicator" id="userIdIndicator">No user id provided.</span>
             </div>
             <div class="col-md-4">
-                <label for="passwordText">Password<span class="red-asterisk">*</span></label>
-                <input type="password" class="form-control" id="passwordText" ng-model="user.password" placeholder="Password" required>
+                <label for="passwordText" style="margin-bottom: 0px;">Password<span class="red-asterisk">*</span></label>
+                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px;">Password must be at least 8 characters long with at least one capital letter, lowercase letter and non-alphanumeric character.</p>
+                <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
+                <span class="indicator" id="passwordIndicator">No password provided.</span>
             </div>
             <div class="col-md-4">
-                <label for="confirmPasswordText">Confirm Password<span class="red-asterisk">*</span></label>
-            <input type="password" class="form-control" id="confirmPasswordText" ng-model="user.confirmPassword" placeholder="Password confirmation" required>
+                <label for="confirmPasswordText" style="margin-bottom: 0px;">Confirm Password<span class="red-asterisk">*</span></label>
+                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 30px;">Password confirmation must match the value of the password field.</br></p>
+                <input type="password" class="form-control" id="confirmPasswordText" placeholder="Password confirmation" ng-text-change="onPasswordChanged()" required>
             </div>
         </div>
         <div class="form-group">

@@ -7,6 +7,7 @@
 var fs = require("fs"); // Node.js internal filesystem module
 var path = require("path"); // Node.js internal pathing utility module
 var _ = require("underscore"); // The it-does-everything library
+var async = require("async");
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
@@ -39,79 +40,61 @@ var normalizeHTTPMethod = function (method) {
 };
 
 var walk = function (_path, app) {
-    fs.readdirSync(_path).forEach(function (file) {
-        var newPath = path.join(_path, file);
-        // Get information on the file
-        var stat = fs.statSync(newPath);
-        if (stat.isFile()) {
-            // If its javascript or coffeescript, load it up
-            if (/(.*)\.(js|coffee)/.test(file) && (file !== "index.js")) {
-                logger.info("\tLoading controller '%s'.", newPath);
-                // Load the routes
-                var controller = require(newPath);
-                if (controller.routes && _.isArray(controller.routes)) {
-                    var route;
-                    for (var i = 0; i < controller.routes.length; i++) {
-                        route = controller.routes[i];
-                        try {
-                            if (!_.isString(route.path)) throw new Error("Route path '" + route.path + "' was not a valid string");
-
-                            var method = normalizeHTTPMethod(route.method);
-                            // TODO permissions
-                            // TODO requires auth
-                            if (_.isFunction(route.handler)) {
-                                (app[method])(route.path, route.handler);
-                                logger.info("\t\tRoute '%s %s' registered successfully.", route.method, route.path);
-                            } else if (_.isArray(route.handlers)) {
-                                var handlerRegistered = false;
-                                var handler;
-                                for (var j = 0; j < route.handlers.length; j++) {
-                                    handler = route.handlers[j];
-                                    if (_.isFunction(handler)) {
-                                        (app[method])(route.path, handler);
-                                        handlerRegistered = true;
-                                    } else {
-                                        logger.warn("\t\tRoute '%s %s' provided a handler that was not a function in its handlers list.", route.method, route.path);
-                                    }
-                                }
-                                if (handlerRegistered) logger.info("\t\tRoute '%s %s' registered successfully.", route.method, route.path);
-                                else logger.error("\t\tRoute '%s %s' NOT registered successfully.", route.method, route.path);
-                            } else {
-                                throw new Error("No valid handlers were provided.");
-                            }
-                        } catch (err) {
-                            logger.error("\t\tCould not register route '%s %s' in controller '%s': %s.", route.method, route.path, newPath, (err.message ? err.message : "Error had no description."));
+    // Records the route priorities
+    var priorityQueue = [];
+    // Regisers a route with express
+    var register = function (route) {
+        // TODO permissions
+        // TODO requires auth
+        (app[normalizeHTTPMethod(route.method)])(route.path, route.handler);
+        logger.info("\t\tRoute '%s %s' registered successfully.", route.method, route.path);
+    };
+    // Get the files in the services folder
+    var files = fs.readdirSync(_path);
+    // Iterate through each file
+    var file, newPath, stat;
+    for (var i = 0; i < files.length; i++) {
+        // Update the control variables
+        file = files[i];
+        newPath = path.join(_path, file);
+        stat = fs.statSync(newPath);
+        // Process the file
+        if (stat.isFile() && /(.*)\.(js|coffee)/.test(file) && (file !== "index.js")) {
+            logger.info("\tLoading service '%s'.", newPath);
+            // Load the routes
+            var controller = require(newPath);
+            if (controller.routes && _.isArray(controller.routes)) {
+                var route;
+                for (var j = 0; j < controller.routes.length; j++) {
+                    route = controller.routes[j];
+                    if (_.isFunction(route.handler)) {
+                        if (!route.priority) {
+                            // Default all priorities to 0
+                            route.priority = 0;
                         }
-                    }
-                } else {
-                    logger.warn("\t\tNo routes were registered.");
-                }
-                // Load the parameter adpaters
-                if (controller.params && _.isObject(controller.params)) {
-                    for (var param in controller.params) {
-                        try {
-                            if (_.isFunction(controller.params[param])) {
-                                app.param(param, controller.params[param]);
-                                logger.info("\t\tParameter adapter for parameter '%s' registered successfully.", param);
-                            } else {
-                                throw new Error("Parameter adapter for parameter '" + param + "' was not a function.");
-                            }
-                        } catch (err) {
-                            logger.error("\t\tCould not register parameter adapter '%s' in controller '%s': %s.", param, newPath, (err.message ? err.message : "Error had no description."));
-                        }
+                        // Initialize the queue if it doesn't exist
+                        if (!priorityQueue[route.priority]) priorityQueue[route.priority] = [];
+                        // Push the route to the queue
+                        priorityQueue[route.priority].push(route);
                     }
                 }
-                // Finish up
-                logger.info("\tController '%s' loaded successfully.", newPath);
             }
-        } else if (stat.isDirectory()) {
-            // Otherwise recurse the directory
-            walk(newPath, app);
         }
-    });
+    }
+    console.log("");
+    logger.info("\tNow registering routes:");
+    // Register the routes
+    var routeList;
+    for (i = 0; i < priorityQueue.length; i++) {
+        routeList = priorityQueue[i];
+        if (routeList) {
+            routeList.forEach(register);
+        }
+    }
+    logger.info("\tRoute registration complete.");
 };
 
-var route = function (app, auth) {
+var route = function (app) {
     // All we do is walk
     walk(__dirname, app);
 };

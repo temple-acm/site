@@ -20,6 +20,7 @@ module.exports = function (app, db) {
 
     //Setting the fav icon and static folder
     app.use(express.favicon());
+    app.use(express.logger('dev'));
     // Don't use logger for test env
     if (process.env.NODE_ENV !== 'test') {
         // Don't use the logger - period
@@ -45,8 +46,13 @@ module.exports = function (app, db) {
         app.use(express.methodOverride());
         // Busboy enables file upload etc.
         app.use(busboy());
-        // Indicates that client side src is in the '/public' dir
-        app.use(express.static(config.root + '/public'));
+        // Pathing for all the static files
+        app.use("/js", express.static(config.root + "/public/js"));
+        app.use("/css", express.static(config.root + "/public/css"));
+        app.use("/fonts", express.static(config.root + "/public/fonts"));
+        app.use("/img", express.static(config.root + "/public/img"));
+        app.use("/lib", express.static(config.root + "/public/lib"));
+        app.use("/views", express.static(config.root + "/public/views"));
 
         //express/mongo session storage
         app.use(express.session({

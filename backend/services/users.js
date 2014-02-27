@@ -19,8 +19,9 @@ var config = require("../../config/config");
 /******************************************** MODULE **********************************************/
 
 // Constants
-var RANDOM_STR_LEN = 16;
+var RANDOM_STR_LEN = 26;
 var RANDOM_STR_CHARS = "abcdefghijklmnopqrstuvwxyz";
+var EMPTY_STRING = "";
 // Some instance variables
 var User = mongoose.model("User");
 var resumePathAsserted = false; // Boolean that keeps track of whether we have a resume folder or not
@@ -30,7 +31,7 @@ var randomString = function () {
 	var chars = [];
 	for (var i = 0; i < RANDOM_STR_LEN; i++)
 		chars.push(RANDOM_STR_CHARS.charAt(Math.floor(Math.random() * RANDOM_STR_CHARS.length)));
-	return chars.join();
+	return chars.join(EMPTY_STRING);
 };
 
 /**
@@ -45,7 +46,7 @@ var register = function (req, res) {
 	req.pipe(req.busboy);
 	// Busboy events for file
 	req.busboy.on("file", function (fieldName, file, fileName) {
-		var generatedFileName = randomString() + "" + (new Date()).getTime() + "." + fileName.split(".").pop();
+		var generatedFileName = randomString() + "." + fileName.split(".").pop();
 		logger.info("New resume being uploaded via member registration: \"" + fileName + "\" -> \"" + generatedFileName + "\"");
 		// Ensure that we have a place to put the file
 		fsUtil.assertPath(config.fs.resumePath, function (err) {
@@ -65,6 +66,23 @@ var register = function (req, res) {
 	res.json(200, {});
 };
 
+var userNameFree = function (req, res) {
+	var username = req.param("username");
+	if (!username) {
+		res.send(400, "Username parameter required.");
+	} else {
+		User.find({
+			username: username
+		}).exec(function (err, results) {
+			if (err) {
+				res.json(500, err);
+			} else {
+				res.json(200, (!results || results.length === 0));
+			}
+		});
+	}
+};
+
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
@@ -72,4 +90,8 @@ module.exports.routes = [{
 	path: "/members/register",
 	method: "POST",
 	handler: register
+}, {
+	path: "/members/isUserNameFree",
+	method: "GET",
+	handler: userNameFree
 }];

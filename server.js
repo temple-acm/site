@@ -61,8 +61,9 @@ services.route(app, auth);
 logger.info("HTTP route bootstrapping complete.");
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port);
-logger.info("Server started on port %d.", port);
+app.listen(port, "127.0.0.1");
+logger.info("Server started on port 127.0.0.1:%d.", port);
+console.log();
 
 /******************************************* EXPORTS **********************************************/
 

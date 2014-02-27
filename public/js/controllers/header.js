@@ -1,21 +1,27 @@
-angular.module("mean.system").controller("HeaderController", ["$scope", "$location", "Global", function ($scope, $location, Global) {
-    $scope.global = Global;
+angular.module("mean.system").controller("HeaderController", ["$scope", "$location", "Global",
+    function ($scope, $location, Global) {
+        $scope.global = Global;
 
-    $scope.doRegister = function() {
-        $location.path("/register");
-    };
+        $scope.doRegister = function () {
+            $location.path("/register");
+        };
 
-    $scope.doSignIn = function() {
-        alert("signin");
-    };
+        $scope.doSignIn = function () {
+            alert("signin");
+        };
 
-    $scope.menu = [{
-        "title": "Articles",
-        "link": "articles"
-    }, {
-        "title": "Create New Article",
-        "link": "articles/create"
-    }];
-    
-    $scope.isCollapsed = false;
-}]);
+        $scope.showSignUp = function () {
+            return $location.path() !== "/register";
+        };
+
+        $scope.menu = [{
+            "title": "Articles",
+            "link": "articles"
+        }, {
+            "title": "Create New Article",
+            "link": "articles/create"
+        }];
+
+        $scope.isCollapsed = false;
+    }
+]);
