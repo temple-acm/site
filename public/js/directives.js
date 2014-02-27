@@ -20,6 +20,6 @@ angular.module("mean.system").directive("ngTextChange", function (RegisterServic
 				clearTimeout(typingTimer);
 				fireEvent();
 			});
-		};
-	}
+		}
+	};
 });
