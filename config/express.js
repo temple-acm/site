@@ -47,12 +47,12 @@ module.exports = function (app, db) {
         // Busboy enables file upload etc.
         app.use(busboy());
         // Pathing for all the static files
-        app.use("/js", express.static(config.root + "/public/js"));
-        app.use("/css", express.static(config.root + "/public/css"));
-        app.use("/fonts", express.static(config.root + "/public/fonts"));
-        app.use("/img", express.static(config.root + "/public/img"));
-        app.use("/lib", express.static(config.root + "/public/lib"));
-        app.use("/views", express.static(config.root + "/public/views"));
+        app.use("/static/js", express.static(config.root + "/public/js"));
+        app.use("/static/css", express.static(config.root + "/public/css"));
+        app.use("/static/fonts", express.static(config.root + "/public/fonts"));
+        app.use("/static/img", express.static(config.root + "/public/img"));
+        app.use("/static/lib", express.static(config.root + "/public/lib"));
+        app.use("/static/views", express.static(config.root + "/public/views"));
 
         //express/mongo session storage
         app.use(express.session({
