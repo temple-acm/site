@@ -17,4 +17,4 @@ if [ -f ~/deploy/projectmaster.zip ]; then
 	echo 'Replacing node_modules.'
 	mv ~/deploy/node_modules /srv/tuacm.org/node_modules
 fi
-echo 'script executed'
+echo 'Git deploy complete.'
