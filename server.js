@@ -69,7 +69,7 @@ logger.info("HTTP route bootstrapping complete.");
 var port = process.env.PORT || config.port;
 var securePort = (parseInt(port) + 1);
 // Create an HTTP service.
-console.log();
+console.log(); // Newline for cleanliness
 http.createServer(app).listen(port, "127.0.0.1");
 logger.info("HTTP server started on port 127.0.0.1:%d.", port);
 https.createServer(options, app).listen(securePort, "127.0.0.1");
