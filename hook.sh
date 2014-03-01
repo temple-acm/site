@@ -1,29 +1,11 @@
 #!/bin/bash
 
-#################################################
-## GIT DEPLOY SHELL SCRIPT ######################
-#################################################
+mkdir -p ~/deploy && cd ~/deploy && wget projectmaster.zip -q https://github.com/temple-acm/site/archive.zip
 
-# !!! NOTE: unzip must be installed on this machine
-# Runs the git deploy
-
-
-# First, get the zip file
-mkdir -p ~/deploy && cd ~/deploy && wget -O projectmaster.zip -q https://github.com/temple-acm/site/archive/master.zip
-
-# Second, unzip it, if the zip file exists
 if [ -f ~/deploy/projectmaster.zip ]; then
-    # Unzip the zip file
-    unzip -q ~/deploy/projectmaster.zip
-    # Delete zip file
-    rm ~/deploy/projectmaster.zip
-    # Rename project directory to desired name
-    mv Project-master tuacm.org
-    # Delete current directory
-    rm -rf /srv/tuacm.org
-    # Replace with new files
-    mv tuacm.org /srv
-    # Perhaps call any other scripts you need to rebuild assets here
-    # or set owner/permissions
-    # or confirm that the old site was replaced correctly
+	unzip -q ~/deploy/projectmaster.zip
+	rm ~/deploy/projectmaster.zip
+	mv Project-master tuacm.org
+	rm -rf /srv/tuacm.org
+	mv tuacm.org /srv
 fi

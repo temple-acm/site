@@ -35,11 +35,10 @@ gith({
 }).on("all", function (payload) {
 	if (payload.branch === "master") {
 		// Exec a shell script
+		console.log(getDateTime() + "\tExecuting git deploy of acm-site...");
 		execFile("hook.sh", function (error, stdout, stderr) {
 			// Log success in some manner
-			console.log(getDateTime() + "\tExecuting git deploy of acm-site...\n");
-			console.log(stdout.toString("utf8"));
-			console.log(getDateTime() + "\tDONE\n.");
+			console.log(getDateTime() + "\t...DONE.");
 		});
 	}
 });
