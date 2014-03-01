@@ -24,10 +24,10 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
 
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300')
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400,600')
-    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/css/common.css')
-    link(rel='stylesheet', href='/css/views/home.css')
-    link(rel='stylesheet', href='/css/views/register.css')
+    link(rel='stylesheet', href='/static/lib/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/static/css/common.css')
+    link(rel='stylesheet', href='/static/css/views/home.css')
+    link(rel='stylesheet', href='/static/css/views/register.css')
 
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
@@ -47,41 +47,38 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
                 | This site is still under construction. New features will be rolling in on a daily basis for the next few weeks, so keep checking back to see if the feature you wanted is available yet.
     section.content(data-ng-class="sidebarClass()")
         section(data-ng-view, data-ng-contoller='PageController', data-ng-init='onReady()')
-    div.sidebar(data-ng-include="'views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()", ng-cloak)
-    div.header(data-ng-include="'views/header.html'", data-role="session", ng-cloak)
+    div.sidebar(data-ng-include="'/static/views/sidebar.html'", data-role="navigation", data-ng-class="sidebarClass()", ng-cloak)
+    div.header(data-ng-include="'/static/views/header.html'", data-role="session", ng-cloak)
 
     // Footer section ------------------------------------------------------------------------------------
 
     // jQuery
-    script(type='text/javascript', src='/lib/jquery/jquery.js')
+    script(type='text/javascript', src='/static/lib/jquery/jquery.js')
     // Bootstrap
-    script(type='text/javascript', src='/lib/bootstrap/dist/js/bootstrap.min.js')
+    script(type='text/javascript', src='/static/lib/bootstrap/dist/js/bootstrap.min.js')
     // AngularJS
-    script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload-shim.min.js')
-    script(type='text/javascript', src='/lib/angular/angular.min.js')
-    script(type='text/javascript', src='/lib/ng-file-upload/angular-file-upload.min.js')
-    script(type='text/javascript', src='/lib/angular-route/angular-route.min.js')
-    script(type='text/javascript', src='/lib/angular-cookies/angular-cookies.min.js')
-    script(type='text/javascript', src='/lib/angular-resource/angular-resource.min.js')
-    script(type='text/javascript', src='/lib/angular-animate/angular-animate.min.js')
+    script(type='text/javascript', src='/static/lib/ng-file-upload/angular-file-upload-shim.min.js')
+    script(type='text/javascript', src='/static/lib/angular/angular.min.js')
+    script(type='text/javascript', src='/static/lib/ng-file-upload/angular-file-upload.min.js')
+    script(type='text/javascript', src='/static/lib/angular-route/angular-route.min.js')
+    script(type='text/javascript', src='/static/lib/angular-cookies/angular-cookies.min.js')
+    script(type='text/javascript', src='/static/lib/angular-resource/angular-resource.min.js')
+    script(type='text/javascript', src='/static/lib/angular-animate/angular-animate.min.js')
     // Angular UI
-    script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap.js')
-    script(type='text/javascript', src='/lib/angular-bootstrap/ui-bootstrap-tpls.js')
-    script(type='text/javascript', src='/lib/angular-ui-utils/modules/route/route.js')
+    script(type='text/javascript', src='/static/lib/angular-bootstrap/ui-bootstrap.js')
+    script(type='text/javascript', src='/static/lib/angular-bootstrap/ui-bootstrap-tpls.js')
+    script(type='text/javascript', src='/static/lib/angular-ui-utils/modules/route/route.js')
     // Application Init
-    script(type='text/javascript', src='/js/app.js')
-    script(type='text/javascript', src='/js/config.js')
-    script(type='text/javascript', src='/js/directives.js')
-    script(type='text/javascript', src='/js/filters.js')
+    script(type='text/javascript', src='/static/js/app.js')
+    script(type='text/javascript', src='/static/js/config.js')
+    script(type='text/javascript', src='/static/js/directives.js')
+    script(type='text/javascript', src='/static/js/filters.js')
     // Application Services
-    script(type='text/javascript', src='/js/services/global.js')
+    script(type='text/javascript', src='/static/js/services/global.js')
     // Application Controllers
-    script(type='text/javascript', src='/js/controllers/page.js')
-    script(type='text/javascript', src='/js/controllers/home.js')
-    script(type='text/javascript', src='/js/controllers/header.js')
-    script(type='text/javascript', src='/js/controllers/sidebar.js')
-    script(type='text/javascript', src='/js/controllers/register.js')
-    script(type='text/javascript', src='/js/init.js')
-    // Dev scripts
-    if (req.host='localhost')
-        script(type='text/javascript', src='http://localhost:35729/livereload.js')
+    script(type='text/javascript', src='/static/js/controllers/page.js')
+    script(type='text/javascript', src='/static/js/controllers/home.js')
+    script(type='text/javascript', src='/static/js/controllers/header.js')
+    script(type='text/javascript', src='/static/js/controllers/sidebar.js')
+    script(type='text/javascript', src='/static/js/controllers/register.js')
+    script(type='text/javascript', src='/static/js/init.js')

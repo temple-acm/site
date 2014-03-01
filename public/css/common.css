@@ -7,7 +7,7 @@
 
 html, body {
     height: 100%;
-    background: url(/img/bg-tile-light-gray.png) repeat;
+    background: url(/static/img/bg-tile-light-gray.png) repeat;
 }
 
 @-webkit-keyframes rotating {
@@ -61,7 +61,7 @@ div.header {
     height: 50px;
 
     z-index: 300;
-    background: url(/img/bg-tile-red.png) repeat;
+    background: url(/static/img/bg-tile-red.png) repeat;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
     overflow: hidden;
     color: #fff;
@@ -87,7 +87,7 @@ div.header .header-logo a span#acm-logo {
     width: 200px;
     height: 40px;
 
-    background: url(/img/acm-logo.png) no-repeat;
+    background: url(/static/img/acm-logo.png) no-repeat;
     background-position: 0px 0px;
 }
 div.header .header-logo a:hover span#acm-logo {
@@ -110,19 +110,19 @@ div.header .header-session-panel .header-session-button {
     outline: 0;
 }
 #sidebar-icon-home {
-    background: url(/img/icons/sidebar/home-small.png) no-repeat;
+    background: url(/static/img/icons/sidebar/home-small.png) no-repeat;
 }
 div.sidebar #sidebar-icon-about {
-    background: url(/img/icons/sidebar/about-small.png) no-repeat;
+    background: url(/static/img/icons/sidebar/about-small.png) no-repeat;
 }
 div.sidebar #sidebar-icon-calendar {
-    background: url(/img/icons/sidebar/calendar-small.png) no-repeat;
+    background: url(/static/img/icons/sidebar/calendar-small.png) no-repeat;
 }
 div.sidebar #sidebar-icon-blog {
-    background: url(/img/icons/sidebar/blog-small.png) no-repeat;
+    background: url(/static/img/icons/sidebar/blog-small.png) no-repeat;
 }
 div.sidebar #sidebar-icon-contact {
-    background: url(/img/icons/sidebar/contact-small.png) no-repeat;
+    background: url(/static/img/icons/sidebar/contact-small.png) no-repeat;
 }
 div.sidebar .sidebar-icon {
     display: inline-block;

@@ -41,6 +41,8 @@ var register = function (req, res) {
 	// Internally defined function to do user creation
 	var createUser = function (resumePath) {
 		// TODO do mongoose create based on req.body
+		console.log("create");
+		console.log(req.body);
 	};
 	// Start piping for busboy
 	req.pipe(req.busboy);

@@ -9,6 +9,8 @@ var express = require("express"); // The web server implementation we're using
 var fs = require("fs"); // Node.js internal filesystem module
 var path = require("path"); // Node.js internal pathing utility module
 var mongoose = require("mongoose"); // The Mongo DB ORM we're using
+var http = require("http"); // The Mongo DB ORM we're using
+var https = require("https");
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
@@ -20,6 +22,10 @@ var services = require("./backend/services");
 /******************************************** MODULE **********************************************/
 
 // Load configurations
+var options = {
+    cert: [fs.readFileSync("ssl/cert-tuacm-org.pem"), config.sslPassphrase],
+    key: [fs.readFileSync("ssl/key-tuacm-org.pem"), config.sslPassphrase]
+};
 // if test env, load example file
 var env = process.env.NODE_ENV; // Defaults to dev. env.
 var auth = require("./config/middlewares/authorization");
@@ -61,8 +67,12 @@ services.route(app, auth);
 logger.info("HTTP route bootstrapping complete.");
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port, "127.0.0.1");
-logger.info("Server started on port 127.0.0.1:%d.", port);
+// Create an HTTP service.
+http.createServer(app).listen(port, "127.0.0.1");
+logger.info("HTTP server started on port 127.0.0.1:%d.", port);
+https.createServer(options, app).listen((port + 1), "127.0.0.1");
+logger.info("HTTPS server started on port 127.0.0.1:%d.", port + 1);
+// Leave a newline
 console.log();
 
 /******************************************* EXPORTS **********************************************/
