@@ -84,7 +84,7 @@ gith({
 		console.log(getDateTime() + "\tExecuting git deploy of acm-site...");
 		execFile("/srv/tuacm.org/hook.sh", function (error, stdout, stderr) {
 			if (error) console.log(error);
-			console.log(stdout);
+			console.log("\n" + stdout);
 			// Log success in some manner
 			console.log(getDateTime() + "\t...DONE.");
 		});
