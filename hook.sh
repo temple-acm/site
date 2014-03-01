@@ -9,3 +9,4 @@ if [ -f ~/deploy/projectmaster.zip ]; then
 	rm -rf /srv/tuacm.org
 	mv tuacm.org /srv
 fi
+echo 'script executed'
