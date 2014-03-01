@@ -73,8 +73,6 @@ http.createServer(app).listen(port, "127.0.0.1");
 logger.info("HTTP server started on port 127.0.0.1:%d.", port);
 https.createServer(options, app).listen(securePort, "127.0.0.1");
 logger.info("HTTPS server started on port 127.0.0.1:%d.", securePort);
-// Leave a newline
-console.log();
 
 /******************************************* EXPORTS **********************************************/
 
