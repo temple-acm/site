@@ -20,10 +20,12 @@ router.register(r'aboutus', aboutUsViews.OfficersSet)
 
 urlpatterns = patterns('',
     url(r'^$', 'acm_homepage.views.home', name='home'),
-    url('^login/', 'django.contrib.auth.views.login', {
-          'template_name': 'login/login.html'
-        }),
+    # url('^login/', 'django.contrib.auth.views.login', {
+    #       'template_name': 'login/login.html'
+    #     }),
+    url(r'^api-login/', UsersViews.AccountLogin.as_view()),
     url(r'^api/', include(router.urls), name='api'),
+    url(r'^api-register/', UsersViews.AccountCreation.as_view()),
     # This line enables browseable API auth
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),

@@ -17,6 +17,7 @@ class ProfileAdmin(UserAdmin):
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'position')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('Social Information'), {'fields': ('facebook', 'twitter', 'github', 'bio')}),
+        (_('School Information'), {'fields': ('resume', 'major', 'year')}),
     )
 
     form = ProfileChangeForm

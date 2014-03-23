@@ -3,6 +3,8 @@
     <head>
         <link rel="stylesheet" href='{% static 'lib/bootstrap/dist/css/bootstrap.css' %}'>
         <link rel="stylesheet" href='{% static 'css/common.css' %}'>
+        <link rel="stylesheet" href='{% static 'css/views/home.css' %}'>
+        <link rel="stylesheet" href='{% static 'css/views/register.css' %}'>
         <link rel="stylesheet" href='{% static 'css/views/articles.css' %}'>
     </head>
 
@@ -12,18 +14,25 @@
             <section data-ng-view></section>
         </section>
         {% verbatim %}
+        <!-- <div data-ng-include= "'/static/views/home.html'" data-role="session" class="home"></div> -->
         <div data-ng-include= "'/static/views/sidebar.html'" data-role="navigation" class="sidebar"></div>
         <div data-ng-include= "'/static/views/header.html'" data-role="session" class="header"></div>
+        <div data-ng-include= "'/static/views/login.html'" data-role="session" class="login"></div>
+        <div data-ng-include= "'/static/views/register.html'" data-role="session" class="register"></div>
         {% endverbatim %}
+        <script type="text/javascript" src='{% static 'lib/jquery/jquery.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/bootstrap/dist/js/bootstrap.js' %}'></script>
+        
+        <script type='text/javascript' src='{% static 'lib/ng-file-upload/angular-file-upload-shim.js' %}'></script>
         <script type="text/javascript" src='{% static 'lib/angular/angular.js' %}'></script>
-
+        <script type='text/javascript' src='{% static 'lib/ng-file-upload/angular-file-upload.js' %}'></script>
         <script type="text/javascript" src='{% static 'lib/angular-route/angular-route.js' %}'></script>
-
         <script type='text/javascript' src='{% static 'lib/angular-cookies/angular-cookies.js' %}'></script>
         <script type='text/javascript' src='{% static 'lib/angular-resource/angular-resource.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-animate/angular-animate.js' %}'></script>
 
-        <script type='text/javascript' src='{% static 'lib/angular-bootstrap/ui-bootstrap-tpls.js' %}'></script>
         <script type='text/javascript' src='{% static 'lib/angular-bootstrap/ui-bootstrap.js' %}'></script>
+        <script type='text/javascript' src='{% static 'lib/angular-bootstrap/ui-bootstrap-tpls.js' %}'></script>
         <script type='text/javascript' src='{% static 'lib/angular-ui-utils/modules/route/route.js' %}'></script>
 
         <script type='text/javascript' src='{% static 'js/app.js' %}'></script>
@@ -32,13 +41,15 @@
         <script type='text/javascript' src='{% static 'js/filters.js' %}'></script>
 
         <script type='text/javascript' src='{% static 'js/services/global.js' %}'></script>
-        <script type='text/javascript' src='{% static 'js/services/articles.js' %}'></script>
+        <!-- // <script type='text/javascript' src='{% static 'js/services/articles.js' %}'></script> -->
 
-        <script type='text/javascript' src='{% static 'js/controllers/articles.js' %}'></script>
-        <script type='text/javascript' src='{% static 'js/controllers/index.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/page.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/home.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/controllers/header.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/controllers/sidebar.js' %}'></script>
-        <script type='text/javascript' src='{% static 'js/controllers/home.js' %}'></script>
+        <script type='text/javascript' src='{% static 'js/controllers/register.js' %}'></script>
         <script type='text/javascript' src='{% static 'js/init.js' %}'></script>
+        <!-- // <script type='text/javascript' src='{% static 'js/controllers/articles.js' %}'></script> -->
+        <!-- // <script type='text/javascript' src='{% static 'js/controllers/index.js' %}'></script> -->
     </body>
 </html>

@@ -1,6 +1,6 @@
 from django.db import models
 from django.core import validators
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 import re
 from django.utils import timezone
 
@@ -29,9 +29,14 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     twitter - User's twitter. optional.
     facebook - User's facebook. optional. Who even uses facebook anymore?
     bio - 3000 characters for the user to tell us anything they want to tell us! Also used for officer bios.
+
+    SCHOOL RELATED FIELDS:
+    major - User's major, sent back as a standardized string from the client.
+    year - User's year of schooling. One of Freshman, Sophomore, Junior, Senior.
+    resume - a .doc, .docx, .odt, or .pdf document containing their resume. TODO: file/mimetype checking.
     """
 
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=15, unique=True)
     email = models.EmailField(blank=False, unique=True,
         validators=[
             validators.RegexValidator(re.compile('^[\w.+]+@[\w]+.[\w.]+'), 'Please enter a valid email address', 'invalid')
@@ -55,9 +60,29 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     facebook = models.CharField(blank=True, max_length=1000)
     bio = models.TextField(blank=True, max_length=3000)
 
+    major = models.TextField(blank=False, max_length=100)
+    year = models.TextField(blank=False, max_length=10)
+
+    ## this will be validated by client-side js, in theory
+    resume = models.FileField(upload_to="resumes", blank=True)
+
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+
+    objects = UserManager()
+
+    def get_resume_link(self):
+        return self.resume.url
+
+    def get_short_name(self):
+        return self.first_name
+
+    def get_username(self):
+        return self.username
+
+    def get_image_link(self):
+        return self.image.url
 
     def get_full_name(self):
         """
@@ -72,6 +97,10 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         """
         self.set_password(new_password)
         self.save()
+
+    def create(cls, attrs):
+        newProfile = cls(attrs=attrs)
+        return newProfile
 
     def __unicode__(self):
         return self.get_full_name() + ", username " + self.username

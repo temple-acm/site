@@ -12,23 +12,23 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-    #     'NAME': '/srv/site_staging/acm_website.db3',                      # Or path to database file if using sqlite3.
-    #     # The following settings are not used with sqlite3:
-    #     'USER': '',
-    #     'PASSWORD': '',
-    #     'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-    #     'PORT': '',                      # Set to empty string for default.
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'site_db',
-        'USER': 'acm',
-        'PASSWORD': 'acmpassword',
-        'HOST': 'localhost',
-        'PORT': ''
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/srv/site_staging/acm_website.db3',                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'site_db',
+    #     'USER': 'acm',
+    #     'PASSWORD': 'acmpassword',
+    #     'HOST': 'localhost',
+    #     'PORT': ''
+    # }
 }
 
 PROJECT_ROOT = os.path.abspath(
@@ -75,7 +75,7 @@ MEDIA_URL = 'http://192.168.56.10/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/srv/site/acm/'
+STATIC_ROOT = '/srv/acm/site/static/public'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -86,7 +86,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/srv/site/acm/static/",
+    "/srv/acm/site/static/public",
     
 )
 
@@ -175,7 +175,7 @@ REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.HyperlinkedModelSerializer',
     'PAGINATE_BY': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.SessionAuthentication', 'rest_framework.authentication.BasicAuthentication'),
-    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',)
+    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',)
 }
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -209,4 +209,3 @@ LOGGING = {
         },
     }
 }
-

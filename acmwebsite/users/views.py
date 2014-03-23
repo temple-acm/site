@@ -13,13 +13,18 @@ from rest_framework.decorators import *
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows users to be viewed by username.
+    API endpoint that allows user data to be viewed by username.
     For now, read-only.
     """
     queryset = Profile.objects.all()
     lookup_field = 'username'
 
     permission_classes = [DjangoModelPermissions]
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self, request):
+        return Response({'detail': 'Query /users/<id>/ for profile information'},
+            status=401)
 
     def retrieve(self, request, username=None):
         user = get_object_or_404(self.queryset, username=username)
@@ -27,20 +32,37 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+class AccountCreation(views.APIView):
+    """
+    API endpoint that allows for account creation. 
+    For now, unimplemented pending setup of email 
+    backend.
+    """
+    serializer_class = ProfileCreateSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.DATA)
+
+        # return Response(request.DATA)
+
+        if serializer.is_valid():
+            Profile.objects.create_profile(attrs)
+            return Response({'detail': _(u'Profile created successfully')}, status=200)
+
+        return Response(serializer.errors, status=400)
+
+
 class AccountLogin(views.APIView):
 
     serializer_class = LoginSerializer
-    # permission_classes = (IsNotAuthenticated,)
     
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.DATA)
 
         if serializer.is_valid():
-            login(request, serializer.instance)
-
             return Response({'detail': _(u'Logged in successfully')}, status=200)
 
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=401)
 
     def permission_denied(self, request):
         raise exceptions.PermissionDenied(_("Already authenticated"))
@@ -64,5 +86,3 @@ class OfficersList(views.APIView):
 
         def get(self, request, format=None):
             return Response(self.get_queryset())
-
-profile_detail = ProfileDetail.as_view()
