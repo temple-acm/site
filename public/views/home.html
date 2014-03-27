@@ -2,7 +2,7 @@
     <carousel interval="100000">
         <slide ng-repeat="slide in slides" id="{{slide.slideId}}" active="slide.active" style="overflow: hidden; background: {{slide.bgColor}}; height: 350px;" ng-click="gotoLink(slide.link)" class="{{slide.link ? 'linked' : ''}}">
             <img class="slide-bg" style="width: 100%; min-height: 100%; display: none;"/>
-            <img ng-if="slide.bgImageUrl" class="slide-loader rotating" src="img/loaders/loader.png" />
+            <img ng-if="slide.bgImageUrl" class="slide-loader rotating" src="static/img/loaders/loader.png" />
             <div class="carousel-caption {{slide.bgImageUrl ? 'subdued' : ''}}" style="color: {{slide.fontColor ? slide.fontColor : '#fff'}}">
                 <h4 class="{{(slide.lowContrast) ? 'sharp' : ''}}">{{slide.title}}</h4>
                 <p class="{{(slide.lowContrast) ? 'sharp' : ''}}">{{slide.subtitle}}</p>
