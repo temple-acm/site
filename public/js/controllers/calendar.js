@@ -1,4 +1,3 @@
-
 angular.module("mean.system").service("RegisterService", function ($http) {
 	this.isUserNameFree = function (userName, callback) {
 		console.log(userName);
