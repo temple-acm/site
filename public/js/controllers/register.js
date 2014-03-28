@@ -40,6 +40,10 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
                 hosted_button_id: "6CYDNKB4YDGVC",
                 notify_url: "http://acm.temple.edu/members/payments/callback/" + encodeURI(userId)
             }
+        }).success(function () {
+            console.log('sucess', arguments);
+        }).error(function () {
+            console.log('error', arguments);
         });
     };
 
@@ -56,10 +60,13 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
                     // Now that the resume is dropped, do the registration
                     user.resume = data;
                     $http.post(SUBMIT_URL, user).success(function (data, status, headers, config) {
-                        alert("BOYAH");
                         $rootScope.me = data;
+                        // Pass the id as a reference
+                        console.log('result', data);
+                        doPayment(data._id);
                     }).error(function (data, status, headers, config) {
                         $('#register-modal').modal("show");
+                        console.log('problem', data);
                     });
                     // file is uploaded successfully
                     console.log("Much success.");
