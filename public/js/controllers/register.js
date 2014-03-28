@@ -25,6 +25,10 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
     var DRAG_DROP_STYLE_WRONG = "wrong";
     var DRAG_DROP_RIGHT = "Resume file \"%s\" is ready to upload";
     var DRAG_DROP_STYLE_RIGHT = "dropped";
+    var PAYPAL_API_CALL_TEMPLATE = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd"' +
+        ' value="_s-xclick"><input type="hidden" name="hosted_button_id" value="6CYDNKB4YDGVC"><input type="hidden" name="notify_url" ' +
+        ' value="http://tuacm.org/members/payments/callback/{{id}}"></form>';
+    var PAYPAL_API_CALL_ID_TOKEN = '{{id}}';
     // Instance variables
     $scope.pendingFile = null;
     $scope.dragDropMessage = DRAG_DROP_NEUTRAL;
@@ -32,19 +36,7 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
 
     // Redirects to payment url
     var doPayment = function (userId) {
-        $http({
-            method: "POST",
-            url: "https://www.paypal.com/cgi-bin/webscr",
-            params: {
-                cmd: "_s-xclick",
-                hosted_button_id: "6CYDNKB4YDGVC",
-                notify_url: "http://acm.temple.edu/members/payments/callback/" + encodeURI(userId)
-            }
-        }).success(function () {
-            console.log('sucess', arguments);
-        }).error(function () {
-            console.log('error', arguments);
-        });
+        $(PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
     };
 
     $scope.submit = function (user) {
