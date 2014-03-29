@@ -1,14 +1,3 @@
-<div id="register-header">
-    <div class="col-md-12 container">
-        <h3>Temple ACM Registration Form</h3>
-        <div class="separator"></div>
-        <p>Come join the Temple ACM family! All you have to do is fill out the form details below and you'll be on your way. 
-        Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter.
-        With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and 
-        a a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best
-        decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
-    </div>
-</div>
 <!-- Modal -->
 <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
     <div class="modal-content">
@@ -27,8 +16,19 @@
     </div>
 </div>
 <!-- Registration Form -->
-<div id="register-form" ng-controller="RegisterFormController" class="container">
-    <form role="form" name="registrationForm" novalidate>
+<div id="register-form" ng-controller="RegistrationController" class="container" ng-switch on="registered">
+    <form role="form" name="registrationForm" ng-controller="RegisterFormController" ng-switch-when="false" novalidate>
+        <div id="register-header" class="form-group">
+            <div class="col-md-12">
+                <h3>Temple ACM Registration Form</h3>
+                <div class="separator"></div>
+                <p>Come join the Temple ACM family! All you have to do is fill out the form details below and you'll be on your way. 
+                Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter.
+                With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and 
+                a a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best
+                decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-12">
                 <h2>Basic Information</h2>
@@ -119,7 +119,7 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-12">
-                <label class="upload-label">Resume File Upload<span class="red-asterisk">*</span></label>
+                <label class="upload-label">Resume File Upload</label>
                 <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 0px;">Submit a file 1MB or less in a *.pdf, *.doc or *.docx format.</p>
                 <input class="upload-button" ng-file-drop-available="dropSupported=true" ng-show="!dropSupported" type="file" ng-file-select="selectFile($files, user)" id="fileUpload">
                 <div class="upload-drop" ng-class="dragDropStyle" ng-file-drop="selectFile($files, user)" ng-file-drag-over-class="on-drag" ng-show="dropSupported">{{dragDropMessage}}</div>
@@ -135,4 +135,8 @@
             </div>
         </div>
     </form>
+    <div id="register-form-payment-waiting-screen" ng-switch-when="true">
+        <h3>Please wait while we get ready to take your money.</h3>
+        <img src="https://d16jfyletng9p5.cloudfront.net/media/KTch8alOZ9yc8/giphy.gif" />
+    </div>
 </div>

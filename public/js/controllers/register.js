@@ -14,6 +14,15 @@ angular.module("mean.system").service("RegisterService", function ($http) {
     };
 });
 
+angular.module("mean.system").controller("RegistrationController", function ($rootScope, $scope) {
+    // True if we're redirecting to paypal
+    $scope.registered = false;
+    // Sets registered to true
+    $scope.declareRegistered = function () {
+        $scope.registered = true;
+    };
+});
+
 angular.module("mean.system").controller("RegisterFormController", function ($rootScope, $scope, $http, $upload, RegisterService) {
     // Constants
     var SUBMIT_URL = "members/register";
@@ -25,9 +34,14 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
     var DRAG_DROP_STYLE_WRONG = "wrong";
     var DRAG_DROP_RIGHT = "Resume file \"%s\" is ready to upload";
     var DRAG_DROP_STYLE_RIGHT = "dropped";
+    // This template is used to redirect to the payment form @ paypal
     var PAYPAL_API_CALL_TEMPLATE = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd"' +
         ' value="_s-xclick"><input type="hidden" name="hosted_button_id" value="6CYDNKB4YDGVC"><input type="hidden" name="notify_url" ' +
-        ' value="http://tuacm.org/members/payments/callback/{{id}}"></form>';
+        ' value="http://acm.temple.edu/members/payments/callback/{{id}}"></form>';
+    // Does the same thing as PAYPAL_API_CALL_TEMPLATE - except it does it with fake money
+    var FAKE_PAYPAL_API_CALL_TEMPLATE = '<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd"' +
+        ' value="_s-xclick"><input type="hidden" name="hosted_button_id" value="9M38CDYV8EHEJ"><input type="hidden" name="notify_url" ' +
+        ' value="http://acm.temple.edu/members/payments/callback/{{id}}"></form>';
     var PAYPAL_API_CALL_ID_TOKEN = '{{id}}';
     // Instance variables
     $scope.pendingFile = null;
@@ -36,34 +50,37 @@ angular.module("mean.system").controller("RegisterFormController", function ($ro
 
     // Redirects to payment url
     var doPayment = function (userId) {
-        $(PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
+        $scope.declareRegistered();
+        $(FAKE_PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
+    };
+    // Create the new user
+    var doRegistration = function (user) {
+        $http.post(SUBMIT_URL, user).success(function (data, status, headers, config) {
+            $rootScope.me = data;
+            // Pass the id as a reference
+            console.log('result', data);
+            doPayment(data._id);
+        }).error(function (data, status, headers, config) {
+            $('#register-modal').modal("show");
+            console.log('problem', data);
+        });
     };
 
     $scope.submit = function (user) {
-        if ($scope.registrationForm.$valid && $scope.pendingFile) {
+        if ($scope.registrationForm.$valid) {
             if ($scope.pendingFile) {
                 $scope.upload = $upload.upload({
                     url: RESUME_DROP_URL,
                     method: "POST",
                     file: $scope.pendingFile
-                }).progress(function (evt) {
-                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function (data, status, headers, config) {
-                    // Now that the resume is dropped, do the registration
-                    user.resume = data;
-                    $http.post(SUBMIT_URL, user).success(function (data, status, headers, config) {
-                        $rootScope.me = data;
-                        // Pass the id as a reference
-                        console.log('result', data);
-                        doPayment(data._id);
-                    }).error(function (data, status, headers, config) {
-                        $('#register-modal').modal("show");
-                        console.log('problem', data);
-                    });
-                    // file is uploaded successfully
-                    console.log("Much success.");
-                    console.log(data);
+                }).success(function () {
+                    doRegistration(user);
+                }).error(function () {
+                    alert('File upload failed.');
+                    console.log('File upload failed', arguments);
                 });
+            } else {
+                doRegistration(user);
             }
         } else {
             $('#register-modal').modal("show");

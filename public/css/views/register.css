@@ -9,7 +9,7 @@ section.content #register-header h3 {
 section.content #register-header p {
   text-align: justify;
   margin-top: 15px;
-  padding: 0 15px;
+  padding: 0px;
   text-shadow: -1px -1px 1px #efefef;
   color: #444;
 }
@@ -70,7 +70,6 @@ section.content #register-form .upload-drop {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 14px;
-  border-color: #a94442;
   color: #666;
 }
 section.content #register-form .upload-drop.on-drag {
@@ -138,6 +137,28 @@ section.content #register-modal .modal-dialog {
 section.content #register-form .form-control.flat-bottomed {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+}
+section.content #register-form #register-form-payment-waiting-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    margin-top: -250px;
+    margin-left: -250px;
+}
+section.content #register-form #register-form-payment-waiting-screen img {
+    width: 500px;
+}
+section.content #register-form #register-form-payment-waiting-screen h3 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 40px;
+    width: 500px;
+    font-weight: 300;
+    margin: 20px auto 30px auto;
+    color: #555;
+    text-shadow: 0px 0px 3px #fff;
+    text-align: center;
 }
 
 /*************************************************************************************************/
