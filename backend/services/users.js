@@ -84,7 +84,7 @@ var userNameFree = function (req, res) {
 };
 
 var paypalCallback = function (req, res) {
-    console.log('Got the paypal callback!', req.param('userId'));
+    console.log('Got the paypal callback!', req.param('userId'), req.body);
     res.send(200);
 };
 
