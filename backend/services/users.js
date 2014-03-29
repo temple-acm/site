@@ -92,7 +92,7 @@ var paypalCallback = function (req, res) {
             user.paid = true;
             user.save(function (err) {
                 if (err) console.log('Could not record payment for \'' + userId + '\'', err);
-                else console.log('Received payment for \'' + userId + '\'', err);
+                else console.log('Received payment for \'' + userId + '\'');
             });
         }
     });
