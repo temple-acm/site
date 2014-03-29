@@ -83,6 +83,11 @@ var userNameFree = function (req, res) {
     }
 };
 
+var paypalCallback = function (req, res) {
+    console.log('Got the paypal callback!', req.param('userId'));
+    res.send(200);
+};
+
 /******************************************* EXPORTS **********************************************/
 
 // This controller's HTTP routes
@@ -98,4 +103,12 @@ module.exports.routes = [{
     path: "/members/isUserNameFree",
     method: "GET",
     handler: userNameFree
+}, {
+    path: "/members/payments/callback/:userId",
+    method: "POST",
+    handler: paypalCallback
+}, {
+    path: "/members/payments/callback/:userId",
+    method: "GET",
+    handler: paypalCallback
 }];
