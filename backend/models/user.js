@@ -27,7 +27,8 @@ var UserSchema = new Schema({
     salt: String,
     facebook: String,
     twitter: String,
-    github: String
+    github: String,
+    paid: Boolean
 });
 
 /**

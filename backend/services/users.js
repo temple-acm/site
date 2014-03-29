@@ -84,7 +84,19 @@ var userNameFree = function (req, res) {
 };
 
 var paypalCallback = function (req, res) {
-    console.log('Got the paypal callback!', req.param('userId'), req.body);
+    var userId = req.param('userId');
+    User.findById(userId, function (err, user) {
+        if (err) console.log('Could not record payment for \'' + userId + '\'', err);
+        else {
+            // Update user payment boolean
+            user.paid = true;
+            user.save(function (err) {
+                if (err) console.log('Could not record payment for \'' + userId + '\'', err);
+                else console.log('Received payment for \'' + userId + '\'', err);
+            });
+        }
+    });
+    // Send a 200 out of courtesy
     res.send(200);
 };
 
