@@ -1,0 +1,19 @@
+#schedule-header {
+  text-align: center;
+}
+#schedule-header h3 {
+  margin-top: 40px;
+  font-size: 36px;
+  font-family: 'Roboto Condensed', sans-serif; 
+}
+#schedule-header p {
+  text-align: justify;
+  margin-top: 15px;
+  padding: 0px;
+  text-shadow: -1px -1px 1px #efefef;
+  color: #444;
+}
+#schedule-header div.separator {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}

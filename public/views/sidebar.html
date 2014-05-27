@@ -1,6 +1,6 @@
 <div class="sidebar-inner" data-ng-controller="SidebarController">
     
-    <div class="sidebar-item" ng-class="navClass('home')">
+    <div class="sidebar-item" ng-class="navClass('home')" ng-click="goHome()">
         <div id="sidebar-icon-home" class="sidebar-icon"></div>
         <div class="sidebar-title">Home</div>
     </div>
@@ -13,7 +13,7 @@
         <div id="sidebar-icon-dev" class="sidebar-icon"></div>
         <div class="sidebar-title">Repository</div>
     </div>
-    <div class="sidebar-item" ng-class="navClass('schedule')">
+    <div class="sidebar-item" ng-class="navClass('schedule')" ng-click='goToSchedule()'>
         <div id="sidebar-icon-calendar" class="sidebar-icon"></div>
         <div class="sidebar-title">Schedule</div>
     </div>

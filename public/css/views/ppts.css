@@ -1,0 +1,70 @@
+.globalppts .font-family-title {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+}
+.globalppts .font-family-content {
+  font-family: "Open Sans", "Proxima Nova Regular", "Helvetica Neue", "Calibri", "Droid Sans", "Helvetica", "Arial", "sans-serif";
+}
+.globalppts body {
+  background-color: #F8F8F8 ;
+  color: #333333 ;
+  font-family: "Open Sans", "Proxima Nova Regular", "Helvetica Neue", "Calibri", "Droid Sans", "Helvetica", "Arial", "sans-serif";
+  font-size: 16px ;
+  line-height: 25px ;
+  margin: 0px 0px 0px 0px ;
+  padding: 0px 0px 0px 0px ;
+}
+.globalppts h1 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 32px ;
+  font-weight: 700 ;
+  line-height: 50px ;
+  margin: 5px 0px 20px 0px ;
+}
+.globalppts h2 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 26px ;
+  font-weight: 700 ;
+  line-height: 40px ;
+  margin: 25px 0px 20px 0px ;
+}
+.globalppts h3 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 20px ;
+  font-weight: 700 ;
+  line-height: 30px ;
+  margin: 25px 0px 20px 0px ;
+}
+.globalppts h4 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 16px ;
+  font-weight: 700 ;
+  line-height: 24px ;
+  margin: 30px 0px 20px 0px ;
+}
+.globalppts h5 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 16px ;
+  font-weight: 700 ;
+  margin: 20px 0px 20px 0px ;
+}
+.globalppts h6 {
+  font-family: "Merriweather", "Skolar Bold", "Palatino", "Cambria", "Droid Serif", "Georgia", "Times New Roman", "Times", "serif";
+  font-size: 16px ;
+  font-weight: 700 ;
+  margin: 20px 0px 20px 0px ;
+}
+.globalppts p {
+  margin: 20px 0px 20px 0px ;
+}
+.globalppts ul,
+.globalppts ol {
+  margin: 20px 0px 20px 0px ;
+}
+.globalppts ul li,
+.globalppts ol li {
+  margin-bottom: 4px ;
+}
+.globalppts ul.paragraphspacing li,
+.globalppts ol.paragraphspacing li {
+  margin-bottom: 15px ;
+}

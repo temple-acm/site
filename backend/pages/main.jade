@@ -27,7 +27,10 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     link(rel='stylesheet', href='/static/lib/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/static/css/common.css')
     link(rel='stylesheet', href='/static/css/views/home.css')
-    link(rel='stylesheet', href='/static/css/views/register.css')
+    link(rel='stylesheet', href='/static/css/views/register.css')    
+    link(rel='stylesheet', href='/static/css/views/schedule.css')
+    link(rel='stylesheet', href='/static/css/views/fullcalendar.css')
+    link(rel='stylesheet', href='/static/css/views/ppts.css')
 
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
@@ -54,6 +57,8 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
 
     // jQuery
     script(type='text/javascript', src='/static/lib/jquery/jquery.js')
+    // jQueryUI for Calendar
+    script(type='text/javascript', src='/static/lib/jquery/jquery-ui.custom.min.js')    
     // Bootstrap
     script(type='text/javascript', src='/static/lib/bootstrap/dist/js/bootstrap.min.js')
     // AngularJS
@@ -81,4 +86,9 @@ html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.face
     script(type='text/javascript', src='/static/js/controllers/header.js')
     script(type='text/javascript', src='/static/js/controllers/sidebar.js')
     script(type='text/javascript', src='/static/js/controllers/register.js')
+    script(type='text/javascript', src='/static/js/controllers/schedule.js')
     script(type='text/javascript', src='/static/js/init.js')
+    // Calendar Scripts
+    script(type='text/javascript', src='/static/js/controllers/fullcalendar.js')
+    script(type='text/javascript', src='/static/js/controllers/fullcalendar.min.js')
+    script(type='text/javascript', src='/static/js/controllers/gcal.js')

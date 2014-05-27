@@ -8,6 +8,13 @@ window.app.config(['$routeProvider',
         when('/', {
             templateUrl: '/static/views/home.html'
         }).
+        when('/schedule', {
+            templateUrl: '/static/views/schedule.html',
+            controller: 'CalendarCtrl'
+        }).
+        when('/termsofservice', {
+            templateUrl: '/static/views/ppts.html',
+        }).
         otherwise({
             redirectTo: '/'
         });

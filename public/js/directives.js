@@ -23,3 +23,12 @@ angular.module("mean.system").directive("ngTextChange", function (RegisterServic
 		}
 	};
 });
+
+angular.module("mean.system").directive("ngReady", function (RegisterService) {
+	return {
+		restrict: "A",
+		link: function (scope, element, attrs) {
+			scope.$eval(attrs.ngReady);
+		}
+	};
+});
