@@ -20,7 +20,7 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['less'], function() {
+gulp.task('default', ['less', 'server'], function() {
     livereload.listen();
     gulp.watch('public/js/**', function(event) {
         livereload.changed();
