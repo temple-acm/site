@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var livereload = require('gulp-livereload');
+var nodemon = require('gulp-nodemon');
 
 // Task responsible for less
 gulp.task('less', function() {
@@ -9,6 +10,14 @@ gulp.task('less', function() {
         .pipe(less())
         .pipe(minifyCSS())
         .pipe(gulp.dest('public/css'));
+});
+// Task responsible for running the server
+gulp.task('server', function() {
+    nodemon({
+        script: 'server.js',
+        ext: 'js',
+        ignore: []
+    });
 });
 
 gulp.task('default', ['less'], function() {
