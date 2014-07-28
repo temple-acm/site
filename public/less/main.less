@@ -182,7 +182,7 @@ a {
     .intro-body {
         display: table-cell;
         vertical-align: middle;
-        font-weight: 200;
+        font-weight: 100;
 
         .brand-heading {
             font-size: 40px;
@@ -190,7 +190,8 @@ a {
         }
 
         .intro-text {
-            font-size: 18px;
+            font-size: 20px;
+            letter-spacing: 1px;
         }
     }
 }
@@ -205,10 +206,16 @@ a {
             }
 
             .intro-text {
-                font-size: 25px;
+                font-size: 28px;
             }
         }
     }
+}
+
+section {
+    background: @light;
+    color: @dark;
+    padding: 40px 0px;
 }
 
 .btn-circle {
@@ -284,10 +291,6 @@ a {
     }
 }
 
-.content-section {
-    padding-top: 100px;
-}
-
 .download-section {
     width: 100%;
     padding: 50px 0;
@@ -307,13 +310,6 @@ a {
 }
 
 @media(min-width:767px) {
-    .content-section {
-        padding-top: 250px;
-    }
-
-    .download-section {
-        padding: 100px 0;
-    }
 
     #map {
         height: 400px;
