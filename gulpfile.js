@@ -16,7 +16,7 @@ gulp.task('server', function() {
     nodemon({
         script: 'server.js',
         ext: 'js',
-        ignore: []
+        ignore: ['public/*']
     });
 });
 
