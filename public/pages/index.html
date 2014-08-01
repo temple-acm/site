@@ -25,7 +25,7 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-ng-controller='MainCtrl'>
         <!-- Navigation -->
         <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
             <div class="container">
@@ -69,20 +69,8 @@
         </nav>
 
         <!-- Intro Header -->
-        <header class="intro">
-            <div class="intro-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <h1 class="brand-heading">We <i class="fa fa-heart"></i> Computing</h1>
-                            <p class="intro-text">We're the Temple University chapter of the ACM,</br>and we're all about technology.</p>
-                            <a href="#about" class="btn btn-circle page-scroll">
-                                <i class="fa fa-angle-double-down animated"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <header>
+            <slider></slider>
         </header>
 
         <!-- About Section -->
@@ -143,16 +131,23 @@
             </div>
         </footer>
 
+        <!-- Vendor JS -->
+
         <!-- jQuery Version 1.11.0 -->
         <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>
+        <!-- Angular 1.2.0 -->
+        <script src="/static/vendor/angular/angular.min.js"></script>
+        <script src="/static/vendor/angular-route/angular-route.min.js"></script>
         <!-- Bootstrap Core JavaScript -->
         <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- Plugin JavaScript -->
-        <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>
-        <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+        <!-- Google Maps API Key -->
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-        <!-- Custom Theme JavaScript -->
-        <script src="/static/js/grayscale.js"></script>
         <!-- Livereload -->
+
+        <!-- Custom JS -->
+
+        <script src="/static/js/grayscale.js"></script>
+        <script src="/static/js/main.js"></script>
     </body>
 </html>

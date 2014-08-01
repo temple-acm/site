@@ -6,7 +6,7 @@ var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
 var INDEX_PAGE_PATH = path.join(__dirname, 'public', 'pages', 'index.html');
 
 exports.route = function(app) {
-	// Setup routes
+	// Main page route
 	app.get('/', function(req, res) {
 		if (process.env.TUACM_PRODUCTION)
 			res.sendfile(INDEX_PAGE_PATH);
@@ -21,5 +21,12 @@ exports.route = function(app) {
 				}
 			});
 		}
+	});
+	// Get the slides
+	app.get('/slides', function(req, res) {
+		var slides = req.db.collection('slides');
+		slides.find().toArray(function(err, results) {
+			res.json(results);
+		});
 	});
 };

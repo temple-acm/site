@@ -38,6 +38,7 @@ var options = {
 var env = process.env.NODE_ENV; // Defaults to dev. env.
 // Define the express app
 var app = express();
+var mongoDb = undefined;
 app.use(favicon(path.join(__dirname, 'public', 'img', 'icons', 'favicon.ico')));
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -47,13 +48,21 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(methodOverride());
 app.use(busboy());
+// Adds mongo to every request
+app.use(function(req, res, next) {
+    req.db = mongoDb;
+    next();
+});
+// Connects to mongo and sets up session shit
 MongoClient.connect('mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
     if (err) throw err;
+    // Session stuff
+    mongoDb = db;
     app.use(session({
         secret: 'MEAN',
         // TODO restrict db creds to env vars
         store: new MongoStore({
-            db: db,
+            db: mongoDb,
             collection: 'sessions'
         }),
     }));
