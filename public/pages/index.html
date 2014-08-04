@@ -54,7 +54,7 @@
                             <a class="page-scroll link" href="#contact">Contact</a>
                         </li>
                         <li>
-                            <a id="register" class="page-scroll btn btn-success" href="#contact">Register</a>
+                            <a id="register" class="page-scroll btn btn-success" ng-click="showRegistration()">Register</a>
                         </li>
                         <li>
                             <a id="sign-in" class="page-scroll btn btn-primary" href="#signin" style="">Sign In</a>
@@ -128,6 +128,16 @@
                 <p>Copyright &copy; Temple ACM 2013 - 2014</p>
             </div>
         </footer>
+
+        <!-- Card Section -->
+        <overlay>
+            <div class="cardholder">
+                <div class="card">
+                    <register ng-include="'/static/partials/register.html'"></register>
+                    <login ng-include="'/static/partials/login.html'"></login>
+                </div>
+            </div>
+        </overlay>
 
         <!-- Vendor JS -->
 

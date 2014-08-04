@@ -2,7 +2,7 @@
 @import "variables.less";
 @import "mixins.less";
 @import "slider.less";
-@import "register.less";
+@import "card.less";
 
 body {
     width: 100%;
@@ -10,6 +10,10 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: @light;
     background-color: @dark;
+
+    &.noscroll {
+        overflow: hidden;
+    }
 }
 
 html {
@@ -158,9 +162,10 @@ a {
         -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
         -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
         transition: background .5s ease-in-out,padding .5s ease-in-out;
+        z-index: @page-z;
     }
 
-    .top-nav-collapse {
+    .navbar.top-nav-collapse {
         padding: 0;
         background-color: @dark;
     }

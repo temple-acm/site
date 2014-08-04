@@ -14,9 +14,7 @@
 
 	(function(app) {
 		app.config(['$routeProvider',
-			function($routeProvider) {
-				// TODO
-			}
+			function($rp) {}
 		]);
 	})(_app);
 
@@ -100,7 +98,35 @@
 	(function(module, app) {
 		module.controller('MainCtrl', ['$scope',
 			function($scope) {
+				var ANIM_DELAY = 400;
+				var $overlay = $('overlay');
 
+				var hideCard = function() {
+					$overlay.find('.cardholder').css('top', '100%');
+					setTimeout(function() {
+						$overlay.css('opacity', '0.0');
+						$('body').removeClass('noscroll');
+						setTimeout(function() {
+							$overlay.hide();
+						}, ANIM_DELAY);
+					}, ANIM_DELAY);
+				};
+				var showCard = function() {
+					$('body').addClass('noscroll');
+					$overlay.show(function() {
+						$overlay.css('opacity', '1.0');
+						setTimeout(function() {
+							$overlay.find('.cardholder').css('top', '0px');
+							$overlay.click(hideCard);
+						}, ANIM_DELAY);
+					});
+				};
+
+				$scope.showRegistration = function() {
+					$('overlay register').css('display', 'block');
+					$('overlay login').css('display', 'none');
+					showCard();
+				};
 			}
 		]);
 	})(ng.module('controllers', []), _app);

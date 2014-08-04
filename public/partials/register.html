@@ -1,0 +1,109 @@
+<h1>Registration</h1>
+<p>Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter. With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and a a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
+<form role="form" novalidate>
+	<div class="form-group">
+        <div class="col-md-12">
+            <h2>Basic Information</h2>
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-4">
+            <label for="firstNameText">First Name<span class="red-asterisk">*</span></label>
+            <input type="text" class="form-control" name="firstName" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
+        </div>
+        <div class="col-md-4">
+            <label for="lastNameText">Last Name<span class="red-asterisk">*</span></label>
+            <input type="text" class="form-control" name="lastName" id="lastNameText" ng-model="user.lastName" placeholder="e.g. Smith" required>
+        </div>
+        <div class="col-md-4">
+            <label for="emailText">Email Address<span class="red-asterisk">*</span></label>
+            <input type="email" class="form-control" name="email" id="emailText" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <h2>About You</h2>
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-4">
+            <label for="gitHubText">Github Id</label>
+            <input type="text" class="form-control" name="github" id="gitHubText" ng-model="user.github" placeholder="e.g. jsmith">
+        </div>
+        <div class="col-md-4">
+            <label for="twitterText">Twitter Handle</label>
+            <input type="text" class="form-control" name="twitter" id="twitterText" ng-model="user.twitter" placeholder="e.g. @somebody">
+        </div>
+        <div class="col-md-4">
+            <label for="facebookText">Facebook Username</label>
+            <input type="text" class="form-control" name="facebook" id="facebookText" ng-model="user.facebook" placeholder="e.g. john">
+        </div>
+        <div class="col-md-8">
+            <label for="bioText">Who are you?<span class="red-asterisk">*</span></label>
+            <textarea class="form-control" rows="5" name="bio" id="bioText" ng-model="user.bio" placeholder="Drop a few lines here about who you are, what you do, how you do it, and computing means to you." required></textarea>
+        </div>
+        <div class="col-md-4">
+            <label for="majorSelect">Temple University Major<span class="red-asterisk">*</span></label>
+            <select class="form-control" name="major" ng-model="user.major" id="majorSelect" required>
+                <option>Information Science &amp; Technology</option>
+                <option>Computer Science</option>
+                <option>Computer Science &amp; Mathematics</option>
+                <option>Management of Information Systems</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="studentLevelSelect">Student Level<span class="red-asterisk">*</span></label>
+            <select class="form-control" name="studentLevel" ng-model="user.studentLevel" id="studentLevelSelect" required>
+                <option>Freshman</option>
+                <option>Sophomore</option>
+                <option>Junior</option>
+                <option>Senior</option>
+                <option>Senior+</option>
+                <option>Graduate</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <h2>Credentials</h2>
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-4">
+            <label for="userIdText" style="margin-bottom: 0px;">Temple ACM User Id<span class="red-asterisk">*</span></label>
+            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px; padding-left: 2px;">User Id must be an alphanumeric string that is 5 - 15 characters long. This user id will be used only to identify you on the Temple ACM website.</p>
+            <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Choose a User Id" ng-text-change-delay="100" required>
+            <span class="indicator" id="userIdIndicator">No user id provided.</span>
+        </div>
+        <div class="col-md-4">
+            <label for="passwordText" style="margin-bottom: 0px;">Password<span class="red-asterisk">*</span></label>
+            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px;">Password must be at least 8 characters long with at least one capital letter, lowercase letter and non-alphanumeric character.</p>
+            <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
+            <span class="indicator" id="passwordIndicator">No password provided.</span>
+        </div>
+        <div class="col-md-4">
+            <label for="confirmPasswordText" style="margin-bottom: 0px;">Confirm Password<span class="red-asterisk">*</span></label>
+            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 30px;">Password confirmation must match the value of the password field.</br></p>
+            <input type="password" class="form-control" id="confirmPasswordText" placeholder="Password confirmation" ng-text-change="onPasswordChanged()" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <h2>Resume</h2>
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-12">
+            <label class="upload-label">Resume File Upload</label>
+            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 0px;">Submit a file 1MB or less in a *.pdf, *.doc or *.docx format.</p>
+            <input class="upload-button" ng-file-drop-available="dropSupported=true" ng-show="!dropSupported" type="file" ng-file-select="selectFile($files, user)" id="fileUpload">
+            <div class="upload-drop" ng-class="dragDropStyle" ng-file-drop="selectFile($files, user)" ng-file-drag-over-class="on-drag" ng-show="dropSupported">{{dragDropMessage}}</div>
+            <p class="upload-label help-block">We need your resume to help us determine which companies and organizations should come and meet you.</br>It really helps us understand your strengths and weaknesses.</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-12" style="float: left; text-align: center;">
+            <button ng-click="submit(user)" class="btn btn-success btn-submit">Continue Registration</button>
+        </div>
+    </div>
+</form>
