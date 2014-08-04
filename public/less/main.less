@@ -1,6 +1,8 @@
+@import "../vendor/bootstrap/less/bootstrap.less";
 @import "variables.less";
 @import "mixins.less";
 @import "slider.less";
+@import "register.less";
 
 body {
     width: 100%;
@@ -39,7 +41,7 @@ header {
     overflow: hidden;
 }
 
-@media(min-width:767px) {
+@media(min-width:@mobileWidth) {
     p {
         margin: 0 0 35px;
         font-size: 20px;
@@ -147,7 +149,7 @@ a {
     }
 }
 
-@media(min-width:767px) {
+@media(min-width:@mobileWidth) {
     .navbar {
         padding: 20px 0;
         border-bottom: none;
@@ -215,7 +217,7 @@ a {
     }
 }
 
-@media(min-width:767px) {
+@media(min-width:@mobileWidth) {
     .intro {
         height: 100%;
         padding: 0;
@@ -328,7 +330,7 @@ section {
     margin-top: 100px;
 }
 
-@media(min-width:767px) {
+@media(min-width:@mobileWidth) {
 
     #map {
         height: 400px;
@@ -368,7 +370,7 @@ ul.banner-social-buttons {
     }
 }
 
-@media(max-width:767px) {
+@media(max-width:@mobileWidth) {
     ul.banner-social-buttons {
         li {
             display: block;

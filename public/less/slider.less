@@ -40,41 +40,27 @@ slider {
 		top: 0px;
 		bottom: 0px;
 		width: 150px;
-		background: transparent;
 		-webkit-transition: opacity 0.25s;
 		transition: opacity 0.25s;
-		opacity: 0;
 		cursor: pointer;
-
-		&:hover {
-			opacity: 1;
-		}
 
 		&.prev {
 			left: 0px;
-			background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.4), transparent);
-			background: -o-linear-gradient(right, rgba(0, 0, 0, 0.4), transparent);
-			background: -moz-linear-gradient(right, rgba(0, 0, 0, 0.4), transparent);
-			background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent);
 
 			i {
-				left: 50px;
+				left: 40px;
 			}
 		}
 		&.next {
 			right: 0px;
-			background: -webkit-linear-gradient(left, transparent, rgba(0, 0, 0, 0.4));
-			background: -o-linear-gradient(right, transparent, rgba(0, 0, 0, 0.4));
-			background: -moz-linear-gradient(right, transparent, rgba(0, 0, 0, 0.4));
-			background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.4));
 
 			i {
-				right: 50px;
+				right: 40px;
 			}
 		}
 
 		i {
-			font-size: 80px;
+			font-size: 60px;
 			position: absolute;
 			top: 50%;
 			margin-top: -40px;
@@ -82,7 +68,7 @@ slider {
 	}
 }
 
-@media(min-width:767px) {
+@media(min-width:@mobileWidth) {
     slider {
         height: 100%;
         padding: 0px;
@@ -103,6 +89,27 @@ slider {
 	                font-size: 28px;
 	            }
 	        }
+    	}
+
+    	arrow.prev,
+    	arrow.next {
+			opacity: 0;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			i {
+				font-size: 80px;
+			}
+    	}
+
+    	arrow.next i {
+			right: 50px;
+    	}
+
+    	arrow.prev i {
+			left: 50px;
     	}
     }
 }
