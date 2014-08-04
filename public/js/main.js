@@ -117,7 +117,11 @@
 						$overlay.css('opacity', '1.0');
 						setTimeout(function() {
 							$overlay.find('.cardholder').css('top', '0px');
-							$overlay.click(hideCard);
+							$overlay.click(function(e) {
+								if (e.target == this) {
+									hideCard();
+								}
+							});
 						}, ANIM_DELAY);
 					});
 				};
