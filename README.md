@@ -1,29 +1,22 @@
 # Temple ACM Site  [![Gitter chat](https://badges.gitter.im/temple-acm.png)](https://gitter.im/temple-acm)
 
-Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which excentuates JS as the primary language of execution. The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
+Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Prerequisites
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/). You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm
-* MongoDB - Download and Install [MongoDB](http://www.mongodb.org/downloads) - Make sure it's running on the default port (27017).
 
 ### Tools Prerequisites
 * NPM - Node.js package manager, should be installed when you install node.js.
-* Bower - Web package manager, installing [Bower](http://bower.io/) is simple when you have npm:
+* Bower - Web package manager, installing [bower](http://bower.io/) is simple:
 
 ```
 $ npm install -g bower
 ```
+* Gulp - Streaming build manager, installing [gulp](http://gulpjs.com/) is also simple:
 
-### Optional
-* Grunt - Download and Install [Grunt](http://gruntjs.com).
-
-## Additional Packages
-* Express - Defined as npm module in the [package.json](package.json) file.
-* Mongoose - Defined as npm module in the [package.json](package.json) file.
-* Passport - Defined as npm module in the [package.json](package.json) file.
-* AngularJS - Defined as bower module in the [bower.json](bower.json) file.
-* Twitter Bootstrap - Defined as bower module in the [bower.json](bower.json) file.
-* UI Bootstrap - Defined as bower module in the [bower.json](bower.json) file.
+```
+$ npm install -g gulp
+```
 
 ## Quick Install
   The quickest way to get started with MEAN is to clone the project and utilize it like this:
@@ -32,13 +25,9 @@ $ npm install -g bower
 
     $ npm install
 
-  We recommend using [Grunt](https://github.com/gruntjs/grunt-cli) to start the server:
+  Use [gulp](http://gulpjs.com/) to start the server:
 
-    $ grunt
-    
-  When not using grunt you can use:
-
-    $ node server
+    $ gulp
     
   Then open a browser and go to:
 
@@ -57,30 +46,6 @@ Bower Clean Cache:
 ```
 $ bower cache clean
 ```
-
- 
-## Configuration
-All configuration is specified in the [config](config/) folder, particularly the [config.js](config/config.js) file and the [env](config/env/) files. Here you will need to specify your application name, database name, as well as hook up any social app keys if you want integration with Twitter, Facebook, GitHub or Google.
-
-### Environmental Settings
-
-There are three environments provided by default, __development__, __test__, and __production__. Each of these environments has the following configuration options:
-* __db__ - This is the name of the MongoDB database to use, and is set by default to __mean-dev__ for the development environment.
-* __app.name__ - This is the name of your app or website, and can be different for each environment. You can tell which environment you are running by looking at the TITLE attribute that your app generates.
-* __Social OAuth Keys__ - Facebook, GitHub, Google, Twitter. You can specify your own social application keys here for each platform:
-	* __clientID__
-	* __clientSecret__
-	* __callbackURL__
-
-To run with a different environment, just specify NODE_ENV as you call grunt:
-
-	$ NODE_ENV=test grunt
-
-If you are using node instead of grunt, it is very similar:
-
-	$ NODE_ENV=test node server
-
-> NOTE: Running Node.js applications in the __production__ environment enables caching, which is disabled by default in all other environments.
 
 ## Credits
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/).
