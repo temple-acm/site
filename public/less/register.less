@@ -1,0 +1,98 @@
+#register-form {
+    .ng-invalid {
+        border-color: #a94442;
+    }
+    .ng-invalid:focus {
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(169, 68, 66, 0.6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(169, 68, 66, 0.6);
+    }
+    .upload-label {
+        float: left;
+        display: inline-block;
+    }
+    .upload-button {
+        float: left;
+        display: inline-block;
+        width: 100%;
+    }
+    .upload-drop-preview {
+        float: left;
+        display: block;
+        font-style: italic;
+        color: #4cae4c;
+    }
+    .upload-label {
+        width: 100%;
+    }
+    .upload-drop {
+        float: left;
+        display: inline-block;
+        width: 100%;
+        border: 1px solid #cccccc;
+        padding: 30px 15px;
+        background: #efefef;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 14px;
+        color: #666;
+    }
+    .upload-drop.on-drag {
+        color: #ffffff;
+        background-color: #428bca;
+        border-color: #357ebd;
+    }
+    .upload-drop.dropped {
+        color: #ffffff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+        font-weight: normal;
+    }
+    .upload-drop.wrong {
+        color: #ffffff;
+        background-color: #a21e32;
+        border-color: #a94442;
+        text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+        font-weight: normal;
+    }
+    h2 {
+        margin-top: 15px;
+        float: left;
+        width: 100%;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+    span.indicator {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        background: #a21e32;
+        border-radius: 0px 0px 4px 4px;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 12px;
+        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        overflow: hidden;
+    }
+    span.indicator.good {
+        background: #5cb85c;
+    }
+    .btn-submit {
+        text-transform: uppercase;
+        border-radius: 0px;
+        font-size: 12px;
+        padding: 10px 20px;
+        margin-bottom: 30px;
+        outline: none;
+    }
+    .form-control.flat-bottomed {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+}
