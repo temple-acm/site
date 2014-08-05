@@ -102,14 +102,18 @@
 				var $overlay = $('overlay');
 
 				var hideCard = function() {
-					$overlay.find('.cardholder').css('top', '100%');
-					setTimeout(function() {
-						$overlay.css('opacity', '0.0');
-						$('body').removeClass('noscroll');
+					$overlay.animate({
+						scrollTop: '0px'
+					}, ANIM_DELAY, function() {
+						$overlay.find('.cardholder').css('top', '100%');
 						setTimeout(function() {
-							$overlay.hide();
+							$overlay.css('opacity', '0.0');
+							$('body').removeClass('noscroll');
+							setTimeout(function() {
+								$overlay.hide();
+							}, ANIM_DELAY);
 						}, ANIM_DELAY);
-					}, ANIM_DELAY);
+					});
 				};
 				var showCard = function() {
 					$('body').addClass('noscroll');

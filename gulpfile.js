@@ -26,10 +26,14 @@ gulp.task('default', ['less', 'server'], function() {
         livereload.changed();
     });
     gulp.watch('public/less/**', function(event) {
-        gulp.run('less');
-        livereload.changed();
+        gulp.run('less', function() {
+            livereload.changed();
+        });
     });
     gulp.watch('public/pages/**', function(event) {
+        livereload.changed();
+    });
+    gulp.watch('public/partials/**', function(event) {
         livereload.changed();
     });
 });
