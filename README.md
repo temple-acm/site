@@ -17,12 +17,13 @@ $ npm install -g bower
 $ npm install -g gulp
 ```
 
-## Quick Install
+## Running the Site
   The quickest way to get started with MEAN is to clone the project and utilize it like this:
 
   Install dependencies:
 
     $ npm install
+    $ bower install
 
   Use [gulp](http://gulpjs.com/) to start the server:
 
