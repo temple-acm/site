@@ -3,16 +3,15 @@
 Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Prerequisites
-* Node.js - Download and Install [Node.js](http://www.nodejs.org/download/). You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm
+* Node.js - Download and Install [Node.js](http://www.nodejs.org/download/)
 
 ### Tools Prerequisites
-* NPM - Node.js package manager, should be installed when you install node.js.
-* Bower - Web package manager, installing [bower](http://bower.io/) is simple:
+* [Bower](http://bower.io/) - Web package manager:
 
 ```
 $ npm install -g bower
 ```
-* Gulp - Streaming build manager, installing [gulp](http://gulpjs.com/) is also simple:
+* [Gulp](http://gulpjs.com/) - Streaming build manager:
 
 ```
 $ npm install -g gulp
