@@ -99,37 +99,41 @@
 		module.controller('MainCtrl', ['$scope',
 			function($scope) {
 				var ANIM_DELAY = 400;
-				var $overlay = $('overlay');
+				var $overlay = $('overlay'),
+					$cardHolder = $overlay.find('.cardholder');
 
+				// Delegate UI Events
+				$overlay.click(function(e) {
+					if (e.target == this) {
+						hideCard();
+					}
+				});
+
+				// Card specific helper functions
 				var hideCard = function() {
 					$overlay.animate({
 						scrollTop: '0px'
 					}, ANIM_DELAY, function() {
-						$overlay.find('.cardholder').css('top', '100%');
+						$cardHolder.css('top', '100%');
 						setTimeout(function() {
 							$overlay.css('opacity', '0.0');
 							$('body').removeClass('noscroll');
 							setTimeout(function() {
-								$overlay.hide();
+								$overlay.css('display', 'none');
 							}, ANIM_DELAY);
 						}, ANIM_DELAY);
 					});
 				};
 				var showCard = function() {
 					$('body').addClass('noscroll');
-					$overlay.show(function() {
-						$overlay.css('opacity', '1.0');
-						setTimeout(function() {
-							$overlay.find('.cardholder').css('top', '0px');
-							$overlay.click(function(e) {
-								if (e.target == this) {
-									hideCard();
-								}
-							});
-						}, ANIM_DELAY);
-					});
+					$overlay.css('display', 'block');
+					$overlay.css('opacity', '1.0');
+					setTimeout(function() {
+						$cardHolder.css('top', '0px');
+					}, ANIM_DELAY);
 				};
 
+				// Scope exports
 				$scope.showRegistration = function() {
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
