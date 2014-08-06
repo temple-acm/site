@@ -139,6 +139,11 @@
 					$('overlay login').css('display', 'none');
 					showCard();
 				};
+				$scope.showLogin = function() {
+					$('overlay register').css('display', 'none');
+					$('overlay login').css('display', 'block');
+					showCard();
+				};
 			}
 		]);
 	})(ng.module('controllers', []), _app);
