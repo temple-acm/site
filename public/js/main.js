@@ -176,11 +176,19 @@
 				$scope.showRegistration = function() {
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
+					$('overlay emailus').css('display', 'none');
 					showCard();
 				};
 				$scope.showLogin = function() {
 					$('overlay register').css('display', 'none');
 					$('overlay login').css('display', 'block');
+					$('overlay emailus').css('display', 'none');
+					showCard();
+				};
+				$scope.showEmailUs = function() {
+					$('overlay register').css('display', 'none');
+					$('overlay login').css('display', 'name');
+					$('overlay emailus').css('display', 'block');
 					showCard();
 				};
 			}
@@ -304,6 +312,18 @@
 						$scope.registrationForm.password.$setValidity("pass", false);
 					}
 				};
+			}
+		]);
+		// Email Controller
+		module.controller('EmailCtrl', ['$scope',
+			function() {
+				// Code that handles the "Email Us" form goes here
+			}
+		]);
+		// Login Controller
+		module.controller('LoginCtrl', ['$scope',
+			function() {
+				// Code that handles the "Login" form goes here
 			}
 		]);
 	})(ng.module('controllers', []), _app);
