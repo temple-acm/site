@@ -17,12 +17,13 @@ $ npm install -g bower
 $ npm install -g gulp
 ```
 
-## Quick Install
+## Running the Site
   The quickest way to get started with MEAN is to clone the project and utilize it like this:
 
   Install dependencies:
 
     $ npm install
+    $ bower install
 
   Use [gulp](http://gulpjs.com/) to start the server:
 
@@ -32,22 +33,8 @@ $ npm install -g gulp
 
     http://localhost:3000
 
-#### Cleaning NPM and Bower cache
-NPM and Bower has a caching system for holding packages that you already installed.
-We found that often cleaning the cache solves some troubles this system creates.
-
-NPM Clean Cache:
-```
-$ npm cache clean
-```
-
-Bower Clean Cache:
-```
-$ bower cache clean
-```
-
 ## Credits
-Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/).
+Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your lord and savior [Sandile Keswa](https://github.com/skeswa/).
 
 ## License
 (The MIT License)

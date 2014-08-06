@@ -1,5 +1,5 @@
 <h1>Registration</h1>
-<p class="description">Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter. With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and a a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
+<p class="description">Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter. With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
 <form role="form" id="register-form" name="registration" novalidate>
 	<div class="form-group">
         <div class="col-md-4">
@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-4">
-            <label for="gitHubText">Github Id</label>
+            <label for="gitHubText">Github ID</label>
             <input type="text" class="form-control" name="github" id="gitHubText" ng-model="user.github" placeholder="e.g. jsmith">
         </div>
         <div class="col-md-4">
@@ -38,7 +38,8 @@
                 <option>Information Science &amp; Technology</option>
                 <option>Computer Science</option>
                 <option>Computer Science &amp; Mathematics</option>
-                <option>Management of Information Systems</option>
+                <option>Engineering</option>
+                <option>Management Information Systems</option>
                 <option>Other</option>
             </select>
         </div>
@@ -57,9 +58,9 @@
     </div>
     <div class="form-group">
         <div class="col-md-4">
-            <label for="userIdText" style="margin-bottom: 0px;">Temple ACM User Id<span class="red-asterisk">*</span></label>
-            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px; padding-left: 2px;">User Id must be an alphanumeric string that is 5 - 15 characters long. This user id will be used only to identify you on the Temple ACM website.</p>
-            <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Choose a User Id" ng-text-change-delay="100" required>
+            <label for="userIdText" style="margin-bottom: 0px;">Temple ACM User ID<span class="red-asterisk">*</span></label>
+            <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px; padding-left: 2px;">User ID must be an alphanumeric string that is 5 - 15 characters long. This user id will be used only to identify you on the Temple ACM website.</p>
+            <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Choose a User ID" ng-text-change-delay="100" required>
             <span class="indicator" id="userIdIndicator">No user id provided.</span>
         </div>
         <div class="col-md-4">

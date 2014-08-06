@@ -1,5 +1,6 @@
 .DS_Store
 .nodemonignore
 .sass-cache/
+public/css/main.css
 node_modules/
 *.log
