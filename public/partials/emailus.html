@@ -1,40 +1,36 @@
 <h1>Email Us</h1>
 <p class="description">Shoot us a message anytime! Add some more content HERE. Dammit Steven.</p>
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-2">
-        <form role="form" id="email-form" name="emailus" novalidate>
-            <div class="form-group">
-                <div class="col-md-4">
-                    <label for="firstNameText">Name<span class="red-asterisk">*</span></label>
-                    <input type="text" class="form-control" name="firstName" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
-                </div>
-                <div class="col-md-4">
-                    <label for="emailText">Email Address<span class="red-asterisk">*</span></label>
-                    <input type="email" class="form-control" name="email" id="emailText" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" required>
-            </div>
-            <div class="form-group">
-                <div class="col-md-4">
-                    <label for="majorSelect">Topic<span class="red-asterisk">*</span></label>
-                    <select class="form-control" name="major" ng-model="user.major" id="majorSelect" placeholder="What you're addressing" required>
-                        <option>Becoming a member</option>
-                        <option>Suggestions &amp; Comments</option>
-                        <option>Sponsorship &amp; Donations</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-                <div class="col-md-12">
-                    <label for="bioText">Who are you?<span class="red-asterisk">*</span></label>
-                    <textarea class="form-control" rows="5" name="bio" id="bioText" ng-model="user.bio" placeholder="" required></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-12">
-                    <div class="separator"></div>
-                </div>
-                <div class="col-md-12" style="float: left; text-align: center;">
-                    <button ng-click="submit(form)" class="btn btn-success btn-submit">Submit</button>
-                </div>
-            </div>
-        </form>
+<form role="form" id="email-form" name="emailus" novalidate>
+    <div class="form-group">
+        <div class="col-md-4">
+            <label for="firstNameText">Name<span class="red-asterisk">*</span></label>
+            <input type="text" class="form-control" name="firstName" id="firstNameText" ng-model="user.firstName" placeholder="e.g. John" required>
+        </div>
+        <div class="col-md-4">
+            <label for="emailText">Email Address<span class="red-asterisk">*</span></label>
+            <input type="email" class="form-control" name="email" id="emailText" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" required>
     </div>
-</div>
+    <div class="form-group">
+        <div class="col-md-4">
+            <label for="majorSelect">Topic<span class="red-asterisk">*</span></label>
+            <select class="form-control" name="major" ng-model="user.major" id="majorSelect" placeholder="What you're addressing" required>
+                <option>Becoming a member</option>
+                <option>Suggestions &amp; Comments</option>
+                <option>Sponsorship &amp; Donations</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div class="col-md-12">
+            <label for="bioText">Who are you?<span class="red-asterisk">*</span></label>
+            <textarea class="form-control" rows="5" name="bio" id="bioText" ng-model="user.bio" placeholder="" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <div class="separator"></div>
+        </div>
+        <div class="col-md-12" style="float: left; text-align: center;">
+            <button ng-click="submit(form)" class="btn btn-success btn-submit">Submit</button>
+        </div>
+    </div>
+</form>

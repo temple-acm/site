@@ -172,7 +172,7 @@
 					}, ANIM_DELAY);
 				};
 
-				// Scope exports
+				// Card-related scope exports
 				$scope.showRegistration = function() {
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
@@ -190,6 +190,22 @@
 					$('overlay login').css('display', 'name');
 					$('overlay emailus').css('display', 'block');
 					showCard();
+				};
+
+				// Utility scope exports
+				$scope.scrollTo = function(section) {
+					if (!section) {
+						$('html, body').stop().animate({
+							scrollTop: 0
+						}, 1500, 'easeInOutExpo');
+					} else {
+						var $anchor = $('section#' + section);
+						if ($anchor.get(0)) {
+							$('html, body').stop().animate({
+								scrollTop: ($anchor.offset().top - 50)
+							}, 1500, 'easeInOutExpo');
+						}
+					}
 				};
 			}
 		]);

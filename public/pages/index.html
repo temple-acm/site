@@ -5,8 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Temple University chapter of the Association for Computing Machinery (ACM).">
-        <meta name="author" content="Sandile Keswa">
-        <meta name="coAuthor" content="Steven Heyen">
+        <meta name="author" content="Sandile Keswa, Steven Heyen">
         <meta name="keywords" content="temple, acm, computer, science, college, university">
 
         <title>Temple ACM</title>
@@ -32,7 +31,7 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand page-scroll" href="#page-top">Temple ACM</a>
+                    <a class="navbar-brand page-scroll" ng-click="scrollTo()">Temple ACM</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -43,16 +42,16 @@
                             <a href="#page-top"></a>
                         </li>
                         <li>
-                            <a class="page-scroll link" href="#about">About</a>
+                            <a class="page-scroll link" ng-click="scrollTo('about')">About</a>
                         </li>
                         <li>
-                            <a class="page-scroll link" href="#events">Events</a>
+                            <a class="page-scroll link" ng-click="scrollTo('events')">Events</a>
                         </li>
                         <li>
-                            <a class="page-scroll link" href="#dev">#Dev</a>
+                            <a class="page-scroll link" ng-click="scrollTo('dev')">#Dev</a>
                         </li>
                         <li>
-                            <a class="page-scroll link" href="#contact">Contact</a>
+                            <a class="page-scroll link" ng-click="scrollTo('contact')">Contact</a>
                         </li>
                         <li>
                             <a id="register" class="page-scroll btn btn-success" ng-click="showRegistration()">Register</a>
@@ -79,29 +78,29 @@
                 <div class="col-lg-6 col-xs-12 featurette-left">
                     <div class="col-xs-6">
                         <i class="fa fa-desktop"></i>
-                        <h2>We Love Computing.</h2>
+                        <h2>We&nbsp;Love Computing.</h2>
                         <div class="separator"></div>
-                        <p>We're dedicated to expanding the academic and professional knowledge of computing across campus. We are also dedicated to helping our students and faculty to cooperate and grow together. Our entire organization is fueled by its collective passion for the boundless possibilities of emerging technology and the creativity it inspires. The world of computing invokes a different perspective on the world and sparks the imagination of its students. We are proud to be evangelists of our craft, and hope to create some incredible technologists.</p>
+                        <p>We're dedicated to expanding the academic and professional knowledge of computing across campus. We are also dedicated to helping our students and faculty to cooperate and grow together. We are proud to be evangelists of our craft, and hope to enable some incredible technologists.</p>
                     </div>
                     <div class="col-xs-6">
                         <i class="fa fa-users"></i>
-                        <h2>We Are a Community.</h2>
+                        <h2>We&nbsp;Are&nbsp;a Community.</h2>
                         <div class="separator"></div>
-                        <p>We welcome people of all majors and creeds to meetings to encourages exploration and discussion of a wide variety of computing-related ideas. We also contend to connect students not only with a vast network of companies, but also to the ever-growing community of their peers. As students, we have a unique opportunity to explore that is rare later in life, and we believe that attending events like hack-a-thons and conferences as a group encourages growth of programming know-how and camraderie.</p>
+                        <p>We welcome people of all majors and creeds to join our meetings and events. We contend to connect students not only with a vast network of companies, but also to the ever-growing community of their peers. We can achieve anything through camraderie, dilligence and creativity.</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 featurette-right">
                     <div class="col-xs-6">
-                        <i class="fa fa-bolt"></i>
-                        <h2>We Crave Innovation.</h2>
+                        <i class="fa fa-gears"></i>
+                        <h2>We&nbsp;Crave Innovation.</h2>
                         <div class="separator"></div>
-                        <p>We think that innovation is the key driver of technology. That technology is a key piece of our everyday lives is already evident, but pushing technology forward is all about figuring out improvements to the human experience and pursuing them. We try to emphasize the value of brainstorming at meetings and have a great culture around communal support for ideas within the group, but understand that as the next generation of developers we must be the harbringers of the next generation of ideas - for better of for worse.</p>
+                        <p>We think that innovation is the key driver of technology. We try to emphasize the value of brainstorming at meetings and have a great culture around communal support for ideas within the group. While what we have already is great, life without iteration and progress is just boring.</p>
                     </div>
                     <div class="col-xs-6">
                         <i class="fa fa-globe"></i>
-                        <h2>We Believe In Open Source.</h2>
+                        <h2>We&nbsp;Support Open&nbsp;Source.</h2>
                         <div class="separator"></div>
-                        <p>We support the open source movement and the technology thereof. We think that socializing the software process is a beautiful. So, naturally, we have a github organization where we try collaborate on new projects as a club. We think organizations like the <a href="”https://www.eclipse.org/org/foundation/”">Eclipse Foundation</a> and <a href="”http://www.apache.org/”">Apache Software Foundation</a> represent an incredible vista for our industry’s future, and, appropriately, we try to employ open source tools and platforms whenever possible.</p>
+                        <p>We support the open source movement and the technology thereof. We think that socializing the software development process is a beautiful. We use Github to collaborate on new projects as an organization. Knowing &amp; changing how your software behaves is almost as important as building it.</p>
                     </div>
                 </div>
             </div>
@@ -147,7 +146,7 @@
         <overlay>
             <div class="cardholder">
                 <div class="card">
-                    <!-- TODO: Add RegisterCtrl here when ready ng-controller="RegisterCtrl" -->
+                    <!-- TODO: Add RegisterCtrl here when ready (ng-controller="RegisterCtrl") -->
                     <register ng-include="'/static/partials/register.html'"></register>
                     <login ng-include="'/static/partials/login.html'" ng-controller="LoginCtrl"></login>
                     <emailus ng-include="'/static/partials/emailus.html'" ng-controller="EmailCtrl"></emailus>
@@ -163,8 +162,6 @@
         <!-- Angular 1.2.0 -->
         <script src="/static/vendor/angular/angular.min.js"></script>
         <script src="/static/vendor/angular-route/angular-route.min.js"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- Google Maps API Key -->
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
         <!-- Livereload -->
