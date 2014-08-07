@@ -8,14 +8,12 @@
 
 	//---- App ----//
 
-	var _app = ng.module('site', ['directives', 'services', 'controllers', 'ngRoute']);
+	var _app = ng.module('site', ['directives', 'services', 'controllers']);
 
 	//---- Config ----//
 
 	(function(app) {
-		app.config(['$routeProvider',
-			function($rp) {}
-		]);
+		// Routing here I think
 	})(_app);
 
 	//---- Directives ----//
@@ -141,8 +139,13 @@
 				var $overlay = $('overlay'),
 					$cardHolder = $overlay.find('.cardholder');
 
-				// Delegate UI Events
+				// Card dismiss event handlers
 				$overlay.click(function(e) {
+					if (e.target == this) {
+						hideCard();
+					}
+				});
+				$cardHolder.click(function(e) {
 					if (e.target == this) {
 						hideCard();
 					}
@@ -171,8 +174,7 @@
 						$cardHolder.css('top', '0px');
 					}, ANIM_DELAY);
 				};
-
-				// Card-related scope exports
+				// Card specific scope functions
 				$scope.showRegistration = function() {
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
@@ -191,7 +193,47 @@
 					$('overlay emailus').css('display', 'block');
 					showCard();
 				};
-
+			}
+		]);
+		// Navigation Controller
+		module.controller('NavCtrl', ['$scope', '$location',
+			function($scope, $location) {
+				var $nav = $('nav ul li a.page-scroll'),
+					$section = $('section');
+				// UI routing
+				var route = function(url) {
+					if (!url) {
+						return;
+					} else if (url === '/') {
+						$scope.scrollTo();
+					} else if (url === '/register') {
+						$scope.showRegistration();
+					} else if (url === '/login') {
+						$scope.showLogin();
+					} else if (url === '/emailus') {
+						$scope.showEmailUs();
+					} else {
+						$scope.scrollTo(url.substring(1));
+					}
+				};
+				var adjustNav = function() {
+					var $el, scrollPos = $(document).scrollTop();
+					for (var i = 0; i < $section.size(); i++) {
+						$el = $($section.get(i));
+						if (($el.position().top - 50) <= scrollPos && (($el.position().top - 50) + $el.height()) > scrollPos) {
+							$nav.removeClass('active');
+							$('nav ul li a[href=\'#/' + $el.attr('id') + '\']').addClass('active');
+							return;
+						}
+					}
+					$nav.removeClass('active');
+				};
+				// Listen for url changes
+				$scope.$on('$locationChangeSuccess', function() {
+					route($location.path());
+				});
+				// Listen for scroll
+				$(document).on('scroll', adjustNav);
 				// Utility scope exports
 				$scope.scrollTo = function(section) {
 					if (!section) {

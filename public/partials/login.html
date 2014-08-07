@@ -1,22 +1,24 @@
-<h1 align="center">Login</h1>
-<form role="form" id="login-form" name="login" novalidate>
-    <div class="form-group">
-        <div class="col-md-4">
-            <!-- Nothing at all --!>
+<view ng-controller="LoginCtrl">
+    <h1 align="center">Login</h1>
+    <form role="form" id="login-form" name="login" novalidate>
+        <div class="form-group">
+            <div class="col-md-4">
+                <!-- Nothing at all -->
+            </div>
+            <div class="col-md-4">
+                <label for="userIdText">User ID</label>
+                <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
+                <span class="indicator" id="userIdIndicator">No user id provided.</span>
+                <label for="passwordText" style="float: left;">Password</label>
+                <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
+                <span class="indicator" id="passwordIndicator">No password provided.</span>
+            </div>
+            <div class="col-md-4">
+                <!-- Nothing at all -->
+            </div>
         </div>
-        <div class="col-md-4">
-            <label for="userIdText">User ID</label>
-            <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
-            <span class="indicator" id="userIdIndicator">No user id provided.</span>
-            <label for="passwordText" style="float: left;">Password</label>
-            <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
-            <span class="indicator" id="passwordIndicator">No password provided.</span>
-        </div>
-        <div class="col-md-4">
-            <!-- Nothing at all --!>
-        </div>
-    </div>
-    <div class="col-md-12" style="float: left; text-align: center;">
-          <button ng-click="login(user)" class="btn btn-success btn-login">Login</button>
-    </div>
-
+        <div class="col-md-12" style="float: left; text-align: center;">
+              <button ng-click="login(user)" class="btn btn-success btn-login">Login</button>
+        </div
+    </form>
+</view>
