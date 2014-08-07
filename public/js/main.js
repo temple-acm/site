@@ -13,7 +13,7 @@
 	//---- Config ----//
 
 	(function(app) {
-		// Routing here I think
+		// TODO config stuff here
 	})(_app);
 
 	//---- Directives ----//
@@ -200,6 +200,11 @@
 			function($scope, $location) {
 				var $nav = $('nav ul li a.page-scroll'),
 					$section = $('section');
+				// Nav UI Events
+				$nav.click(function() {
+					var section = $(this).data('section');
+					$scope.scrollTo(section);
+				});
 				// UI routing
 				var route = function(url) {
 					if (!url) {
@@ -222,13 +227,16 @@
 						$el = $($section.get(i));
 						if (($el.position().top - 50) <= scrollPos && (($el.position().top - 50) + $el.height()) > scrollPos) {
 							$nav.removeClass('active');
-							$('nav ul li a[href=\'#/' + $el.attr('id') + '\']').addClass('active');
+							$('nav ul li a[data-section=\'' + $el.attr('id') + '\']').addClass('active');
 							return;
 						}
 					}
 					$nav.removeClass('active');
 				};
 				// Listen for url changes
+				$scope.$on('$locationChangeStart', function() {
+					console.log(arguments);
+				});
 				$scope.$on('$locationChangeSuccess', function() {
 					route($location.path());
 				});
