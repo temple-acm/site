@@ -255,9 +255,8 @@
 						}, 1500, 'easeInOutExpo');
 					} else {
 						var $anchor = $('section#' + section);
-						$scope.$apply(function() {
-							$location.path('/' + section);
-						});
+						window.location = '#/' + section;
+						$location.path('/' + section).replace();
 						if ($anchor.get(0)) {
 							$viewport.stop().animate({
 								scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 50)
