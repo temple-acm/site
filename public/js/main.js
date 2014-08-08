@@ -198,7 +198,9 @@
 		// Navigation Controller
 		module.controller('NavCtrl', ['$scope', '$location',
 			function($scope, $location) {
-				var $nav = $('nav ul li a.page-scroll'),
+				var $viewport = $('viewport'),
+					$navbar = $('.navbar-fixed-top'),
+					$nav = $('nav ul li a.page-scroll'),
 					$section = $('section');
 				// Nav UI Events
 				$nav.click(function() {
@@ -222,10 +224,16 @@
 					}
 				};
 				var adjustNav = function() {
-					var $el, scrollPos = $(document).scrollTop();
+					if ($viewport.scrollTop() > 50) {
+						$navbar.addClass('top-nav-collapse');
+					} else {
+						$navbar.removeClass('top-nav-collapse');
+					}
+
+					var $el;
 					for (var i = 0; i < $section.size(); i++) {
 						$el = $($section.get(i));
-						if (($el.position().top - 50) <= scrollPos && (($el.position().top - 50) + $el.height()) > scrollPos) {
+						if ($el.position().top <= 50 && (($el.position().top + ($el.height()))) >= -45) {
 							$nav.removeClass('active');
 							$('nav ul li a[data-section=\'' + $el.attr('id') + '\']').addClass('active');
 							return;
@@ -234,25 +242,25 @@
 					$nav.removeClass('active');
 				};
 				// Listen for url changes
-				$scope.$on('$locationChangeStart', function() {
-					console.log(arguments);
-				});
 				$scope.$on('$locationChangeSuccess', function() {
 					route($location.path());
 				});
 				// Listen for scroll
-				$(document).on('scroll', adjustNav);
+				$viewport.on('scroll', adjustNav);
 				// Utility scope exports
 				$scope.scrollTo = function(section) {
 					if (!section) {
-						$('html, body').stop().animate({
+						$viewport.stop().animate({
 							scrollTop: 0
 						}, 1500, 'easeInOutExpo');
 					} else {
 						var $anchor = $('section#' + section);
+						$scope.$apply(function() {
+							$location.path('/' + section);
+						});
 						if ($anchor.get(0)) {
-							$('html, body').stop().animate({
-								scrollTop: ($anchor.offset().top - 50)
+							$viewport.stop().animate({
+								scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 50)
 							}, 1500, 'easeInOutExpo');
 						}
 					}

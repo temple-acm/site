@@ -14,10 +14,21 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: @light;
     background-color: @dark;
+    overflow: hidden;
+}
 
-    &.noscroll {
-        overflow: hidden;
-    }
+.noscroll viewport {
+    overflow: hidden;
+}
+
+viewport {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    overflow-y: scroll;
 }
 
 html {
