@@ -189,7 +189,7 @@
 				};
 				$scope.showEmailUs = function() {
 					$('overlay register').css('display', 'none');
-					$('overlay login').css('display', 'name');
+					$('overlay login').css('display', 'none');
 					$('overlay emailus').css('display', 'block');
 					showCard();
 				};
