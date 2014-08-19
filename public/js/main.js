@@ -93,12 +93,41 @@
 				};
 			}
 		]);
+		// Text change directive
+		module.directive('ngTextChange', [
+
+			function() {
+				return {
+					restrict: 'A',
+					link: function(scope, element, attrs) {
+						var delay = attrs.ngTextChangeDelay || 100;
+
+						var typingTimer;
+						var fireEvent = function() {
+							scope.$eval(attrs.ngTextChange);
+						};
+
+						element.keyup(function() {
+							clearTimeout(typingTimer);
+							typingTimer = setTimeout(fireEvent, delay);
+						});
+						element.keydown(function() {
+							clearTimeout(typingTimer);
+						});
+						element.blur(function() {
+							clearTimeout(typingTimer);
+							fireEvent();
+						});
+					}
+				};
+			}
+		]);
 	})(ng.module('directives', []), _app);
 
 	//---- Services ----//
 
 	(function(module, app) {
-		module.controller('RegisterSvc', ['$http',
+		module.service('RegisterSvc', ['$http',
 			function($http) {
 				// This template is used to redirect to the payment form @ paypal
 				var PAYPAL_API_CALL_TEMPLATE = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd"' +
@@ -113,9 +142,9 @@
 				this.isUserNameFree = function(userName) {
 					return $http({
 						method: 'GET',
-						url: '/members/isUserNameFree',
+						url: '/members/userName/isFree',
 						params: {
-							username: userName
+							userName: userName
 						}
 					});
 				};
@@ -143,8 +172,8 @@
 
 	(function(module, app) {
 		// Main Controller
-		module.controller('MainCtrl', ['$scope',
-			function($scope) {
+		module.controller('MainCtrl', ['$scope', '$location',
+			function($scope, $location) {
 				var ANIM_DELAY = 400;
 				var $overlay = $('overlay'),
 					$cardHolder = $overlay.find('.cardholder');
@@ -166,6 +195,10 @@
 					$overlay.animate({
 						scrollTop: '0px'
 					}, ANIM_DELAY, function() {
+						// Move back to main path
+						window.location = '#/';
+						$location.path('/').replace();
+						// Continue animating
 						$cardHolder.css('top', '100%');
 						setTimeout(function() {
 							$overlay.css('opacity', '0.0');
@@ -186,24 +219,30 @@
 				};
 				// Card specific scope functions
 				$scope.showRegistration = function() {
+					// Show & hide the right divs
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
 					$('overlay emailus').css('display', 'none');
-					$('.cardholder').css('margin-left', '-400px');
+					// Resize the card
+					$('.cardholder').removeClass('small').addClass('large');
 					showCard();
 				};
 				$scope.showLogin = function() {
+					// Show & hide the right divs
 					$('overlay register').css('display', 'none');
 					$('overlay login').css('display', 'block');
 					$('overlay emailus').css('display', 'none');
-					$('.cardholder').css('margin-left', '-165px');
+					// Resize the card
+					$('.cardholder').removeClass('large').addClass('small');
 					showCard();
 				};
 				$scope.showEmailUs = function() {
+					// Show & hide the right divs
 					$('overlay register').css('display', 'none');
 					$('overlay login').css('display', 'none');
 					$('overlay emailus').css('display', 'block');
-					$('.cardholder').css('margin-left', '-400px');
+					// Resize the card
+					$('.cardholder').removeClass('small').addClass('large');
 					showCard();
 				};
 			}
@@ -280,122 +319,78 @@
 			}
 		]);
 		// Registration Controller
-		module.controller('RegisterCtrl', ['$scope', '$rootScope', '$upload', 'RegisterSvc',
-			function($scope, $rootScope, $upload, registerService) {
-				// Constants
-				var SUBMIT_URL = "members/register";
-				var RESUME_DROP_URL = "members/resumes/drop";
-				var DRAG_DROP_NEUTRAL = "Drag & Drop Your Resume Here";
-				var DRAG_DROP_STYLE_NEUTRAL = "";
-				var DRAG_DROP_WRONG_TYPE = "Provided file was the wrong type";
-				var DRAG_DROP_WRONG_SIZE = "Provided file was too big";
-				var DRAG_DROP_STYLE_WRONG = "wrong";
-				var DRAG_DROP_RIGHT = "Resume file \"%s\" is ready to upload";
-				var DRAG_DROP_STYLE_RIGHT = "dropped";
-
-				// Instance variables
-				$scope.pendingFile = null;
-				$scope.dragDropMessage = DRAG_DROP_NEUTRAL;
-				$scope.dragDropStyle = DRAG_DROP_STYLE_NEUTRAL;
-
+		module.controller('RegisterCtrl', ['$scope', '$rootScope', 'RegisterSvc',
+			function($scope, $rootScope, service) {
 				$scope.submit = function(user) {
 					if ($scope.registration.$valid) {
-						if ($scope.pendingFile) {
-							$scope.upload = $upload.upload({
-								url: RESUME_DROP_URL,
-								method: 'POST',
-								file: $scope.pendingFile
-							}).success(function() {
-								doRegistration(user);
-							}).error(function() {
-								alert('File upload failed.');
-								console.log('File upload failed', arguments);
-							});
-						} else {
-							registerService.registerUser(user).success(function(data, status, headers, config) {
-								$rootScope.me = data;
-								// Pass the id as a reference
-								console.log('result', data);
-								$scope.declareRegistered();
-								registerService.redirectToPaypal(data._id);
-							}).error(function(data, status, headers, config) {
-								$('#register-modal').modal("show");
-								console.log('problem', data);
-							});
-						}
+						service.registerUser(user).success(function(data, status, headers, config) {
+							$rootScope.me = data;
+							// Pass the id as a reference
+							console.log('result', data);
+							$scope.declareRegistered();
+							registerService.redirectToPaypal(data._id);
+						}).error(function(data, status, headers, config) {
+							// TODO show an error modal
+							alert('Could not submit registration form. Check the console for details.');
+							console.log('problem', data);
+						});
 					} else {
 						// TODO modal or something
-						// $('#register-modal').modal("show");
+						// $('#register-modal').modal('show');
 						alert('Could not submit registration form.');
 					}
 				};
 
-				$scope.selectFile = function($files, user) {
-					//$files: an array of files selected, each file has name, size, and type.
-					var file = $files[0]; // Assume just one file
-					var extension = file.name.split(".").pop().toLowerCase();
-					// Check extension
-					if (extension !== "doc" && extension !== "docx" && extension !== "pdf") {
-						$scope.dragDropStyle = DRAG_DROP_STYLE_WRONG;
-						$scope.dragDropMessage = DRAG_DROP_WRONG_TYPE;
-					} else if (file.size > 1048576) {
-						$scope.dragDropStyle = DRAG_DROP_STYLE_WRONG;
-						$scope.dragDropMessage = DRAG_DROP_WRONG_SIZE;
-					} else {
-						// Set the file instance variable
-						$scope.pendingFile = file;
-						// Cosmetics
-						$scope.dragDropStyle = DRAG_DROP_STYLE_RIGHT;
-						$scope.dragDropMessage = DRAG_DROP_RIGHT.replace("%s", file.name);
-					}
-				};
-
 				$scope.onUserIdChanged = function() {
-					var val = $("#userIdText").val();
+					var val = $('#register-form #user-id-text').val();
 					if (val && val.length >= 5 && val.length <= 15 && /^[a-z0-9\.]+$/i.test(val)) {
-						RegisterService.isUserNameFree($("#userIdText").val(), function(err, isFree) {
+						service.isUserNameFree($('#register-form #user-id-text').val()).success(function(isFree) {
 							if (isFree) {
-								$("#userIdIndicator").addClass("good");
-								$("#userIdIndicator").html("This user id is available.");
+								$('#register-form #user-id-indicator').addClass('good');
+								$('#register-form #user-id-indicator').html('This user id is available.');
 								// Mark the field valid
-								$scope.registrationForm.userId.$setValidity("id", true);
+								$scope.registration.userId.$setValidity('id', true);
 							} else {
-								$("#userIdIndicator").removeClass("good");
-								$("#userIdIndicator").html("This user id is taken.");
+								$('#register-form #user-id-indicator').removeClass('good');
+								$('#register-form #user-id-indicator').html('This user id is taken.');
 								// Mark the field invalid
-								$scope.registrationForm.userId.$setValidity("id", false);
+								$scope.registration.userId.$setValidity('id', false);
 							}
+						}).error(function() {
+							$('#register-form #user-id-indicator').removeClass('good');
+							$('#register-form #user-id-indicator').html('There was a problem connecting to the server.');
+							// Mark the field invalid
+							$scope.registration.userId.$setValidity('id', false);
 						});
 					} else {
-						$("#userIdIndicator").removeClass("good");
-						$("#userIdIndicator").html("User id format invalid.");
+						$('#register-form #user-id-indicator').removeClass('good');
+						$('#register-form #user-id-indicator').html('User id format invalid.');
 						// Mark the field invalid
-						$scope.registrationForm.userId.$setValidity("id", false);
+						$scope.registration.userId.$setValidity('id', false);
 					}
 				};
 
 				$scope.onPasswordChanged = function() {
-					var pass = $("#passwordText").val();
-					var conf = $("#confirmPasswordText").val();
-					if (/^(?=.*[^a-zA-Z])(?=.*[a-z])(?=.*[A-Z])\S{8,}$/.test(pass)) {
-						RegisterService.isUserNameFree($("#userIdText").val(), function(err, isFree) {
-							if (pass === conf) {
-								$("#passwordIndicator").addClass("good");
-								$("#passwordIndicator").html("This password is valid.");
-								// Mark the field valid
-								$scope.registrationForm.password.$setValidity("pass", true);
-							} else {
-								$("#passwordIndicator").removeClass("good");
-								$("#passwordIndicator").html("The passwords don't match.");
-								// Mark the field invalid
-								$scope.registrationForm.password.$setValidity("pass", false);
-							}
-						});
+					var pass = $('#register-form #password-text').val();
+					var conf = $('#register-form #confirm-password-text').val();
+					if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(pass)) {
+						console.log(pass, conf);
+						if (pass === conf) {
+							$('#register-form #password-indicator').addClass('good');
+							$('#register-form #password-indicator').html('This password is valid.');
+							// Mark the field valid
+							$scope.registration.password.$setValidity('pass', true);
+						} else {
+							$('#register-form #password-indicator').removeClass('good');
+							$('#register-form #password-indicator').html('The passwords don\'t match.');
+							// Mark the field invalid
+							$scope.registration.password.$setValidity('pass', false);
+						}
 					} else {
-						$("#passwordIndicator").removeClass("good");
-						$("#passwordIndicator").html("Password format invalid.");
+						$('#register-form #password-indicator').removeClass('good');
+						$('#register-form #password-indicator').html('Password format invalid.');
 						// Mark the field invalid
-						$scope.registrationForm.password.$setValidity("pass", false);
+						$scope.registration.password.$setValidity('pass', false);
 					}
 				};
 			}
@@ -412,7 +407,7 @@
 				// Code that handles the "Login" form goes here
 			}
 		]);
-	})(ng.module('controllers', []), _app);
+	})(ng.module('controllers', ['services']), _app);
 
 	//---- Init ----//
 

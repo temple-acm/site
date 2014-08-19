@@ -24,12 +24,45 @@ exports.route = function(app) {
 	});
 	// Get the slides
 	app.get('/slides', function(req, res) {
-		var slides = req.db.collection('slides');
-		slides.find().sort({
+		req.db.collection('slides').find().sort({
 			order: 1
 		}).toArray(function(err, results) {
 			res.json(results);
 		});
+	});
+	// Check if a user name is free
+	app.get('/members/userName/isFree', function(req, res) {
+		var userName = req.param("userName");
+		if (!userName) {
+			res.send(400, "Username parameter required.");
+		} else {
+			req.db.collection('user').find({
+				userName: userName
+			}).toArray(function(err, results) {
+				if (err) {
+					res.json(500, err);
+				} else {
+					res.json(200, (!results || results.length === 0));
+				}
+			});
+		}
+	});
+	// Check if a user name is free
+	app.get('/members/register', function(req, res) {
+		var userName = req.param("userName");
+		if (!userName) {
+			res.send(400, "Username parameter required.");
+		} else {
+			req.db.collection('user').find({
+				userName: userName
+			}).exec(function(err, results) {
+				if (err) {
+					res.json(500, err);
+				} else {
+					res.json(200, (!results || results.length === 0));
+				}
+			});
+		}
 	});
 	// Redirects due to user error
 	app.get('/register', function(req, res) {

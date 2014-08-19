@@ -16,7 +16,8 @@ overlay {
 		padding-top: 100px;
 		top: 100%;
 		bottom: 0px;
-		left: 50%;
+		left: 20px;
+		right: 20px;
 		bottom: 0px;
 		transition: top 0.5s;
 
@@ -47,13 +48,12 @@ overlay {
 
 			register,
             emailus {
-				width: 800px;
 				height: 100%;
 				display: none;
 			}
 
             login {
-                width: 300px;
+                width: 252px; // Have to account for the 48px padding
                 height: 100%;
                 display: none;
             }
@@ -91,6 +91,47 @@ overlay {
 			}
 			.form-group div {
 				margin-top: 20px;
+			}
+		}
+	}
+}
+
+@media(min-width:@mobileWidth) {
+	overlay {
+		.cardholder {
+			position: absolute;
+			padding-top: 100px;
+			top: 100%;
+			bottom: 0px;
+			left: 50%;
+			bottom: 0px;
+			transition: top 0.5s;
+
+			&.large {
+				margin-left: -400px;
+
+				.card {
+					width: 800px;
+				}
+			}
+
+			&.small {
+				margin-left: -150px;
+
+				.card {
+					width: 300px;
+				}
+			}
+
+			.card {
+				register,
+            	emailus {
+            		width: 752px; // Have to account for the 48px padding
+            	}
+
+            	login {
+            		width: 252px; // Have to account for the 48px padding
+            	}
 			}
 		}
 	}
