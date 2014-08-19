@@ -1,17 +1,19 @@
 <view>
-    <h1 align="center">Sign In</h1>
+    <h1>Sign In</h1>
     <form role="form" id="login-form" name="login" novalidate>
         <div class="form-group">
             <div class="col-md-12">
                 <label for="userIdText">User ID</label>
                 <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
                 <span class="indicator" id="userIdIndicator">No user id provided.</span>
-                <label for="passwordText" style="float: left;">Password</label>
+            </div>
+            <div class="col-md-12">
+                <label for="passwordText">Password</label>
                 <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
                 <span class="indicator" id="passwordIndicator">No password provided.</span>
             </div>
         </div>
-        <div class="col-md-12" style="float: left; text-align: center;">
+        <div class="col-md-12" style="text-align: center;">
               <button ng-click="login(user)" class="btn btn-success btn-login">Login</button>
         </div>
     </form>
