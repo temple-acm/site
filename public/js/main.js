@@ -18,6 +18,13 @@
 
 	//---- Directives ----//
 
+
+// To anybody who reads this section:
+// I apologize for the outdated memes my
+// colleague is using. I promise you, he
+// has a greater mental maturity than his
+// comments imply.
+//      -- Not Sandile Keswa
 	(function(module, app) {
 		// Slider directive
 		module.directive('slider', ['$http',
@@ -179,18 +186,21 @@
 					$('overlay register').css('display', 'block');
 					$('overlay login').css('display', 'none');
 					$('overlay emailus').css('display', 'none');
+                    $('.cardholder').css('margin-left', '-400px');
 					showCard();
 				};
 				$scope.showLogin = function() {
 					$('overlay register').css('display', 'none');
 					$('overlay login').css('display', 'block');
 					$('overlay emailus').css('display', 'none');
+                    $('.cardholder').css('margin-left', '-165px');
 					showCard();
 				};
 				$scope.showEmailUs = function() {
 					$('overlay register').css('display', 'none');
-					$('overlay login').css('display', 'name');
+					$('overlay login').css('display', 'none');
 					$('overlay emailus').css('display', 'block');
+                    $('.cardholder').css('margin-left', '-400px');
 					showCard();
 				};
 			}

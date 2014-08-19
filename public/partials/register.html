@@ -59,6 +59,12 @@
             <div class="col-md-12"><!-- Zeroes out the extra float --></div>
         </div>
         <div class="form-group">
+            <div class="col-md-12">
+                <label for="membershipNum">ACM Membership Number</label>
+                <input type="text" class="form-control" name="membership" id="membershipNum" ng-model="user.membership" placeholder="If you have an ACM National account, put your membership number here.">
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-4">
                 <label for="userIdText" style="margin-bottom: 0px;">Temple ACM User ID<span class="red-asterisk">*</span></label>
                 <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px; padding-left: 2px;">User ID must be an alphanumeric string that is 5 - 15 characters long. This user id will be used only to identify you on the Temple ACM website.</p>
@@ -73,7 +79,7 @@
             </div>
             <div class="col-md-4">
                 <label for="confirmPasswordText" style="margin-bottom: 0px;">Confirm Password<span class="red-asterisk">*</span></label>
-                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 30px;">Password confirmation must match the value of the password field.</br></br></p>
+                <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 30px;">Password confirmation must match the value of the password field. Pretty standard stuff, really.</br></br></p>
                 <input type="password" class="form-control" id="confirmPasswordText" placeholder="Password confirmation" ng-text-change="onPasswordChanged()" required>
             </div>
         </div>
