@@ -155,6 +155,7 @@
 						data: user
 					});
 				};
+				// TODO make sure this is tested
 				this.redirectToPaypal = function(userId) {
 					// TODO make this not the fake url on live
 					if (window.location.host === 'localhost' || window.location.host === '127.0.0.1') {
