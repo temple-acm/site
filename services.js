@@ -25,7 +25,9 @@ exports.route = function(app) {
 	// Get the slides
 	app.get('/slides', function(req, res) {
 		var slides = req.db.collection('slides');
-		slides.find().toArray(function(err, results) {
+		slides.find().sort({
+			order: 1
+		}).toArray(function(err, results) {
 			res.json(results);
 		});
 	});
