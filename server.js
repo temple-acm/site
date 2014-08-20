@@ -20,6 +20,7 @@ var express = require('express'),
     favicon = require('serve-favicon'),
     MongoStore = require('connect-mongo')(session),
     busboy = require('connect-busboy');
+var passport = require('passport');
 
 /*************************************** INTERNAL IMPORTS *****************************************/
 
