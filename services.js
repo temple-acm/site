@@ -48,14 +48,12 @@ passport.deserializeUser(function(id, done) {
 });
 
 function saltAndHash(password) {
-    var SALT_FACTOR = 5;
-
-    bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
-        bcrypt.hash(password, salt, null, function(err, hash) {
-            return hash;
-        });
-    });
+    console.log("LOG OUTPUT: Now hashing/salting password " + password);
+    var SALT_FACTOR = 10;
+    var salt = bcrypt.genSaltSync();
+    return bcrypt.hashSync(password, salt);
 };
+
 
 // --------------------- ROUTES AND THINGS! ----------------------------------//
 
@@ -127,28 +125,46 @@ exports.route = function(app) {
 
     // Login stuff
     app.post('/members/login', function(req, res) {
-        var userName = req.param("userName");
+        var un = req.param("userName");
         var testSaltedPassword = saltAndHash(req.param("Password"));
-        if (!userName) {
+        console.log("LOG OUTPUT: Recieved password is " + req.param('Password'));
+        console.log("LOG OUTPUT: Recived username is " + req.param("userName"));
+        console.log("LOG OUTPUT: Hashed password is "+ testSaltedPassword);
+        if (!un) {
             res.send(400, "Username parameter required.");
         } else {
             // Here begins the massive amount of to-be-duplicated code
-            req.db.collection('user').find ({
-                userName: userName
+            req.db.collection('user').find({
+                userName: "testguy" // TODO: this is hardcoded for testing purposes
             }).toArray(function(err, results) {
                 if (err) {
+                    console.log("LOG OUTPUT: ToArray error");
                     res.json(500, err);
                 } else {
                     if (!results || results.length === 0) {
-                        res.json(500, err);
+                        console.log("LOG OUTPUT: No results returned");
+                        res.json(500, results);
                     } else {
                         var dbPassword = results[0].password;
                         bcrypt.compare(dbPassword, testSaltedPassword, function(err, isMatch) {
                             if (err) {
+                                console.log("LOG OUTPUT: Invalid credentials");
                                 res.json(401, "Logon failed");
                             } else {
-                                //TODO: figure out what needs to be sent back
-                                res.json(200); // Logon successful
+                                passport.authenticate('local', function(err, user, info) {
+                                    if (err) {
+                                        return next(err); //TODO: Testing
+                                    }
+                                    if (!user) {
+                                        res.json(401, "Logon failed");
+                                    }
+                                    req.logIn(user, function(err) {
+                                        if (err) {
+                                            return next(err);
+                                        }
+                                        return res.redirect('/'); //TODO: give them a reason to log in
+                                    });
+                                })(req, res, next);
                             }
                         });
                     }
