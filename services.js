@@ -8,7 +8,8 @@ var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var async = require('async');
-
+var request = require('request');
+var FeedParser = require('feedparser');
 
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
@@ -134,8 +135,7 @@ exports.route = function(app) {
             res.send(400, "Username parameter required.");
         } else {
             // Here begins the massive amount of to-be-duplicated code
-            req.db.collection('user').find({
-                userName: "testguy" // TODO: this is hardcoded for testing purposes
+            req.db.collection('users').find({
             }).toArray(function(err, results) {
                 if (err) {
                     console.log("LOG OUTPUT: ToArray error");
@@ -143,7 +143,7 @@ exports.route = function(app) {
                 } else {
                     if (!results || results.length === 0) {
                         console.log("LOG OUTPUT: No results returned");
-                        res.json(500, results);
+                        res.json(500, err);
                     } else {
                         var dbPassword = results[0].password;
                         bcrypt.compare(dbPassword, testSaltedPassword, function(err, isMatch) {
@@ -173,6 +173,66 @@ exports.route = function(app) {
         }
     });
 
+    app.get('/events/calendar', function(req, res) {
+        var results = [];
+        var requesty = request('https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic'),
+        feedparser = new FeedParser([addmeta="false"]);
+
+        requesty.on('error', function(error) {
+            //handle request errors
+            res.json(500, error);
+        });
+        requesty.on('response', function(res) {
+            var stream = this;
+            if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
+
+            stream.pipe(feedparser);
+        });
+
+        //feedparser.on('error', function(error) {
+        //    console.log("oh shit motherfucker");
+        //    res.json(500, error);
+        //});
+        var events = [];
+        feedparser.on('readable', function() { 
+            var stream = this,
+            meta = this.meta,
+            item;
+            while (item = stream.read()) {
+                console.log("LOG OUTPUT: WE ARE PUSHING AN EVENT");
+                events.push(item);
+            }
+        });
+        var retThingy = [];
+        var item;
+        feedparser.on('end', function() {
+            for (var w = 0; w < 5; w++) {
+                console.log("LOG OUTPUT: WE HAVE BEGUN PROCESSING THE RESULTS");
+                data = events[w].summary.split("\n");
+                var retArray = {
+                    'title': events[w].title
+                },
+                when, where;
+                retArray['description'] = events[w].description;
+                retArray['link'] = events[w].link;
+                for (var q = 0; q < data.length; q++) {
+                    console.log(data[q]);
+                    when = data[q].match("^(<br>)?When: (.*)$");
+                    where = data[q].match("^(<br>)?Where: (.*)$");
+                    if (when != null) {
+                        retArray['when'] = when[2];
+                    }
+                    if (where != null) {
+                        retArray['where'] = where[2];
+                    }
+                }
+                console.log("LOG OUTPUT: WE ARE PUSHING TO THE ARRAY");
+                retThingy.push(retArray);
+            }
+            console.log("LOG OUTPUT: WE ARE SERVING JSON");
+            res.json(200, retThingy);
+        });
+    });
 
 	// Redirects due to user error
 	app.get('/register', function(req, res) {
