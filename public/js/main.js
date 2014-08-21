@@ -322,14 +322,16 @@
 		// Registration Controller
 		module.controller('RegisterCtrl', ['$scope', '$rootScope', 'RegisterSvc',
 			function($scope, $rootScope, service) {
+				$scope.registered = false;
+
 				$scope.submit = function(user) {
 					if ($scope.registration.$valid) {
 						service.registerUser(user).success(function(data, status, headers, config) {
 							$rootScope.me = data;
 							// Pass the id as a reference
 							console.log('result', data);
-							$scope.declareRegistered();
-							registerService.redirectToPaypal(data._id);
+							$scope.registered = true;
+							service.redirectToPaypal(data.userName);
 						}).error(function(data, status, headers, config) {
 							// TODO show an error modal
 							alert('Could not submit registration form. Check the console for details.');
@@ -346,7 +348,7 @@
 					var val = $('#register-form #user-id-text').val();
 					if (val && val.length >= 5 && val.length <= 15 && /^[a-z0-9\.]+$/i.test(val)) {
 						service.isUserNameFree($('#register-form #user-id-text').val()).success(function(isFree) {
-							if (isFree) {
+							if (isFree !== 'false') {
 								$('#register-form #user-id-indicator').addClass('good');
 								$('#register-form #user-id-indicator').html('This user id is available.');
 								// Mark the field valid
@@ -375,7 +377,6 @@
 					var pass = $('#register-form #password-text').val();
 					var conf = $('#register-form #confirm-password-text').val();
 					if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(pass)) {
-						console.log(pass, conf);
 						if (pass === conf) {
 							$('#register-form #password-indicator').addClass('good');
 							$('#register-form #password-indicator').html('This password is valid.');
