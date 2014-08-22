@@ -14,6 +14,8 @@ var FeedParser = require('feedparser');
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
 var INDEX_PAGE_PATH = path.join(__dirname, 'public', 'pages', 'index.html');
+var CALENDAR_RSS_URL = 'https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic';
+var UPCOMING_EVENTS_LIMIT = 6;
 
 // --------------------- HELPER THINGS! --------------------------------------//
 
@@ -108,7 +110,6 @@ exports.route = function(app) {
             req.db.collection('users').find({
                 userName: userName
             }).toArray(function(err, results) {
-                console.log(arguments);
                 if (err) {
                     res.json(500, err);
                 } else {
@@ -226,63 +227,69 @@ exports.route = function(app) {
     });
 
     app.get('/events/calendar', function(req, res) {
-        var results = [];
-        var requesty = request('https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic'),
-            feedparser = new FeedParser([addmeta = "false"]);
-
-        requesty.on('error', function(error) {
-            //handle request errors
-            res.json(500, error);
-        });
-        requesty.on('response', function(res) {
-            var stream = this;
-            if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
-
-            stream.pipe(feedparser);
-        });
-
-        //feedparser.on('error', function(error) {
-        //    console.log("oh shit motherfucker");
-        //    res.json(500, error);
-        //});
-        var events = [];
-        feedparser.on('readable', function() {
-            var stream = this,
-                meta = this.meta,
-                item;
-            while (item = stream.read()) {
-                console.log("LOG OUTPUT: WE ARE PUSHING AN EVENT");
-                events.push(item);
+        var parser = new FeedParser(),
+            rssEntries = [],
+            events = [];
+        // Grab the calendar data
+        request(CALENDAR_RSS_URL)
+            .on('response', function() {
+                // Pipe the calendar data into the feed parser
+                this.pipe(parser);
+            })
+            .on('error', function(err) {
+                res.json(500, err);
+            });
+        // Called when the parser grabs an RSS entry
+        parser.on('readable', function() {
+            var rssEntry;
+            while (rssEntry = this.read()) {
+                // Cache the RSS entries
+                if (rssEntries.length <= UPCOMING_EVENTS_LIMIT) {
+                    rssEntries.push(rssEntry);
+                }
             }
         });
-        var retThingy = [];
-        var item;
-        feedparser.on('end', function() {
-            for (var w = 0; w < 5; w++) {
-                console.log("LOG OUTPUT: WE HAVE BEGUN PROCESSING THE RESULTS");
-                data = events[w].summary.split("\n");
-                var retArray = {
-                        'title': events[w].title
-                    },
-                    when, where;
-                retArray['description'] = events[w].description;
-                retArray['link'] = events[w].link;
-                for (var q = 0; q < data.length; q++) {
-                    console.log(data[q]);
-                    when = data[q].match("^(<br>)?When: (.*)$");
-                    where = data[q].match("^(<br>)?Where: (.*)$");
-                    if (when != null) {
-                        retArray['when'] = when[2];
+        // Called when we reach the end of the RSS stream
+        parser.on('end', function() {
+            console.log('end');
+            for (var i = 0; i < UPCOMING_EVENTS_LIMIT; i++) {
+                var data, when, where, desc, status, evt;
+                // Parse the rss entry
+                evt = {
+                    title: rssEntries[i].title,
+                    link: rssEntries[i].link
+                };
+                // 2 fields are hidden in the "desciption" rss field
+                data = rssEntries[i].description.split('\n');
+                for (var ii = 0; ii < data.length; ii++) {
+                    // Look for description
+                    desc = data[ii].match(/Event Description: (.*)/);
+                    if (desc) {
+                        evt.description = desc[1];
                     }
-                    if (where != null) {
-                        retArray['where'] = where[2];
+                    // Look for status
+                    status = data[ii].match(/Event Status: (.*)/);
+                    if (status) {
+                        evt.status = status[1];
                     }
                 }
-                console.log("LOG OUTPUT: WE ARE PUSHING TO THE ARRAY");
-                retThingy.push(retArray);
+                // 2 fields are hidden in the "summary" rss field
+                data = rssEntries[i].summary.split('\n');
+                for (var ii = 0; ii < data.length; ii++) {
+                    when = data[ii].match(/^(<br>)?When: (.*)$/);
+                    where = data[ii].match(/^(<br>)?Where: (.*)$/);
+                    if (when) {
+                        evt.when = when[2];
+                    }
+                    if (where) {
+                        evt.where = where[2];
+                    }
+                }
+                // Put the events in a list
+                events.push(evt);
             }
-            console.log("LOG OUTPUT: WE ARE SERVING JSON");
-            res.json(200, retThingy);
+            // Return the list when we're done
+            res.json(200, events);
         });
     });
 
