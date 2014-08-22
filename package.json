@@ -20,7 +20,7 @@
   "dependencies": {
     "MD5": "latest",
     "async": "latest",
-    "bcrypt-nodejs": "latest",
+    "bcrypt": "^0.8.0",
     "body-parser": "latest",
     "bower": "latest",
     "connect-busboy": "latest",
