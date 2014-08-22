@@ -4,12 +4,13 @@ var path = require('path'),
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var async = require('async');
 var request = require('request');
 var FeedParser = require('feedparser');
+var MongoClient = require('mongodb').MongoClient;
 
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
@@ -17,63 +18,61 @@ var INDEX_PAGE_PATH = path.join(__dirname, 'public', 'pages', 'index.html');
 
 // --------------------- HELPER THINGS! --------------------------------------//
 
-
 // Passport authentication stuffs
-passport.use(new LocalStrategy({
-        usernameField: 'userName'
+passport.use('local', new LocalStrategy({
+        usernameField: 'userName',
+        passReqToCallback: true
     },
-    function(username, password, done) {
-        req.db.find({
-            userName: userName
-        }, function(err, user) {
+    function(req, username, password, done) {
+        req.db.collection('users').find({
+            userName: username
+        }).toArray(function(err, user) {
             if (err) {
-                return done(err);
+                return done(null, false, err);
             }
             if (!user) {
-                return done(null, false, {
-                    message: 'Incorrect username.'
-                });
+                return done(null, false, { message: "Invalid credentials" });
             }
-            if (!user.validPassword(password)) {
-                return done(null, false, {
-                    message: 'Incorrect password.'
-                });
+            var isMatch = bcrypt.compareSync(password, user[0].password);
+            if (!isMatch) {
+                return done(null, false, { message: "Invalid credentials" });
+            } else {
+                return done(null, user);
             }
-            return done(null, user);
         });
     }
 ));
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user[0]['_id'].id);
 });
 
-passport.deserializeUser(function(id, done) {
-    req.db.find({
-        id: id
-    }, function(err, user) {
+passport.deserializeUser(function(req, id, done) {
+    req.db.collection('users').find({
+        _id: id
+    }).toArray(function(err, user) {
         done(err, user);
     });
 });
 
+// Helper function to create password hashes
 function saltAndHash(password) {
-    console.log("LOG OUTPUT: Now hashing/salting password " + password);
     var SALT_FACTOR = 10;
-    var salt = bcrypt.genSaltSync();
+    var salt = bcrypt.genSaltSync(SALT_FACTOR);
     return bcrypt.hashSync(password, salt);
 };
 
 
-// --------------------- ROUTES AND THINGS! ----------------------------------//
-
 exports.route = function(app) {
-    // --------------------- SETTINGS AND THINGS! --------------------------------//
+// --------------------- SESSIONS AND THINGS! --------------------------------//
     // TODO: Change this for prod!
     app.use(session({
         secret: 'THIS SHOULD NOT BE USED IN PROD'
     }));
     app.use(passport.initialize());
     app.use(passport.session());
+
+// --------------------- ROUTES AND THINGS! ----------------------------------//
 
     // Main page route
     app.get('/', function(req, res) {
@@ -117,7 +116,7 @@ exports.route = function(app) {
             });
         }
     });
-    // Check if a user name is free
+
     app.post('/members/register', function(req, res) {
         // TODO we need better validations here
         var newUser = {};
@@ -136,14 +135,14 @@ exports.route = function(app) {
         newUser.password = req.body.password;
         newUser.paid = false;
 
-        if (!newUser.userName && newUser.userName.length > 0) res.send(500, 'userName property was invalid.');
-        else if (!newUser.firstName && newUser.firstName.length > 0) res.send(500, 'firstName property was invalid.');
-        else if (!newUser.lastName && newUser.lastName.length > 0) res.send(500, 'lastName property was invalid.');
-        else if (!newUser.email && newUser.email.length > 0) res.send(500, 'email property was invalid.');
-        else if (!newUser.bio && newUser.bio.length > 0) res.send(500, 'bio property was invalid.');
-        else if (!newUser.major && newUser.major.length > 0) res.send(500, 'major property was invalid.');
-        else if (!newUser.studentLevel && newUser.studentLevel.length > 0) res.send(500, 'studentLevel property was invalid.');
-        else if (!newUser.password && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(newUser.password)) res.send(500, 'password property was invalid.');
+        if (!newUser.userName && newUser.userName.length > 0) res.send(500, 'userName property is invalid.');
+        else if (!newUser.firstName && newUser.firstName.length > 0) res.send(500, 'firstName property is invalid.');
+        else if (!newUser.lastName && newUser.lastName.length > 0) res.send(500, 'lastName property is invalid.');
+        else if (!newUser.email && newUser.email.length > 0) res.send(500, 'email property is invalid.');
+        else if (!newUser.bio && newUser.bio.length > 0) res.send(500, 'bio property is invalid.');
+        else if (!newUser.major && newUser.major.length > 0) res.send(500, 'major property is invalid.');
+        else if (!newUser.studentLevel && newUser.studentLevel.length > 0) res.send(500, 'studentLevel property is invalid.');
+        else if (!newUser.password && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(newUser.password)) res.send(500, 'password property is invalid.');
         else {
             // TODO double check the user name
             // TODO double check the email
@@ -170,7 +169,7 @@ exports.route = function(app) {
             if (err) {
                 console.log('Could not mark user "', userName, '" paid.', err);
             } else {
-                console.log('User "', userName, '" was marked paid.');
+                console.log('User "', userName, '" is marked paid.');
             }
         });
     };
@@ -178,111 +177,76 @@ exports.route = function(app) {
     app.post('/members/payments/callback/:userName', paypalCallback);
 
     // Login stuff
-    app.post('/members/login', function(req, res) {
-        var un = req.param("userName");
-        var testSaltedPassword = saltAndHash(req.param("Password"));
-        console.log("LOG OUTPUT: Recieved password is " + req.param('Password'));
-        console.log("LOG OUTPUT: Recived username is " + req.param("userName"));
-        console.log("LOG OUTPUT: Hashed password is " + testSaltedPassword);
-        if (!un) {
-            res.send(400, "Username parameter required.");
-        } else {
-            // Here begins the massive amount of to-be-duplicated code
-            req.db.collection('users').find({}).toArray(function(err, results) {
-                if (err) {
-                    console.log("LOG OUTPUT: ToArray error");
-                    res.json(500, err);
-                } else {
-                    if (!results || results.length === 0) {
-                        console.log("LOG OUTPUT: No results returned");
-                        res.json(500, err);
-                    } else {
-                        var dbPassword = results[0].password;
-                        bcrypt.compare(dbPassword, testSaltedPassword, function(err, isMatch) {
-                            if (err) {
-                                console.log("LOG OUTPUT: Invalid credentials");
-                                res.json(401, "Logon failed");
-                            } else {
-                                passport.authenticate('local', function(err, user, info) {
-                                    if (err) {
-                                        return next(err); //TODO: Testing
-                                    }
-                                    if (!user) {
-                                        res.json(401, "Logon failed");
-                                    }
-                                    req.logIn(user, function(err) {
-                                        if (err) {
-                                            return next(err);
-                                        }
-                                        return res.redirect('/'); //TODO: give them a reason to log in
-                                    });
-                                })(req, res, next);
-                            }
-                        });
+    app.post('/members/login',
+    function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+                return res.json(401, err);
+            } else {
+                req.logIn(user, function(err) {
+                    if (err) {
+                        return res.json(500, "Unspecified login error, please alert somebody in charge");
                     }
-                }
-            });
-        }
+                    return res.json(200, { 'userName': user[0].userName }); // We can add more fields here if needed
+                });
+            }
+        })(req, res, next);
     });
 
     app.get('/events/calendar', function(req, res) {
         var results = [];
-        var requesty = request('https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic'),
+        var calRequest = request('https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic'),
             feedparser = new FeedParser([addmeta = "false"]);
 
-        requesty.on('error', function(error) {
+        calRequest.on('error', function(error) {
             //handle request errors
             res.json(500, error);
         });
-        requesty.on('response', function(res) {
+        calRequest.on('response', function(res) {
             var stream = this;
             if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
 
             stream.pipe(feedparser);
         });
 
-        //feedparser.on('error', function(error) {
-        //    console.log("oh shit motherfucker");
-        //    res.json(500, error);
-        //});
-        var events = [];
+        var events = []; // array to store parsed objects from feedparser
+
+        // runs whenever a new Readable item enters the feedparser stream
         feedparser.on('readable', function() {
             var stream = this,
                 meta = this.meta,
                 item;
             while (item = stream.read()) {
-                console.log("LOG OUTPUT: WE ARE PUSHING AN EVENT");
                 events.push(item);
             }
         });
-        var retThingy = [];
+
+        var calArray = [];
         var item;
+
+        // Runs after the stream finishes, ie, there's nothing left in the stream.
         feedparser.on('end', function() {
-            for (var w = 0; w < 5; w++) {
-                console.log("LOG OUTPUT: WE HAVE BEGUN PROCESSING THE RESULTS");
+            for (var w = 0; w < 5; w++) { // we only want the first five entries
                 data = events[w].summary.split("\n");
-                var retArray = {
+                var itemArray = { // itemArray is not a good name for this
                         'title': events[w].title
                     },
                     when, where;
-                retArray['description'] = events[w].description;
-                retArray['link'] = events[w].link;
-                for (var q = 0; q < data.length; q++) {
-                    console.log(data[q]);
+                itemArray['description'] = events[w].description;
+                itemArray['link'] = events[w].link;
+                for (var q = 0; q < data.length; q++) { // looks for When and Where entries 
                     when = data[q].match("^(<br>)?When: (.*)$");
                     where = data[q].match("^(<br>)?Where: (.*)$");
                     if (when != null) {
-                        retArray['when'] = when[2];
+                        itemArray['when'] = when[2];
                     }
                     if (where != null) {
-                        retArray['where'] = where[2];
+                        itemArray['where'] = where[2];
                     }
                 }
-                console.log("LOG OUTPUT: WE ARE PUSHING TO THE ARRAY");
-                retThingy.push(retArray);
+                calArray.push(itemArray);
             }
-            console.log("LOG OUTPUT: WE ARE SERVING JSON");
-            res.json(200, retThingy);
+            res.json(200, calArray); // send as json object
         });
     });
 
