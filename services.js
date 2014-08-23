@@ -15,7 +15,7 @@ var MongoClient = require('mongodb').MongoClient;
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
 var INDEX_PAGE_PATH = path.join(__dirname, 'public', 'pages', 'index.html');
-var CALENDAR_RSS_URL = 'https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic?orderby=starttime&sortorder=ascending';
+var CALENDAR_RSS_URL = 'https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic?orderby=starttime&sortorder=ascending&start-min={{isoDateTime}}';
 var UPCOMING_EVENTS_LIMIT = 3;
 
 // --------------------- HELPER THINGS! --------------------------------------//
@@ -67,6 +67,15 @@ function saltAndHash(password) {
     var salt = bcrypt.genSaltSync(SALT_FACTOR);
     return bcrypt.hashSync(password, salt);
 };
+
+// Date helper for google calendar
+function padDigit(n) {
+    return (n < 10) ? ('0' + n) : n;
+}
+
+function toISODateString(d) {
+    return d.getUTCFullYear() + '-' + padDigit(d.getUTCMonth() + 1) + '-' + padDigit(d.getUTCDate()) + 'T' + padDigit(d.getUTCHours()) + ':' + padDigit(d.getUTCMinutes()) + ':' + padDigit(d.getUTCSeconds()) + 'Z';
+}
 
 
 exports.route = function(app) {
@@ -205,7 +214,8 @@ exports.route = function(app) {
             rssEntries = [],
             events = [];
         // Grab the calendar data
-        request(CALENDAR_RSS_URL)
+        console.log(CALENDAR_RSS_URL.replace('{{isoDateTime}}', toISODateString((new Date()))));
+        request(CALENDAR_RSS_URL.replace('{{isoDateTime}}', toISODateString((new Date()))))
             .on('response', function() {
                 // Pipe the calendar data into the feed parser
                 this.pipe(parser);
@@ -253,6 +263,10 @@ exports.route = function(app) {
                     where = data[ii].match(/^(<br>)?Where: (.*)$/);
                     if (when) {
                         evt.when = when[2];
+                        // Cosmetic trailing non-breaking space fix
+                        if (evt.when && (evt.when.indexOf('&nbsp;') !== -1)) {
+                            evt.when = evt.when.substring(0, evt.when.length - 6);
+                        }
                     }
                     if (where) {
                         evt.where = where[2];
