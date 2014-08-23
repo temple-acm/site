@@ -127,6 +127,7 @@
 	//---- Services ----//
 
 	(function(module, app) {
+		// Service that handles registration
 		module.service('RegisterSvc', ['$http',
 			function($http) {
 				// This template is used to redirect to the payment form @ paypal
@@ -164,6 +165,17 @@
 					} else {
 						$(PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
 					}
+				};
+			}
+		]);
+		// Service that handles events
+		module.service('EventSvc', ['$http',
+			function($http) {
+				this.getEvents = function() {
+					return $http({
+						method: 'GET',
+						url: '/events/calendar'
+					});
 				};
 			}
 		]);
@@ -322,7 +334,7 @@
 		// Registration Controller
 		module.controller('RegisterCtrl', ['$scope', '$rootScope', 'RegisterSvc',
 			function($scope, $rootScope, service) {
-				$scope.registered = false;
+				$rootScope.registered = false;
 
 				$scope.submit = function(user) {
 					if ($scope.registration.$valid) {
@@ -330,7 +342,7 @@
 							$rootScope.me = data;
 							// Pass the id as a reference
 							console.log('result', data);
-							$scope.registered = true;
+							$rootScope.registered = true;
 							service.redirectToPaypal(data.userName);
 						}).error(function(data, status, headers, config) {
 							// TODO show an error modal
@@ -340,7 +352,7 @@
 					} else {
 						// TODO modal or something
 						// $('#register-modal').modal('show');
-						alert('Could not submit registration form.');
+						alert('The form is not yet complete. Please ensure the form is valid.');
 					}
 				};
 
@@ -352,24 +364,28 @@
 								$('#register-form #user-id-indicator').addClass('good');
 								$('#register-form #user-id-indicator').html('This user id is available.');
 								// Mark the field valid
+
 								$scope.registration.userId.$setValidity('id', true);
 							} else {
 								$('#register-form #user-id-indicator').removeClass('good');
 								$('#register-form #user-id-indicator').html('This user id is taken.');
 								// Mark the field invalid
-								$scope.registration.userId.$setValidity('id', false);
+								if ($scope.registration)
+									$scope.registration.userId.$setValidity('id', false);
 							}
 						}).error(function() {
 							$('#register-form #user-id-indicator').removeClass('good');
 							$('#register-form #user-id-indicator').html('There was a problem connecting to the server.');
 							// Mark the field invalid
-							$scope.registration.userId.$setValidity('id', false);
+							if ($scope.registration)
+								$scope.registration.userId.$setValidity('id', false);
 						});
 					} else {
 						$('#register-form #user-id-indicator').removeClass('good');
 						$('#register-form #user-id-indicator').html('User id format invalid.');
 						// Mark the field invalid
-						$scope.registration.userId.$setValidity('id', false);
+						if ($scope.registration)
+							$scope.registration.userId.$setValidity('id', false);
 					}
 				};
 
@@ -381,20 +397,37 @@
 							$('#register-form #password-indicator').addClass('good');
 							$('#register-form #password-indicator').html('This password is valid.');
 							// Mark the field valid
-							$scope.registration.password.$setValidity('pass', true);
+							if ($scope.registration)
+								$scope.registration.password.$setValidity('pass', true);
 						} else {
 							$('#register-form #password-indicator').removeClass('good');
 							$('#register-form #password-indicator').html('The passwords don\'t match.');
 							// Mark the field invalid
-							$scope.registration.password.$setValidity('pass', false);
+							if ($scope.registration)
+								$scope.registration.password.$setValidity('pass', false);
 						}
 					} else {
 						$('#register-form #password-indicator').removeClass('good');
 						$('#register-form #password-indicator').html('Password format invalid.');
 						// Mark the field invalid
-						$scope.registration.password.$setValidity('pass', false);
+						if ($scope.registration)
+							$scope.registration.password.$setValidity('pass', false);
 					}
 				};
+			}
+		]);
+		// Events Controller
+		module.controller('EventsCtrl', ['$scope', '$rootScope', 'EventSvc',
+			function($scope, $rootScope, service) {
+				$scope.eventsLoaded = false;
+				// Code that handles the "Upcoming Events" section of the main page goes here
+				service.getEvents().success(function(events) {
+					// Mark the events ready
+					$scope.events = events;
+					$scope.eventsLoaded = true;
+				}).error(function(err) {
+					console.log('Could not load events:', err);
+				});
 			}
 		]);
 		// Email Controller

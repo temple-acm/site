@@ -1,4 +1,67 @@
 section#events {
 	background: #1b769e;
 	color: #ffffff;
+	padding-left: 50px;
+	padding-right: 50px;
+
+	.event-cardholder {
+		padding: 10px;
+
+		.event-card {
+			display: block;
+			background-color: #fff;
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+			border-radius: 2px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			padding: 24px;
+			color: #1b769e;
+			height: 280px;
+
+			.title {
+				text-align: left;
+				margin-bottom: 5px;
+			}
+			.when,
+			.where {
+				text-align: left;
+				font-size: 12px;
+				color: #666;
+				padding-bottom: 5px;
+				// display: table-row;
+
+				i,
+				h5 {
+					display: table-cell;
+					margin-bottom: 5px;
+				}
+				i {
+					width: 15px;
+					text-align: center;
+					vertical-align: middle;
+				}
+				h5 {
+					padding-left: 10px;
+					font-weight: normal;
+					font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				}
+			}
+
+			p {
+				margin-top: 5px;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				font-weight: 200;
+				font-size: 16px;
+			}
+		}
+	}
+}
+
+@media(min-width:@mobileWidth) {
+	section#events {
+		.event-cardholder .event-card {
+			height: 380px;
+		}
+	}
 }

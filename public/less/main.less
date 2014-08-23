@@ -8,6 +8,7 @@
 @import "about.less";
 @import "contact.less";
 @import "events.less";
+@import "officers.less";
 
 body {
     width: 100%;
@@ -176,15 +177,16 @@ a {
         border-bottom: none;
         letter-spacing: 1px;
         background: transparent;
-        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        transition: background .5s ease-in-out,padding .5s ease-in-out;
+        -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out, box-shadow .5s ease-in-out;
+        -moz-transition: background .5s ease-in-out, padding .5s ease-in-out, box-shadow .5s ease-in-out;
+        transition: background .5s ease-in-out, padding .5s ease-in-out, box-shadow .5s ease-in-out;
         z-index: @page-z;
     }
 
     .navbar.top-nav-collapse {
         padding: 0;
         background-color: @dark;
+        box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.3);
     }
 
     .navbar-custom {

@@ -1,6 +1,6 @@
-<view ng-controller="RegisterCtrl">
+<view>
     <div style="display: block; width: 100%;" data-ng-switch="registered">
-        <div style="display: block; width: 100%;" ng-switch-default>
+        <div style="display: block; width: 100%;" ng-switch-default ng-controller="RegisterCtrl">
             <h1>Registration</h1>
             <p class="description">Membership costs a total of <b>$40.00</b>, with <b>$19.00</b> of that going to ACM national and the remaining <b>$21.00</b> sent to us at the Temple chapter. With that nominal fee comes an unquantifiable set of boons including, but not limited to, an MSDN subscription, lots of free research, and a first-class ticket to all our local ACM social events. What you do in the next few minutes can, and will be one of the best decisions of your collegiate career. So go ahead, take the next step in your technology career!</p>
             <form role="form" id="register-form" name="registration" novalidate>
@@ -98,9 +98,8 @@
             <div style="display: block; width: 100%; text-align: center;">
                 <i class="fa fa-spin fa-cog" style="font-size: 200px; color: #9e1b34;"></i>
             </div>
-            <h1 style="padding: 0px; text-align: center;">Thanks for registering!</h1>
-            <p style="font-size: 16px; text-align: center;">You're that much closer to being part of the family. We're redirecting you to paypal right now to make your membership official.</p>
-            <!-- TODO: make this pretty -->
+            <h1 style="padding: 0px; text-align: center;">Redirecting to Paypal...</h1>
+            <p style="font-size: 16px; text-align: center;">Thanks for registering! You're that much closer to being part of the family. We're redirecting you to paypal right now to make your membership official.</p>
         </div>
     </div>
 </view>

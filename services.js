@@ -15,8 +15,8 @@ var MongoClient = require('mongodb').MongoClient;
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
 var INDEX_PAGE_PATH = path.join(__dirname, 'public', 'pages', 'index.html');
-var CALENDAR_RSS_URL = 'https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic';
-var UPCOMING_EVENTS_LIMIT = 6;
+var CALENDAR_RSS_URL = 'https://www.google.com/calendar/feeds/tuacm%40temple.edu/public/basic?orderby=starttime&sortorder=ascending';
+var UPCOMING_EVENTS_LIMIT = 3;
 
 // --------------------- HELPER THINGS! --------------------------------------//
 
@@ -225,7 +225,6 @@ exports.route = function(app) {
         });
         // Called when we reach the end of the RSS stream
         parser.on('end', function() {
-            console.log('end');
             for (var i = 0; i < UPCOMING_EVENTS_LIMIT; i++) {
                 var data, when, where, desc, status, evt;
                 // Parse the rss entry
@@ -286,7 +285,7 @@ exports.route = function(app) {
     app.get('/contact', function(req, res) {
         res.redirect('/#/contact');
     });
-    app.get('/dev', function(req, res) {
-        res.redirect('/#/dev');
+    app.get('/officers', function(req, res) {
+        res.redirect('/#/officers');
     });
 };
