@@ -1,20 +1,21 @@
-<view>
+<view ng-controller="LoginCtrl">
     <h1>Sign In</h1>
     <form role="form" id="login-form" name="login" novalidate>
         <div class="form-group">
             <div class="col-md-12">
-                <label for="userIdText">User ID</label>
-                <input type="text" class="form-control flat-bottomed" name="userId" id="userIdText" ng-model="user.username" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
-                <span class="indicator" id="userIdIndicator">No user id provided.</span>
+                <label for="userIdText" style="margin-bottom: 0px;">User ID</label>
+                <input type="text" class="form-control " name="userId" id="user-id-text" ng-model="user.userName" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
             </div>
             <div class="col-md-12">
-                <label for="passwordText">Password</label>
-                <input type="password" class="form-control flat-bottomed" name="password" id="passwordText" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
-                <span class="indicator" id="passwordIndicator">No password provided.</span>
+                <label for="passwordText" style="margin-bottom: 0px;">Password</label>
+                <input type="password" class="form-control " name="password" id="password-text" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
             </div>
         </div>
+        <div class="col-md-12">
+            <br />
+        </div>
         <div class="col-md-12" style="text-align: center;">
-              <button ng-click="login(user)" class="btn btn-success btn-login">Login</button>
+              <button ng-click="submit(user)" class="btn btn-success btn-login">Login</button>
         </div>
     </form>
 </view>

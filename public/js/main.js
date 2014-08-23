@@ -182,6 +182,17 @@
 				};
 			}
 		]);
+        module.service('LoginSvc', ['$http',
+            function($http) {
+                this.logInUser = function(user) {
+                    return $http({
+                        method: 'POST',
+                        url: '/members/login',
+                        data: user
+                    });
+                };
+            }
+        ]);
 	})(ng.module('services', []), _app);
 
 	//---- Controllers ----//
@@ -439,10 +450,22 @@
 			}
 		]);
 		// Login Controller
-		module.controller('LoginCtrl', ['$scope',
-			function() {
+		module.controller('LoginCtrl', ['$scope', '$rootScope', 'LoginSvc',
+			function($scope, $rootScope, service) {
 				// Code that handles the "Login" form goes here
-			}
+                $scope.submit = function(user) {
+                    if ($scope.login.$valid) {
+                        service.logInUser(user).success(function(data, status, headers, config) {
+                            alert("WINNING");
+                        }).error(function(data, status, headers, config){
+                            //TODO: I guess throw back an error? But the frontend has no way to render it.
+                            alert('Could not log in. Replace this with something that looks nice.');
+                        });
+                    } else {
+                        alert('Could not submit login form, are you sure you typed everything in?');
+                    }
+                };
+            }
 		]);
 	})(ng.module('controllers', ['services']), _app);
 
