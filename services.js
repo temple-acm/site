@@ -11,6 +11,7 @@ var async = require('async');
 var request = require('request');
 var FeedParser = require('feedparser');
 var MongoClient = require('mongodb').MongoClient;
+var entities = require('entities');
 
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
 var LIVERELOAD_PLACEHOLDER = "<!-- Livereload -->";
@@ -261,15 +262,12 @@ exports.route = function(app) {
                 for (var ii = 0; ii < data.length; ii++) {
                     when = data[ii].match(/^(<br>)?When: (.*)$/);
                     where = data[ii].match(/^(<br>)?Where: (.*)$/);
+                    // Actual HTML escaping fix
                     if (when) {
-                        evt.when = when[2];
-                        // Cosmetic trailing non-breaking space fix
-                        if (evt.when && (evt.when.indexOf('&nbsp;') !== -1)) {
-                            evt.when = evt.when.substring(0, evt.when.length - 6);
-                        }
+                        evt.when = entities.decodeHTML(when[2]);
                     }
                     if (where) {
-                        evt.where = where[2];
+                        evt.where = entities.decodeHTML(where[2]);
                     }
                 }
                 // Put the events in a list
