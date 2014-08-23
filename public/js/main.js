@@ -156,15 +156,18 @@
 						data: user
 					});
 				};
-				// TODO make sure this is tested
 				this.redirectToPaypal = function(userId) {
 					// TODO make this not the fake url on live
+					var form;
 					if (window.location.host === 'localhost' || window.location.host === '127.0.0.1') {
 						// We're doing testing
-						$(FAKE_PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
+						form = $(FAKE_PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId));
 					} else {
-						$(PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId)).submit();
+						form = $(PAYPAL_API_CALL_TEMPLATE.replace(PAYPAL_API_CALL_ID_TOKEN, userId));
 					}
+					// Add to the DOM first - FF bug
+					$('body').append(form);
+					form.submit();
 				};
 			}
 		]);
@@ -341,7 +344,6 @@
 						service.registerUser(user).success(function(data, status, headers, config) {
 							$rootScope.me = data;
 							// Pass the id as a reference
-							console.log('result', data);
 							$rootScope.registered = true;
 							service.redirectToPaypal(data.userName);
 						}).error(function(data, status, headers, config) {
