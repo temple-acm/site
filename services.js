@@ -274,7 +274,7 @@ exports.route = function(app) {
                 events.push(evt);
             }
             // Return the list when we're done
-            res.json(200, events);
+            res.json(events);
         });
     });
 
