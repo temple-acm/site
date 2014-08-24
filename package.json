@@ -27,6 +27,7 @@
     "connect-mongo": "latest",
     "cookie-parser": "latest",
     "crypto": "latest",
+    "entities": "^1.1.1",
     "errorhandler": "latest",
     "express": "latest",
     "express-session": "latest",
