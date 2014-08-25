@@ -1,8 +1,9 @@
-# Temple ACM Site  [![Gitter chat](https://badges.gitter.im/temple-acm.png)](https://gitter.im/temple-acm)
+# Temple ACM Site
 
 Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Prerequisites
+* UNIX Development Environment (OSX, BSD, Linux) - If you're on Windows, try [this guide](http://www.howtogeek.com/howto/11287/how-to-run-ubuntu-in-windows-7-with-vmware-player/)
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/)
 
 ### Tools Prerequisites
@@ -32,6 +33,11 @@ $ npm install -g gulp
   Then open a browser and go to:
 
     http://localhost:3000
+    
+  OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
+
+## Questions?
+Come and ask for assistance or just hangout in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
 
 ## Credits
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your lord and savior [Sandile Keswa](https://github.com/skeswa/).
