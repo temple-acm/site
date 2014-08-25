@@ -1,4 +1,4 @@
-# Temple ACM Site  [![Gitter chat](https://badges.gitter.im/temple-acm.png)](https://gitter.im/temple-acm)
+# Temple ACM Site
 
 Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
