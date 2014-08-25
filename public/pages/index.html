@@ -107,7 +107,6 @@
                 </div>
             </section>
 
-
             <!-- Events Section -->
             <section id="events" class="content-section text-center" data-ng-controller="EventsCtrl">
                 <div class="row">
@@ -131,7 +130,7 @@
                                         <h5 ng-show="event.where">{{event.where}}</h5>
                                         <h5 style="font-style: italic; font-family: 'Helvetica Neue'; font-weight: 200;" ng-hide="event.where">To Be Determined</h5>
                                     </div>
-                                    <p ng-show="event.description">{{event.description}}</p>
+                                    <p ng-show="event.description" ng-bind-html="event.description"></p>
                                     <p ng-hide="event.description" style="font-style: italic;">No description is available for this event.</p>
                                 </div>
                             </div>

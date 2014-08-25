@@ -182,17 +182,17 @@
 				};
 			}
 		]);
-        module.service('LoginSvc', ['$http',
-            function($http) {
-                this.logInUser = function(user) {
-                    return $http({
-                        method: 'POST',
-                        url: '/members/login',
-                        data: user
-                    });
-                };
-            }
-        ]);
+		module.service('LoginSvc', ['$http',
+			function($http) {
+				this.logInUser = function(user) {
+					return $http({
+						method: 'POST',
+						url: '/members/login',
+						data: user
+					});
+				};
+			}
+		]);
 	})(ng.module('services', []), _app);
 
 	//---- Controllers ----//
@@ -430,12 +430,17 @@
 			}
 		]);
 		// Events Controller
-		module.controller('EventsCtrl', ['$scope', '$rootScope', 'EventSvc',
-			function($scope, $rootScope, service) {
+		module.controller('EventsCtrl', ['$scope', '$rootScope', '$sce', 'EventSvc',
+			function($scope, $rootScope, $sce, service) {
 				$scope.eventsLoaded = false;
 				// Code that handles the "Upcoming Events" section of the main page goes here
 				service.getEvents().success(function(events) {
 					// Mark the events ready
+					// HTML escape the description field
+					for (var i = 0; i < events.length; i++) {
+						events[i].description = $sce.trustAsHtml(events[i].description);
+					}
+					// Now its safe to show the events
 					$scope.events = events;
 					$scope.eventsLoaded = true;
 				}).error(function(err) {
@@ -453,19 +458,19 @@
 		module.controller('LoginCtrl', ['$scope', '$rootScope', 'LoginSvc',
 			function($scope, $rootScope, service) {
 				// Code that handles the "Login" form goes here
-                $scope.submit = function(user) {
-                    if ($scope.login.$valid) {
-                        service.logInUser(user).success(function(data, status, headers, config) {
-                            alert("WINNING");
-                        }).error(function(data, status, headers, config){
-                            //TODO: I guess throw back an error? But the frontend has no way to render it.
-                            alert('Could not log in. Replace this with something that looks nice.');
-                        });
-                    } else {
-                        alert('Could not submit login form, are you sure you typed everything in?');
-                    }
-                };
-            }
+				$scope.submit = function(user) {
+					if ($scope.login.$valid) {
+						service.logInUser(user).success(function(data, status, headers, config) {
+							alert("WINNING");
+						}).error(function(data, status, headers, config) {
+							//TODO: I guess throw back an error? But the frontend has no way to render it.
+							alert('Could not log in. Replace this with something that looks nice.');
+						});
+					} else {
+						alert('Could not submit login form, are you sure you typed everything in?');
+					}
+				};
+			}
 		]);
 	})(ng.module('controllers', ['services']), _app);
 
