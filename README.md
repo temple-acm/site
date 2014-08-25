@@ -33,6 +33,8 @@ $ npm install -g gulp
   Then open a browser and go to:
 
     http://localhost:3000
+    
+  OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
 
 ## Credits
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your lord and savior [Sandile Keswa](https://github.com/skeswa/).
