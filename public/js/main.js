@@ -280,7 +280,8 @@
 				var $viewport = $('viewport'),
 					$navbar = $('.navbar-fixed-top'),
 					$nav = $('nav ul li a.page-scroll'),
-					$section = $('section');
+					$section = $('section'),
+					$dropdown = $('.navbar-main-collapse');
 				// Nav UI Events
 				$nav.click(function() {
 					var section = $(this).data('section');
@@ -341,6 +342,18 @@
 								scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 50)
 							}, 1500, 'easeInOutExpo');
 						}
+						// Hide the dropdown if it isn't already hidden
+						if (!$dropdown.hasClass('collapse')) {
+							$dropdown.addClass('collapse');
+						}
+					}
+				};
+				// Shows and hides the nav menu
+				$scope.toggleMobileNavMenu = function() {
+					if ($dropdown.hasClass('collapse')) {
+						$dropdown.removeClass('collapse');
+					} else {
+						$dropdown.addClass('collapse');
 					}
 				};
 			}
