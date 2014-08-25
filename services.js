@@ -83,7 +83,7 @@ exports.route = function(app) {
     // --------------------- SESSIONS AND THINGS! --------------------------------//
     // TODO: Change this for prod!
     app.use(session({
-        secret: 'THIS SHOULD NOT BE USED IN PROD'
+        secret: process.env.TUACM_SESSION_SECRET || 'THIS SHOULD NOT BE USED IN PROD'
     }));
     app.use(passport.initialize());
     app.use(passport.session());
