@@ -36,6 +36,9 @@ $ npm install -g gulp
     
   OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
 
+## Questions?
+Come and ask for assistance or just hangout in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
+
 ## Credits
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your lord and savior [Sandile Keswa](https://github.com/skeswa/).
 
