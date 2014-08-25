@@ -210,6 +210,16 @@ exports.route = function(app) {
             })(req, res, next);
         });
 
+    app.get('/members/login', function(req, res) {
+        req.db.find({"officer": true}).toArray(function(err, officers) {
+            if (err) {
+                console.log("fuck nodejs");
+            } else {
+                res.json(200, officers);
+            }
+        });
+    });
+
     app.get('/events/calendar', function(req, res) {
         var parser = new FeedParser(),
             rssEntries = [],

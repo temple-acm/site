@@ -193,6 +193,16 @@
 				};
 			}
 		]);
+        module.service('OfficersSvc', ['$http',
+            function($http) {
+                this.getOfficers = function() {
+                    return $http({
+                        method: 'GET',
+                        url: '/members/officers'
+                    });
+                };
+            }
+        ]);
 	})(ng.module('services', []), _app);
 
 	//---- Controllers ----//
@@ -467,6 +477,18 @@
 				// Code that handles the "Email Us" form goes here
 			}
 		]);
+        // Officers Controller
+        module.controller('OfficersCtrl', ['$scope', 'OfficersSvc',
+            function($scope, service) {
+                $scope.officersLoaded = false;
+                service.getOfficers().success(function(officers) {
+                    $scope.officers = officers;
+                    $scope.officersLoaded = true;
+                }).error(function(err) {
+                    console.log("Could not load officers:", err);
+                });
+            }
+        ]);
 		// Google Map Controller
 		module.controller('MapCtrl', ['$scope',
 			function() {
