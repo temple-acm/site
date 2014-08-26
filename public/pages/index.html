@@ -140,9 +140,36 @@
             </section>
 
             <!-- Officers Section -->
-            <section id="officers" class="container content-section text-center">
+            <section id="officers" class="container content-section text-center" data-ng-controller="OfficersCtrl">
                 <div class="row">
                     <h2>Our Officers</h2>
+                    <div style="width: 100%; display: block;">
+                        <div style="width: 100%; display: block;" ng-hide="officersLoaded">
+                            <div style="display: block; width: 100%; text-align: center;">
+                                <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
+                            </div>
+                        </div>
+                        <div style="width: 100%; display: block;" ng-show="officersLoaded">
+                            <div class="officer-cardholder col-sm-3 col-xs-6" ng-repeat="officer in officers">
+                                <div class="officer-card">
+                                    <img class="picture" ng-bg-img="{{officer.picture}}">
+                                    <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
+                                    <h5 class="title">{{officer.title}}</h5>
+                                    <p ng-bind-html="officer.bio"></p>
+                                </div>
+                            </div>
+                            <div class="officer-ad {{adWidth}}">
+                                <div class="officer-ad-card">
+                                    <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
+                                        <div style="display: table-cell; vertical-align: middle;">
+                                            <h1>Interested in becoming an officer?</h1>
+                                            <a href="mailto:tuacm@temple.edu" class="btn btn-default btn-lg"><span class="network-name">Let Us Know</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

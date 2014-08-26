@@ -148,7 +148,9 @@ exports.route = function(app) {
         newUser.studentLevel = req.body.studentLevel;
         newUser.membership = req.body.membership;
         newUser.password = req.body.password;
+        newUser.picture = req.body.picture;
         newUser.paid = false;
+        newUser.officer = false;
 
         if (!newUser.userName && newUser.userName.length > 0) res.send(500, 'userName property is invalid.');
         else if (!newUser.firstName && newUser.firstName.length > 0) res.send(500, 'firstName property is invalid.');
@@ -192,28 +194,29 @@ exports.route = function(app) {
     app.post('/members/payments/callback/:userName', paypalCallback);
 
     // Login stuff
-    app.post('/members/login',
-        function(req, res, next) {
-            passport.authenticate('local', function(err, user, info) {
-                if (err) {
-                    return res.json(401, err);
-                } else {
-                    req.logIn(user, function(err) {
-                        if (err) {
-                            return res.json(500, "Unspecified login error, please alert somebody in charge");
-                        }
-                        return res.json(200, {
-                            'userName': user[0].userName
-                        }); // We can add more fields here if needed
-                    });
-                }
-            })(req, res, next);
-        });
-
-    app.get('/members/login', function(req, res) {
-        req.db.find({"officer": true}).toArray(function(err, officers) {
+    app.post('/members/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
             if (err) {
-                console.log("fuck nodejs");
+                return res.json(401, err);
+            } else {
+                req.logIn(user, function(err) {
+                    if (err) {
+                        return res.json(500, "Unspecified login error, please alert somebody in charge");
+                    }
+                    return res.json(200, {
+                        'userName': user[0].userName
+                    }); // We can add more fields here if needed
+                });
+            }
+        })(req, res, next);
+    });
+
+    app.get('/members/officers', function(req, res) {
+        req.db.collection('users').find({
+            officer: true
+        }).toArray(function(err, officers) {
+            if (err) {
+                res.json(500, err);
             } else {
                 res.json(200, officers);
             }

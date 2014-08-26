@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
     next();
 });
 // Connects to mongo and sets up session shit
-MongoClient.connect('mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
+MongoClient.connect(process.env.TUACM_MONGO_URL || 'mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
     if (err) throw err;
     // Session stuff
     mongoDb = db;

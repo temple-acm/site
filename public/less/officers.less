@@ -1,4 +1,87 @@
 section#officers {
 	background-color: #9e1b34;
 	color: #ffffff;
+	padding-left: 50px;
+	padding-right: 50px;
+
+	.officer-ad {
+		height: 425px;
+		padding: 10px;
+
+		.officer-ad-card {
+			border-radius: 2px;
+			background-color: rgba(0, 0, 0, 0.3);
+			height: 100%;
+
+			h1 {
+				font-size: 20px;
+			}
+
+			.btn {
+				border: none;
+				color: #9e1b34;
+				background-color: #ffffff;
+
+				&:hover {
+					color: #ffffff;
+					background-color: rgba(0, 0, 0, 0.3);
+				}
+			}
+		}
+	}
+
+	.officer-cardholder {
+		padding: 10px;
+
+		.officer-card {
+			display: block;
+			background-color: #fff;
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+			border-radius: 2px;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			padding: 24px;
+			color: #9e1b34;
+			height: 405px;
+
+			.picture {
+				width: 120px;
+				height: 120px;
+				border-radius: 60px;
+				background-color: #ccc;
+				background-position: center;
+			}
+			.name {
+				text-align: center;
+				margin-top: 10px;
+				margin-bottom: 5px;
+				font-size: 20px;
+			}
+			.title {
+				text-align: center;
+				font-weight: normal;
+				font-size: 12px;
+				margin-bottom: 10px;
+				color: #666;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+
+			p {
+				margin-top: 5px;
+				text-align: left;
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				font-weight: 200;
+				font-size: 16px;
+				height: 150px;
+				margin-bottom: 5px;
+				overflow-y: auto;
+			}
+		}
+	}
+}
+
+@media(min-width:@mobileWidth) {
+	section#officers .officer-ad .officer-ad-card h1 {
+		font-size: 30px;
+	}
 }
