@@ -191,6 +191,12 @@
 						data: user
 					});
 				};
+                this.isLoggedIn = function() {
+                    return $http({
+                        method: 'GET',
+                        url: '/members/isLoggedIn'
+                    });
+                };
 			}
 		]);
         module.service('OfficersSvc', ['$http',
@@ -285,8 +291,22 @@
 			}
 		]);
 		// Navigation Controller
-		module.controller('NavCtrl', ['$scope', '$location',
-			function($scope, $location) {
+		module.controller('NavCtrl', ['$scope', '$location', 'LoginSvc',
+			function($scope, $location, loginService) {
+                // I don't know what I'm doing, but this regulates the logged-in status of users
+                $scope.logInChecked = false;
+                $scope.isLoggedIn = false;
+                loginService.isLoggedIn().success(function(data, status, headers, config) {
+                    $scope.logInChecked = true;
+                    if (data !== "false") { //TODO: Figure out a better notification system
+                        $scope.isLoggedIn = true;
+                        $scope.loggedInUserName = data;
+                    }
+                }).error(function(data, status, headers, config) {
+                    console.log(status);
+                    console.log(data);
+                }); // I don't know if this is necessary.
+
 				var $viewport = $('viewport'),
 					$navbar = $('.navbar-fixed-top'),
 					$nav = $('nav ul li a.page-scroll'),
@@ -528,8 +548,8 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-							alert("WINNING");
-						}).error(function(data, status, headers, config) {
+						    res.redirect("/"); // TODO: Actually make this work
+                        }).error(function(data, status, headers, config) {
 							//TODO: I guess throw back an error? But the frontend has no way to render it.
 							alert('Could not log in. Replace this with something that looks nice.');
 						});

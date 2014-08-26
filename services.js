@@ -11,6 +11,7 @@ var async = require('async');
 var request = require('request');
 var FeedParser = require('feedparser');
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var entities = require('entities');
 
 var LIVERELOAD_MIXIN = '<script src="http://localhost:35729/livereload.js"></script>';
@@ -55,8 +56,9 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(req, id, done) {
+    userObjectID = new ObjectID(id);
     req.db.collection('users').find({
-        _id: id
+        _id: userObjectID
     }).toArray(function(err, user) {
         done(err, user);
     });
@@ -210,7 +212,16 @@ exports.route = function(app) {
             })(req, res, next);
         });
 
-    app.get('/members/officers', function(req, res) {
+        app.get('/members/isLoggedIn', function(req, res) {
+            if (req.user) {
+                console.log(typeof(req.user[0].userName));
+                res.send(200, req.user[0].userName);
+            } else {
+                res.send(401, "false");
+            }
+        });
+
+        app.get('/members/officers', function(req, res) {
         req.db.find({"officer": true}).toArray(function(err, officers) {
             if (err) {
                 console.log("fuck nodejs");
