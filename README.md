@@ -19,9 +19,9 @@ $ npm install -g gulp
 ```
 
 ## Running the Site
-  The quickest way to get started with MEAN is to clone the project and utilize it like this:
+The quickest way to get started with MEAN is to clone the project and utilize it like this:
 
-  Install dependencies:
+Install dependencies:
 
     $ npm install
     $ bower install
@@ -35,6 +35,20 @@ $ npm install -g gulp
     http://localhost:3000
     
   OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
+
+## Production Setup
+In production we change the way we make a few concessions:
+- Mongo DB, our database, is run locally on the same box as the web server instead hosted by [Compose](compose.io)
+- We use environment variables for sensitive information instead of the development defaults
+- We use [HAProxy](haproxy.org) for reverse proxying
+- We *only* support HTTPS
+The variables we use are as follows:
+- TUACM_SSL_CERT - The filepath for the SSL certificate for the site
+- TUACM_SSL_KEY - The filepath for the SSL keyfile for the site
+- TUACM_SSL_PASS - The password associated with the SSL certificate for the site
+- TUACM_PORT - The port that the web server is listening for HTTP requests on
+- TUACM_SESSION_SECRET - The secret used for salting session tokens
+To manage and query our data, we use [Robomongo](robomongo.org).
 
 ## Questions?
 Come and ask for assistance or just hangout in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
