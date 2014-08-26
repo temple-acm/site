@@ -203,7 +203,9 @@ exports.route = function(app) {
                             return res.json(500, "Unspecified login error, please alert somebody in charge");
                         }
                         return res.json(200, {
-                            'userName': user[0].userName
+                            userName: user[0].userName,
+                            firstName: user[0].firstName,
+                            lastName: user[0].lastName
                         }); // We can add more fields here if needed
                     });
                 }
@@ -212,8 +214,7 @@ exports.route = function(app) {
 
     app.get('/members/isLoggedIn', function(req, res) {
         if (req.user) {
-            console.log(typeof(req.user[0].userName));
-            res.send(200, req.user[0].userName);
+            res.send(200, req.user[0]);
         } else {
             res.send(401, "false");
         }

@@ -302,20 +302,22 @@
 			}
 		]);
 		// Navigation Controller
-		module.controller('NavCtrl', ['$scope', '$location', 'LoginSvc',
-			function($scope, $location, loginService) {
+		module.controller('NavCtrl', ['$scope', '$rootScope', '$location', 'LoginSvc',
+			function($scope, $rootScope, $location, loginService) {
 				// I don't know what I'm doing, but this regulates the logged-in status of users
 				$scope.logInChecked = false;
-				$scope.isLoggedIn = false;
+				$rootScope.isLoggedIn = false;
+                $rootScope.loggedInUserName = undefined;
 				loginService.isLoggedIn().success(function(data, status, headers, config) {
 					$scope.logInChecked = true;
 					if (data !== "false") { //TODO: Figure out a better notification system
-						$scope.isLoggedIn = true;
-						$scope.loggedInUserName = data;
+						$rootScope.isLoggedIn = true;
+						$rootScope.loggedInFirstName = data.firstName;
+                        $('#session-panel').css('display', 'block');
 					}
 				}).error(function(data, status, headers, config) {
-					console.log(status);
-					console.log(data);
+					$scope.logInChecked = true;
+                    console.log(data);
 				}); // I don't know if this is necessary.
 
 				var $viewport = $('viewport'),
@@ -580,8 +582,11 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-							res.redirect("/"); // TODO: Actually make this work
-						}).error(function(data, status, headers, config) {
+						    console.log("Logged in successfully ", data);
+                            $rootScope.isLoggedIn = true;
+                            console.log($scope.isLoggedIn);
+                            $rootScope.loggedInFirstName = data.firstName;
+                        }).error(function(data, status, headers, config) {
 							//TODO: I guess throw back an error? But the frontend has no way to render it.
 							alert('Could not log in. Replace this with something that looks nice.');
 						});

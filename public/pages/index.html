@@ -61,8 +61,8 @@
                                 <a id="sign-in" class="btn btn-primary" data-ng-href="#/login" >Sign In</a>
                             </li>
                         </ul>
-                        <div id="session-panel" ng-if="isLoggedIn">
-                            <div>Hi, Steve!.</div>
+                        <div style="display: none;" id="session-panel">
+                            <div>Welcome, {{loggedInFirstName}}</div>
                             <a id="sign-out" class="btn btn-danger" ng-click="logout()">Sign Out</a>
                         </div>
                     </div>
