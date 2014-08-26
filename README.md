@@ -42,12 +42,15 @@ In production we change the way we make a few concessions:
 - We use environment variables for sensitive information instead of the development defaults
 - We use [HAProxy](haproxy.org) for reverse proxying
 - We *only* support HTTPS
+
 The variables we use are as follows:
 - TUACM_SSL_CERT - The filepath for the SSL certificate for the site
 - TUACM_SSL_KEY - The filepath for the SSL keyfile for the site
 - TUACM_SSL_PASS - The password associated with the SSL certificate for the site
 - TUACM_PORT - The port that the web server is listening for HTTP requests on
 - TUACM_SESSION_SECRET - The secret used for salting session tokens
+- 
+
 To manage and query our data, we use [Robomongo](robomongo.org).
 
 ## Questions?
