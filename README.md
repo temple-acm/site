@@ -2,6 +2,13 @@
 
 Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
+## Getting Source
+To download the source of the website, you'll need to use git's clone feature. This only works if you are registered as a contributor.
+```
+git clone git@github.com:/temple-acm/site -b revamp
+```
+If you are not recognized as a contributor, you need to _fork this repository_ and *not* do a vanilla clone.
+
 ## Prerequisites
 * UNIX Development Environment (OSX, BSD, Linux) - If you're on Windows, try [this guide](http://www.howtogeek.com/howto/11287/how-to-run-ubuntu-in-windows-7-with-vmware-player/)
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/)
