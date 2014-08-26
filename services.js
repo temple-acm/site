@@ -83,10 +83,6 @@ function toISODateString(d) {
 
 exports.route = function(app) {
     // --------------------- SESSIONS AND THINGS! --------------------------------//
-    // TODO: Change this for prod!
-    app.use(session({
-        secret: process.env.TUACM_SESSION_SECRET || 'THIS SHOULD NOT BE USED IN PROD'
-    }));
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -214,17 +210,19 @@ exports.route = function(app) {
             })(req, res, next);
         });
 
-        app.get('/members/isLoggedIn', function(req, res) {
-            if (req.user) {
-                console.log(typeof(req.user[0].userName));
-                res.send(200, req.user[0].userName);
-            } else {
-                res.send(401, "false");
-            }
-        });
+    app.get('/members/isLoggedIn', function(req, res) {
+        if (req.user) {
+            console.log(typeof(req.user[0].userName));
+            res.send(200, req.user[0].userName);
+        } else {
+            res.send(401, "false");
+        }
+    });
 
-        app.get('/members/officers', function(req, res) {
-        req.db.find({"officer": true}).toArray(function(err, officers) {
+    app.get('/members/officers', function(req, res) {
+        req.db.collection('users').find({
+            officer: true
+        }).toArray(function(err, officers) {
             if (err) {
                 res.json(500, err);
             } else {

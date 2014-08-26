@@ -59,12 +59,14 @@ MongoClient.connect(process.env.TUACM_MONGO_URL || 'mongodb://tuacm:tuacm@kahana
     // Session stuff
     mongoDb = db;
     app.use(session({
-        secret: 'MEAN',
+        secret: (process.env.TUACM_SESSION_SECRET || 'MEAN'),
         // TODO restrict db creds to env vars
         store: new MongoStore({
             db: mongoDb,
             collection: 'sessions'
         }),
+        resave: true,
+        saveUninitialized: true
     }));
 });
 app.use(ErrorHandler({
