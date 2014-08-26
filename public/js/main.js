@@ -371,6 +371,8 @@
 						}
 					}
 				};
+				// Export scroll to for non-angular access
+				window.$scrollTo = $scope.scrollTo;
 				// Shows and hides the nav menu
 				$scope.toggleMobileNavMenu = function() {
 					if ($dropdown.hasClass('collapse')) {
