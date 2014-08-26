@@ -152,7 +152,7 @@
                         <div style="width: 100%; display: block;" ng-show="officersLoaded">
                             <div class="officer-cardholder col-sm-3 col-xs-6" ng-repeat="officer in officers">
                                 <div class="officer-card">
-                                    <img class="picture" ng-bg-img="{{officer.picture}}">
+                                    <div class="picture" ng-bg-img="{{officer.picture}}"></div>
                                     <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
                                     <h5 class="title">{{officer.title}}</h5>
                                     <p ng-bind-html="officer.bio"></p>
