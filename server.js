@@ -68,14 +68,14 @@ MongoClient.connect(process.env.TUACM_MONGO_URL || 'mongodb://tuacm:tuacm@kahana
         resave: true,
         saveUninitialized: true
     }));
+    // Bootstrap the application routes
+    services.route(app);
 });
 app.use(ErrorHandler({
     dumpExceptions: true,
     showStack: true
 }));
 app.use('/static', express.static(path.join(__dirname, 'public')));
-// Bootstrap the application routes
-services.route(app);
 // Start the app by listening on <port>
 var port = process.env.TUACM_PORT || 3000;
 var securePort = (parseInt(port) + 1);
