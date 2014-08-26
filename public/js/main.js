@@ -321,7 +321,9 @@
 					} else if (url === '/emailus') {
 						$scope.showEmailUs();
 					} else {
-						$scope.scrollTo(url.substring(1));
+						setTimeout(function() {
+							$scope.scrollTo(url.substring(1));
+						}, 1500);
 					}
 				};
 				var adjustNav = function() {
