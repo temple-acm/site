@@ -54,13 +54,17 @@
                             <li>
                                 <a class="page-scroll link" data-section="contact">Contact</a>
                             </li>
-                            <li>
+                            <li ng-if="!isLoggedIn">
                                 <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
                             </li>
-                            <li>
+                            <li ng-if="!isLoggedIn">
                                 <a id="sign-in" class="btn btn-primary" data-ng-href="#/login" >Sign In</a>
                             </li>
                         </ul>
+                        <div id="session-panel" ng-if="isLoggedIn">
+                            <div>Hi, Steve!.</div>
+                            <a id="sign-out" class="btn btn-danger" ng-click="logout()">Sign Out</a>
+                        </div>
                     </div>
                     <!-- /.navbar-collapse -->
                 </div>
