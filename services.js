@@ -85,7 +85,7 @@ exports.route = function(app) {
     // --------------------- SESSIONS AND THINGS! --------------------------------//
     // TODO: Change this for prod!
     app.use(session({
-        secret: 'THIS SHOULD NOT BE USED IN PROD'
+        secret: process.env.TUACM_SESSION_SECRET || 'THIS SHOULD NOT BE USED IN PROD'
     }));
     app.use(passport.initialize());
     app.use(passport.session());
@@ -150,7 +150,9 @@ exports.route = function(app) {
         newUser.studentLevel = req.body.studentLevel;
         newUser.membership = req.body.membership;
         newUser.password = req.body.password;
+        newUser.picture = req.body.picture;
         newUser.paid = false;
+        newUser.officer = false;
 
         if (!newUser.userName && newUser.userName.length > 0) res.send(500, 'userName property is invalid.');
         else if (!newUser.firstName && newUser.firstName.length > 0) res.send(500, 'firstName property is invalid.');
@@ -224,7 +226,7 @@ exports.route = function(app) {
         app.get('/members/officers', function(req, res) {
         req.db.find({"officer": true}).toArray(function(err, officers) {
             if (err) {
-                console.log("fuck nodejs");
+                res.json(500, err);
             } else {
                 res.json(200, officers);
             }

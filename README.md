@@ -49,6 +49,7 @@ The variables we use are as follows:
 - TUACM_SSL_PASS - The password associated with the SSL certificate for the site
 - TUACM_PORT - The port that the web server is listening for HTTP requests on
 - TUACM_SESSION_SECRET - The secret used for salting session tokens
+- TUACM_MONGO_URL - The connection string for mongo
 
 To manage and query our data, we use [Robomongo](http://robomongo.org).
 

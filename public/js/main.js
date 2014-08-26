@@ -122,6 +122,17 @@
 				};
 			}
 		]);
+		// Background image loading directive
+		module.directive('ngBgImg', function() {
+			return function(scope, element, attrs) {
+				attrs.$observe('ngBgImg', function(value) {
+					element.css({
+						'background-image': 'url(' + value + ')',
+						'background-size': 'cover'
+					});
+				});
+			};
+		});
 	})(ng.module('directives', []), _app);
 
 	//---- Services ----//
@@ -199,16 +210,16 @@
                 };
 			}
 		]);
-        module.service('OfficersSvc', ['$http',
-            function($http) {
-                this.getOfficers = function() {
-                    return $http({
-                        method: 'GET',
-                        url: '/members/officers'
-                    });
-                };
-            }
-        ]);
+		module.service('OfficersSvc', ['$http',
+			function($http) {
+				this.getOfficers = function() {
+					return $http({
+						method: 'GET',
+						url: '/members/officers'
+					});
+				};
+			}
+		]);
 	})(ng.module('services', []), _app);
 
 	//---- Controllers ----//
@@ -330,7 +341,9 @@
 					} else if (url === '/emailus') {
 						$scope.showEmailUs();
 					} else {
-						$scope.scrollTo(url.substring(1));
+						setTimeout(function() {
+							$scope.scrollTo(url.substring(1));
+						}, 1500);
 					}
 				};
 				var adjustNav = function() {
@@ -378,6 +391,8 @@
 						}
 					}
 				};
+				// Export scroll to for non-angular access
+				window.$scrollTo = $scope.scrollTo;
 				// Shows and hides the nav menu
 				$scope.toggleMobileNavMenu = function() {
 					if ($dropdown.hasClass('collapse')) {
@@ -478,7 +493,6 @@
 				$scope.eventsLoaded = false;
 				// Code that handles the "Upcoming Events" section of the main page goes here
 				service.getEvents().success(function(events) {
-					// Mark the events ready
 					// HTML escape the description field
 					for (var i = 0; i < events.length; i++) {
 						events[i].description = $sce.trustAsHtml(events[i].description);
@@ -494,21 +508,39 @@
 		// Email Controller
 		module.controller('EmailCtrl', ['$scope',
 			function() {
-				// Code that handles the "Email Us" form goes here
+				// TODO: Code that handles the "Email Us" form goes here
 			}
 		]);
-        // Officers Controller
-        module.controller('OfficersCtrl', ['$scope', 'OfficersSvc',
-            function($scope, service) {
-                $scope.officersLoaded = false;
-                service.getOfficers().success(function(officers) {
-                    $scope.officers = officers;
-                    $scope.officersLoaded = true;
-                }).error(function(err) {
-                    console.log("Could not load officers:", err);
-                });
-            }
-        ]);
+		// Officers Controller
+		module.controller('OfficersCtrl', ['$scope', '$sce', 'OfficersSvc',
+			function($scope, $sce, service) {
+				$scope.officersLoaded = false;
+				// Code that handles the "Officers" section of the main page goes here
+				service.getOfficers().success(function(officers) {
+					// HTML escape the description field
+					for (var i = 0; i < officers.length; i++) {
+						officers[i].bio = $sce.trustAsHtml(officers[i].bio);
+						officers[i].title = officers[i].title || 'Officer';
+					}
+					// Now we can show the officers
+					$scope.officers = officers;
+					if ($scope.officers.length % 4 === 0) {
+						$scope.adWidth = 'col-sm-12 col-xs-12';
+					} else {
+						var mod = 4 - ($scope.officers.length % 4);
+						$scope.adWidth = 'col-sm-' + (mod * 3);
+						if ($scope.officers.length % 2 === 0) {
+							$scope.adWidth += ' col-xs-12';
+						} else {
+							$scope.adWidth += ' col-xs-6';
+						}
+					}
+					$scope.officersLoaded = true;
+				}).error(function(err) {
+					console.log('Could not load officers:', err);
+				});
+			}
+		]);
 		// Google Map Controller
 		module.controller('MapCtrl', ['$scope',
 			function() {

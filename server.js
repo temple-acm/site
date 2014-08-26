@@ -30,10 +30,9 @@ var services = require('./services');
 /******************************************** MODULE **********************************************/
 
 // Load configurations
-// TODO: exposed
 var options = {
-    cert: [fs.readFileSync('ssl/cert-tuacm-org.pem'), 'TempleACM450'],
-    key: [fs.readFileSync('ssl/key-tuacm-org.pem'), 'TempleACM450']
+    cert: [fs.readFileSync(process.env.TUACM_SSL_CERT || 'ssl/cert-tuacm-org.pem'), process.env.TUACM_SSL_PASS || 'TempleACM450'],
+    key: [fs.readFileSync(process.env.TUACM_SSL_KEY || 'ssl/key-tuacm-org.pem'), process.env.TUACM_SSL_PASS || 'TempleACM450']
 };
 // if test env, load example file
 var env = process.env.NODE_ENV; // Defaults to dev. env.
@@ -55,7 +54,7 @@ app.use(function(req, res, next) {
     next();
 });
 // Connects to mongo and sets up session shit
-MongoClient.connect('mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
+MongoClient.connect(process.env.TUACM_MONGO_URL || 'mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
     if (err) throw err;
     // Session stuff
     mongoDb = db;
@@ -76,7 +75,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 // Bootstrap the application routes
 services.route(app);
 // Start the app by listening on <port>
-var port = process.env.PORT || 3000;
+var port = process.env.TUACM_PORT || 3000;
 var securePort = (parseInt(port) + 1);
 // Create an HTTP service
 http.createServer(app).listen(port, '0.0.0.0');
