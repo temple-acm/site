@@ -205,7 +205,8 @@ exports.route = function(app) {
                         return res.json(200, {
                             userName: user[0].userName,
                             firstName: user[0].firstName,
-                            lastName: user[0].lastName
+                            lastName: user[0].lastName,
+                            picture: user[0].picture
                         }); // We can add more fields here if needed
                     });
                 }

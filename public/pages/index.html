@@ -62,7 +62,7 @@
                             </li>
                         </ul>
                         <div style="display: none;" id="session-panel">
-                            <div>Welcome back, {{loggedInFirstName}}!</div>
+                            <div><img src={{loggedInUser.picture}} />  {{loggedInUser.userName}}</div>
                             <a id="sign-out" class="btn btn-danger" ng-click="logout()">Sign Out</a>
                         </div>
                     </div>

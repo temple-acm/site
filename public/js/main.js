@@ -313,12 +313,11 @@
 				// I don't know what I'm doing, but this regulates the logged-in status of users
 				$scope.logInChecked = false;
 				$rootScope.isLoggedIn = false;
-                $rootScope.loggedInUserName = undefined;
 				loginService.isLoggedIn().success(function(data, status, headers, config) {
 					$scope.logInChecked = true;
 					if (status !== 250) {
 						$rootScope.isLoggedIn = true;
-						$rootScope.loggedInFirstName = data.firstName;
+						$rootScope.loggedInUser = data;
                         $('#session-panel').css('display', 'block');
 					}
 				}).error(function(data, status, headers, config) {
@@ -331,7 +330,6 @@
                     loginService.logOut().success(function(data, status, headers, config) {
                         $('#session-panel').css('display', 'none');
                         $rootScope.isLoggedIn = false;
-                        $rootScope.loggedInFirstName = undefined;
                     }).error(function(data, status, headers, config) {
                         toastr.error("Could not log out. Check that you have a connection to the Internet.");
                     });
@@ -595,7 +593,7 @@
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
                             $rootScope.isLoggedIn = true;
-                            $rootScope.loggedInFirstName = data.firstName;
+                            $rootScope.loggedInUser = data;
                             $rootScope.hideCard();
                             $('#session-panel').css('display', 'block');
                         }).error(function(data, status, headers, config) {
