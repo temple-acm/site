@@ -475,7 +475,7 @@
 				$scope.onPasswordChanged = function() {
 					var pass = $('#register-form #password-text').val();
 					var conf = $('#register-form #confirm-password-text').val();
-					if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(pass)) {
+					if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/gm.test(pass)) {
 						if (pass === conf) {
 							$('#register-form #password-indicator').addClass('good');
 							$('#register-form #password-indicator').html('This password is valid.');
