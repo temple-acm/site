@@ -34,7 +34,7 @@ passport.use('local', new LocalStrategy({
             if (err) {
                 return done(null, false, err);
             }
-            if (!user) {
+            if (!user || user.length === 0) {
                 return done(null, false, {
                     message: "Invalid credentials"
                 });
@@ -221,7 +221,7 @@ exports.route = function(app) {
         if (req.user) {
             res.send(200, req.user[0]);
         } else {
-            res.send(401, "false");
+            res.send(250, "false");
         }
     });
 

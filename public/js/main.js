@@ -1,7 +1,7 @@
 (function(ng, $) {
 	if (!ng || !$) {
 		// TODO show the user that their browser is junk
-		alert('Oh lawd. Bump dat browser game doe.');
+		toastr.error('Oh lawd. Bump dat browser game doe.');
 		return;
 	}
 
@@ -334,7 +334,7 @@
                         $rootScope.isLoggedIn = false;
                         $rootScope.loggedInFirstName = undefined;
                     }).error(function(data, status, headers, config) {
-                        alert("Could not log out. Check that your internet isn't out");
+                        toastr.error("Could not log out. Check that you have a connection to the Internet.");
                     });
                 };
 				var $viewport = $('viewport'),
@@ -436,13 +436,13 @@
 							service.redirectToPaypal(data.userName);
 						}).error(function(data, status, headers, config) {
 							// TODO show an error modal
-							alert('Could not submit registration form. Check the console for details.');
+							toastr.error('Could not submit registration form. Check the console for details.');
 							console.log('problem', data);
 						});
 					} else {
 						// TODO modal or something
 						// $('#register-modal').modal('show');
-						alert('The form is not yet complete. Please ensure the form is valid.');
+						toastr.warning('The form is not yet complete. Please ensure the form is valid.');
 					}
 				};
 
@@ -606,10 +606,10 @@
                             $('#session-panel').css('display', 'block');
                         }).error(function(data, status, headers, config) {
 							//TODO: I guess throw back an error? But the frontend has no way to render it.
-							alert('Could not log in. Replace this with something that looks nice.');
+							toastr.error('Could not log in. Replace this with something that looks nice.', 'Error');
 						});
 					} else {
-						alert('Could not submit login form, are you sure you typed everything in?');
+						toastr.warning('Could not submit login form, are you sure you typed everything in?', 'Warning');
 					}
 				};
 			}
