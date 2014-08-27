@@ -232,8 +232,8 @@
 
 	(function(module, app) {
 		// Main Controller
-		module.controller('MainCtrl', ['$scope', '$location',
-			function($scope, $location) {
+		module.controller('MainCtrl', ['$scope', '$location', '$rootScope',
+			function($scope, $location, $rootScope) {
 				var ANIM_DELAY = 400;
 				var $overlay = $('overlay'),
 					$cardHolder = $overlay.find('.cardholder');
@@ -251,7 +251,7 @@
 				});
 
 				// Card specific helper functions
-				var hideCard = function() {
+				var hideCard = $rootScope.hideCard = function() {
 					$overlay.animate({
 						scrollTop: '0px'
 					}, ANIM_DELAY, function() {
@@ -316,7 +316,7 @@
                 $rootScope.loggedInUserName = undefined;
 				loginService.isLoggedIn().success(function(data, status, headers, config) {
 					$scope.logInChecked = true;
-					if (status !== 401) {
+					if (status !== 250) {
 						$rootScope.isLoggedIn = true;
 						$rootScope.loggedInFirstName = data.firstName;
                         $('#session-panel').css('display', 'block');
@@ -599,12 +599,11 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-						    console.log("Logged in successfully ", data); //TODO: Remove console.log()s
                             $rootScope.isLoggedIn = true;
                             console.log($scope.isLoggedIn); //TODO: Remove console.log()s
                             $rootScope.loggedInFirstName = data.firstName;
+                            $rootScope.hideCard();
                             $('#session-panel').css('display', 'block');
-					        $('overlay login').css('display', 'none');
                         }).error(function(data, status, headers, config) {
 							//TODO: I guess throw back an error? But the frontend has no way to render it.
 							alert('Could not log in. Replace this with something that looks nice.');
