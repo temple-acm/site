@@ -597,7 +597,7 @@
                             $rootScope.hideCard();
                             $('#session-panel').css('display', 'block');
                         }).error(function(data, status, headers, config) {
-							toastr.error('Could not log in. Replace this with something that looks nice.', 'Error');
+							toastr.error("Could not log in. Make sure you've typed your username and password properly.", 'Error');
 						});
 					} else {
 						toastr.warning('Could not submit login form, are you sure you typed everything in?', 'Warning');
