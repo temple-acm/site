@@ -242,7 +242,6 @@ exports.route = function(app) {
             rssEntries = [],
             events = [];
         // Grab the calendar data
-        console.log(CALENDAR_RSS_URL.replace('{{isoDateTime}}', toISODateString((new Date()))));
         request(CALENDAR_RSS_URL.replace('{{isoDateTime}}', toISODateString((new Date()))))
             .on('response', function() {
                 // Pipe the calendar data into the feed parser
