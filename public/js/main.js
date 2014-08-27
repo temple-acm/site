@@ -329,7 +329,6 @@
                 // Logout function
                 $scope.logout = function() {
                     loginService.logOut().success(function(data, status, headers, config) {
-                        console.log("Logged out successfully"); //TODO: Remove console.log()s
                         $('#session-panel').css('display', 'none');
                         $rootScope.isLoggedIn = false;
                         $rootScope.loggedInFirstName = undefined;
@@ -435,13 +434,9 @@
 							$rootScope.registered = true;
 							service.redirectToPaypal(data.userName);
 						}).error(function(data, status, headers, config) {
-							// TODO show an error modal
-							toastr.error('Could not submit registration form. Check the console for details.');
-							console.log('problem', data);
+							toastr.error('Could not submit registration form.');
 						});
 					} else {
-						// TODO modal or something
-						// $('#register-modal').modal('show');
 						toastr.warning('The form is not yet complete. Please ensure the form is valid.');
 					}
 				};
@@ -600,12 +595,10 @@
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
                             $rootScope.isLoggedIn = true;
-                            console.log($scope.isLoggedIn); //TODO: Remove console.log()s
                             $rootScope.loggedInFirstName = data.firstName;
                             $rootScope.hideCard();
                             $('#session-panel').css('display', 'block');
                         }).error(function(data, status, headers, config) {
-							//TODO: I guess throw back an error? But the frontend has no way to render it.
 							toastr.error('Could not log in. Replace this with something that looks nice.', 'Error');
 						});
 					} else {
