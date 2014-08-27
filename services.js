@@ -212,6 +212,11 @@ exports.route = function(app) {
             })(req, res, next);
         });
 
+    app.get('/members/logout', function(req, res) {
+        req.logout();
+        res.send(200, "true");
+    });
+
     app.get('/members/isLoggedIn', function(req, res) {
         if (req.user) {
             res.send(200, req.user[0]);

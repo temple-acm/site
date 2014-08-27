@@ -208,6 +208,12 @@
 						url: '/members/isLoggedIn'
 					});
 				};
+                this.logOut = function() {
+                    return $http({
+                        method: 'GET',
+                        url: '/members/logout'
+                    });
+                };
 			}
 		]);
 		module.service('OfficersSvc', ['$http',
@@ -310,7 +316,7 @@
                 $rootScope.loggedInUserName = undefined;
 				loginService.isLoggedIn().success(function(data, status, headers, config) {
 					$scope.logInChecked = true;
-					if (data !== "false") { //TODO: Figure out a better notification system
+					if (status !== 401) {
 						$rootScope.isLoggedIn = true;
 						$rootScope.loggedInFirstName = data.firstName;
                         $('#session-panel').css('display', 'block');
@@ -320,6 +326,17 @@
                     console.log(data);
 				}); // I don't know if this is necessary.
 
+                // Logout function
+                $scope.logout = function() {
+                    loginService.logOut().success(function(data, status, headers, config) {
+                        console.log("Logged out successfully"); //TODO: Remove console.log()s
+                        $('#session-panel').css('display', 'none');
+                        $rootScope.isLoggedIn = false;
+                        $rootScope.loggedInFirstName = undefined;
+                    }).error(function(data, status, headers, config) {
+                        alert("Could not log out. Check that your internet isn't out");
+                    });
+                };
 				var $viewport = $('viewport'),
 					$navbar = $('.navbar-fixed-top'),
 					$nav = $('nav ul li a.page-scroll'),
@@ -582,10 +599,12 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-						    console.log("Logged in successfully ", data);
+						    console.log("Logged in successfully ", data); //TODO: Remove console.log()s
                             $rootScope.isLoggedIn = true;
-                            console.log($scope.isLoggedIn);
+                            console.log($scope.isLoggedIn); //TODO: Remove console.log()s
                             $rootScope.loggedInFirstName = data.firstName;
+                            $('#session-panel').css('display', 'block');
+					        $('overlay login').css('display', 'none');
                         }).error(function(data, status, headers, config) {
 							//TODO: I guess throw back an error? But the frontend has no way to render it.
 							alert('Could not log in. Replace this with something that looks nice.');
