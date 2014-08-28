@@ -538,15 +538,16 @@
 					// Now we can show the officers
 					$scope.officers = officers;
 					if ($scope.officers.length % 4 === 0) {
-						$scope.adWidth = 'col-sm-12 col-xs-12';
+						$scope.adWidth = 'col-md-12  col-sm-12 col-xs-12';
 					} else {
 						var mod = 4 - ($scope.officers.length % 4);
-						$scope.adWidth = 'col-sm-' + (mod * 3);
+						$scope.adWidth = 'col-md-' + (mod * 3);
 						if ($scope.officers.length % 2 === 0) {
-							$scope.adWidth += ' col-xs-12';
+							$scope.adWidth += ' col-sm-12';
 						} else {
-							$scope.adWidth += ' col-xs-6';
+							$scope.adWidth += ' col-sm-6';
 						}
+						$scope.adWidth += ' col-xs-12';
 					}
 					$scope.officersLoaded = true;
 				}).error(function(err) {
