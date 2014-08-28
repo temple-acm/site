@@ -399,7 +399,7 @@
 						$location.path('/' + section).replace();
 						if ($anchor.get(0)) {
 							$viewport.stop().animate({
-								scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 50)
+								scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 40)
 							}, 1500, 'easeInOutExpo');
 						}
 						// Hide the dropdown if it isn't already hidden
