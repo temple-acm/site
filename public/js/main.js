@@ -353,10 +353,22 @@
 						$scope.scrollTo();
 					} else if (url === '/register') {
 						$scope.showRegistration();
+						// Hide the dropdown if it isn't already hidden
+						if (!$dropdown.hasClass('collapse')) {
+							$dropdown.addClass('collapse');
+						}
 					} else if (url === '/login') {
 						$scope.showLogin();
+						// Hide the dropdown if it isn't already hidden
+						if (!$dropdown.hasClass('collapse')) {
+							$dropdown.addClass('collapse');
+						}
 					} else if (url === '/emailus') {
 						$scope.showEmailUs();
+						// Hide the dropdown if it isn't already hidden
+						if (!$dropdown.hasClass('collapse')) {
+							$dropdown.addClass('collapse');
+						}
 					} else {
 						setTimeout(function() {
 							$scope.scrollTo(url.substring(1));
