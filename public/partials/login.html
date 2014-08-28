@@ -2,22 +2,22 @@
     <div data-ng-switch="isLoggedIn" style="display: block; width: 100%;">
         <div ng-switch-default style="display: block; width: 100%;" ng-controller="LoginCtrl">
             <h1>Sign In</h1>
+            <p class="description">Enter the credentials you made during registraiton in the fields below. Ask for help in our <a href="https://tuacm.slack.com/signup/">slack channel</a> if you did not register through our website.</p>
             <form role="form" id="login-form" name="login" novalidate>
                 <div class="form-group">
-                    <div class="col-md-12">
-                        <label for="userIdText" style="margin-bottom: 0px;">User ID</label>
-                        <input type="text" class="form-control " name="userId" id="user-id-text" ng-model="user.userName" ng-text-change="onUserIdChanged()" placeholder="Enter your User ID" ng-text-change-delay="100" required>
+                    <div class="col-md-6">
+                        <label for="user-id-text" style="margin-bottom: 0px;">User Id</label>
+                        <input type="text" class="form-control " name="userId" id="user-id-text" ng-model="user.userName" placeholder="Your User Id" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="password-text" style="margin-bottom: 0px;">Password</label>
+                        <input type="password" class="form-control " name="password" id="password-text" ng-model="user.password" placeholder="Your Password" required>
                     </div>
                     <div class="col-md-12">
-                        <label for="passwordText" style="margin-bottom: 0px;">Password</label>
-                        <input type="password" class="form-control " name="password" id="password-text" ng-model="user.password" ng-text-change="onPasswordChanged()" placeholder="Password" required>
+                        <div class="alert alert-warning" ng-if="incompleteForm" style="text-align: center; font-size: 14px; margin-top: 0px;" role="alert"><span style="font-weight: bold;">Oops.</span> Make sure you finish filling out both fields before trying to authenticate.</div>
+                        <div class="alert alert-danger" ng-if="invalidCredentials" style="text-align: center; font-size: 14px; margin-top: 0px;" role="alert"><span style="font-weight: bold;">Oh snap!</span> The&nbsp;credentials&nbsp;you&nbsp;gave&nbsp;us&nbsp;were&nbsp;wrong! Please&nbsp;try&nbsp;again.</div>
+                        <button ng-click="submit(user)" class="btn btn-sign-in col-md-12">Login</button>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <br />
-                </div>
-                <div class="col-md-12" style="text-align: center;">
-                      <button ng-click="submit(user)" class="btn btn-success btn-login">Login</button>
                 </div>
             </form>
         </div>

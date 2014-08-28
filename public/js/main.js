@@ -208,12 +208,12 @@
 						url: '/members/isLoggedIn'
 					});
 				};
-                this.logOut = function() {
-                    return $http({
-                        method: 'GET',
-                        url: '/members/logout'
-                    });
-                };
+				this.logOut = function() {
+					return $http({
+						method: 'GET',
+						url: '/members/logout'
+					});
+				};
 			}
 		]);
 		module.service('OfficersSvc', ['$http',
@@ -251,7 +251,7 @@
 				});
 
 				// Card specific helper functions
-				var hideCard = $rootScope.hideCard = function() {
+				var hideCard = $rootScope.hideCard = function(callback) {
 					$overlay.animate({
 						scrollTop: '0px'
 					}, ANIM_DELAY, function() {
@@ -265,6 +265,7 @@
 							$('body').removeClass('noscroll');
 							setTimeout(function() {
 								$overlay.css('display', 'none');
+								if (callback) callback();
 							}, ANIM_DELAY);
 						}, ANIM_DELAY);
 					});
@@ -318,22 +319,22 @@
 					if (status !== 250) {
 						$rootScope.isLoggedIn = true;
 						$rootScope.loggedInUser = data;
-                        $('#session-panel').css('display', 'block');
+						$('#session-panel').css('display', 'block');
 					}
 				}).error(function(data, status, headers, config) {
 					$scope.logInChecked = true;
-                    console.log(data);
+					console.log(data);
 				}); // I don't know if this is necessary.
 
-                // Logout function
-                $scope.logout = function() {
-                    loginService.logOut().success(function(data, status, headers, config) {
-                        $('#session-panel').css('display', 'none');
-                        $rootScope.isLoggedIn = false;
-                    }).error(function(data, status, headers, config) {
-                        toastr.error("Could not log out. Check that you have a connection to the Internet.");
-                    });
-                };
+				// Logout function
+				$scope.logout = function() {
+					loginService.logOut().success(function(data, status, headers, config) {
+						$('#session-panel').css('display', 'none');
+						$rootScope.isLoggedIn = false;
+					}).error(function(data, status, headers, config) {
+						toastr.error("Could not log out. Check that you have a connection to the Internet.");
+					});
+				};
 				var $viewport = $('viewport'),
 					$navbar = $('.navbar-fixed-top'),
 					$nav = $('nav ul li a.page-scroll'),
@@ -588,19 +589,29 @@
 		// Login Controller
 		module.controller('LoginCtrl', ['$scope', '$rootScope', 'LoginSvc',
 			function($scope, $rootScope, service) {
+				$scope.incompleteForm = false;
+				$scope.invalidCredentials = false;
 				// Code that handles the "Login" form goes here
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-                            $rootScope.isLoggedIn = true;
-                            $rootScope.loggedInUser = data;
-                            $rootScope.hideCard();
-                            $('#session-panel').css('display', 'block');
-                        }).error(function(data, status, headers, config) {
-							toastr.error("Could not log in. Make sure you've typed your username and password properly.", 'Error');
+							$rootScope.isLoggedIn = true;
+							$rootScope.loggedInUser = data;
+							$rootScope.hideCard();
+
+							$scope.incompleteForm = false;
+							$scope.invalidCredentials = false;
+
+							$('#session-panel').css('display', 'block');
+						}).error(function(data, status, headers, config) {
+							$scope.incompleteForm = false;
+							$scope.invalidCredentials = true;
+							// Refocus the password field
+							$('#login-form #password-text').val('').focus();
 						});
 					} else {
-						toastr.warning('Could not submit login form, are you sure you typed everything in?', 'Warning');
+						$scope.incompleteForm = true;
+						$scope.invalidCredentials = false;
 					}
 				};
 			}
