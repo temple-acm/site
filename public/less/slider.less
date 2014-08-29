@@ -38,6 +38,27 @@ slider {
 		    	padding-left: 100px;
 		    	padding-right: 100px;
 		    }
+
+		    .btn-circle {
+			    width: 70px;
+			    height: 70px;
+			    margin-top: 15px;
+			    padding: 7px 16px;
+			    border: 2px solid @light;
+			    border-radius: 35px;
+			    font-size: 40px;
+			    color: @light;
+			    background: transparent;
+			    -webkit-transition: background .3s ease-in-out;
+			    -moz-transition: background .3s ease-in-out;
+			    transition: background .3s ease-in-out;
+			    &:hover,
+			    &:focus {
+			        outline: none;
+			        color: @light;
+			        background: fade(@light, 10%);
+			    }
+			}
 		}
 	}
 

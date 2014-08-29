@@ -608,14 +608,18 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-							$rootScope.isLoggedIn = true;
-							$rootScope.loggedInUser = data;
-							$rootScope.hideCard();
+							$rootScope.hideCard(function() {
+								$rootScope.$apply(function() {
+									$rootScope.isLoggedIn = true;
+									$rootScope.loggedInUser = data;
+								});
+								$scope.$apply(function() {
+									$scope.incompleteForm = false;
+									$scope.invalidCredentials = false;
+								});
 
-							$scope.incompleteForm = false;
-							$scope.invalidCredentials = false;
-
-							$('#session-panel').css('display', 'block');
+								$('#session-panel').css('display', 'block');
+							});
 						}).error(function(data, status, headers, config) {
 							$scope.incompleteForm = false;
 							$scope.invalidCredentials = true;
