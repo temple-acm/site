@@ -82,11 +82,11 @@ function toISODateString(d) {
 
 
 exports.route = function(app) {
-    // --------------------- SESSIONS AND THINGS! --------------------------------//
+// --------------------- SESSIONS AND THINGS! --------------------------------//
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // --------------------- ROUTES AND THINGS! ----------------------------------//
+// --------------------- ROUTES AND THINGS! ----------------------------------//
 
     // Main page route
     app.get('/', function(req, res) {
@@ -166,9 +166,9 @@ exports.route = function(app) {
             // Insert the new user
             req.db.collection('users').save(newUser, function(err, createdUser) {
                 if (err) {
-                    res.json(500, err);
+                    res.json(200, { "500" : err });
                 } else {
-                    res.json(200, createdUser);
+                    res.json(200, { "200" : createdUser });
                 }
             });
         }
@@ -196,18 +196,18 @@ exports.route = function(app) {
         function(req, res, next) {
             passport.authenticate('local', function(err, user, info) {
                 if (err) {
-                    return res.json(401, err);
+                    return res.json(200, {"500": "Internal Passport error" }); // This may never be called, since it's an internal Passport error
                 } else {
                     req.logIn(user, function(err) {
                         if (err) {
-                            return res.json(500, "Unspecified login error, please alert somebody in charge");
+                            return res.json(200, { "401" : "Unspecified login error" });
                         }
-                        return res.json(200, {
+                        return res.json(200, { "200": {
                             userName: user[0].userName,
                             firstName: user[0].firstName,
                             lastName: user[0].lastName,
                             picture: user[0].picture
-                        }); // We can add more fields here if needed
+                        }}); // We can add more fields here if needed
                     });
                 }
             })(req, res, next);
@@ -220,9 +220,14 @@ exports.route = function(app) {
 
     app.get('/members/isLoggedIn', function(req, res) {
         if (req.user) {
-            res.send(200, req.user[0]);
+            var loggedInUser = {
+                userName: req.user[0].userName,
+                firstName: req.user[0].firstName,
+                picture: req.user[0].picture
+            }
+            res.send(200, {"200": loggedInUser });
         } else {
-            res.send(250, "false");
+            res.send(200, { "401" : "false" });
         }
     });
 
@@ -231,9 +236,9 @@ exports.route = function(app) {
             officer: true
         }).toArray(function(err, officers) {
             if (err) {
-                res.json(500, err);
+                res.json(200, { "500" : err });
             } else {
-                res.json(200, officers);
+                res.json(200, { "200" : officers });
             }
         });
     });
@@ -249,7 +254,7 @@ exports.route = function(app) {
                 this.pipe(parser);
             })
             .on('error', function(err) {
-                res.json(500, err);
+                res.json(200, { "500" : err });
             });
         // Called when the parser grabs an RSS entry
         parser.on('readable', function() {
@@ -301,7 +306,7 @@ exports.route = function(app) {
                 events.push(evt);
             }
             // Return the list when we're done
-            res.json(events);
+            res.json(200, { "200" : events });
         });
     });
 
