@@ -11,7 +11,7 @@ nav a.navbar-brand {
     margin-bottom: 0;
     // border-bottom: 1px solid fade(@light, 30%);
     text-transform: uppercase;
-    font-family: "Montserrat","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: @heading-font;
     background-color: @dark;
 
     .navbar-brand {
@@ -93,9 +93,7 @@ nav a.navbar-brand {
         float: left;
         width: 100%;
         height: 50px;
-        margin-left: 10px;
-        margin-right: 10px;
-        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-family: @generic-font;
         text-transform: none;
         margin-left: 0px;
         margin-right: 0px;
@@ -118,14 +116,14 @@ nav a.navbar-brand {
         		display: block;
         		width: 100%;
         		font-size: 14px;
-        		font-family: "Helvetica Neue", Arial, sans-serif;
+        		font-family: @generic-font;
         	}
         	.is-logged-in {
         		display: block;
         		width: 100%;
         		text-transform: uppercase;
         		font-size: 9px;
-        		font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        		font-family: @heading-font;
         	}
         }
 
@@ -190,6 +188,7 @@ nav a.navbar-brand {
 
         #session-panel {
             width: auto;
+            margin-left: 15px;
 
             .sign-out {
                 float: left;
