@@ -91,31 +91,68 @@ nav a.navbar-brand {
         float: left;
         height: 50px;
         margin-left: 10px;
-        display: none;
+        margin-right: 10px;
         font-family: "Helvetica Neue", Arial, sans-serif;
         text-transform: none;
 
-        a#sign-out {
-            padding: 6px 15px;
-            border-radius: 38px;
-            margin: 7px 10px;
-            display: inline-block;
-
-            &:hover {
-                color: #fff;
-                background-color: #c9302c;
-                border-color: #ac2925;
-            }
+        .picture {
+        	float: left;
+        	margin-top: 7.5px;
+        	width: 35px;
+        	height: 35px;
+        	border-radius: 17.5px;
+        	vertical-align: middle;
         }
 
-        img {
-            width: 40px;
-            height: 40px;
+        .who {
+        	float: left;
+        	margin-left: 10px;
+        	margin-top: 7px;
+
+        	.user {
+        		display: block;
+        		width: 100%;
+        		font-size: 14px;
+        		font-family: "Helvetica Neue", Arial, sans-serif;
+        	}
+        	.is-logged-in {
+        		display: block;
+        		width: 100%;
+        		text-transform: uppercase;
+        		font-size: 9px;
+        		font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        	}
         }
 
-        div {
-            display: inline-block;
-            padding-top: 5px;
+        .sign-out {
+        	float: left;
+        	height: 100%;
+        	width: 0px;
+        	display: block;
+        	overflow: hidden;
+        	-webkit-transition: width .3s ease-in-out;
+            -moz-transition: width .3s ease-in-out;
+            transition: width .3s ease-in-out;
+
+        	.btn {
+        		padding: 6px 15px;
+	            border-radius: 38px;
+	            margin: 7px 10px;
+	            margin-right: 0px;
+	            display: inline-block;
+
+	            &:hover {
+	                color: #fff;
+	                background-color: #c9302c;
+	                border-color: #ac2925;
+	            }
+        	}
+        }
+
+        &:hover {
+        	.sign-out {
+        		width: 125px;
+        	}
         }
     }
 }
