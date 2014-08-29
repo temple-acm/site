@@ -129,7 +129,26 @@ exports.route = function(app) {
             });
         }
     });
-
+    /*
+     * This endpoint registers members. It takes in a serialized object with all
+     * the fields enumerated below, performs validation on them, and then commits
+     * the changes to the database and redirects the client to Paypal to give us
+     * money.
+     *
+     * Input:
+     *  All that stuff below, with the exceptions of "paid" and "officer", which
+     *  are provided defaults because for every newly registering user both should
+     *  be "false" until otherwise changed.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { "200" : newUser } where newUser is the newly-created user's
+     *      information.
+     *  Error:
+     *      status: 200
+     *      data: { "500" : err } where "err" is the database error.
+     */
     app.post('/members/register', function(req, res) {
         // TODO we need better validations here
         var newUser = {};
@@ -173,7 +192,8 @@ exports.route = function(app) {
             });
         }
     });
-    // Callback we get from successful payment from Paypal
+    // Callback we get from successful payment from Paypal.
+    // Updates the "paid" field for that user in the database.
     var paypalCallback = function(req, res) {
         var userName = req.param('userName');
         req.db.collection('users').update({
@@ -191,7 +211,28 @@ exports.route = function(app) {
     app.get('/members/payments/callback/:userName', paypalCallback);
     app.post('/members/payments/callback/:userName', paypalCallback);
 
-    // Login stuff
+    /*
+     * This endpoint logs in users. It takes in a serialized object representing
+     * a login request, and returns either an object with that user's relevant
+     * information from the database, or an error message.
+     *
+     * Input:
+     *  { "userName" : username, "password" : password } where username/password
+     *  are the inputted username/password. Note the spelling of "userName" in the
+     *  object.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { "200": [ userName, firstName, lastName, picture ] }
+     *  Error:
+     *      Internal Passport Error:
+     *          status: 200
+     *          data: { "500" : "Internal Passport error" }
+     *      Login credential error:
+     *          status: 200
+     *          data: { "401" : "Unspecified login error" }
+     */
     app.post('/members/login',
         function(req, res, next) {
             passport.authenticate('local', function(err, user, info) {
@@ -213,11 +254,31 @@ exports.route = function(app) {
             })(req, res, next);
         });
 
+    /*
+     * The simplest endpoint in this mess. Logs people out. Can't actually go
+     * wrong, I think. It just makes one call to Passport's session stuff and
+     * sends a 200 back. Beautiful. Simple. Perfect (almost).
+     */
     app.get('/members/logout', function(req, res) {
         req.logout();
         res.send(200, "true");
     });
 
+    /*
+     * This endpoint queries for an active user object in the session. If one
+     * exists, then we can confidently say that there is a logged-in user in
+     * this session and we send that user's information back. If not, we return
+     * the error string "false".
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: {"200" : loggedInUser }, where loggedInUser is the user object the current
+     *      session belongs to.
+     *  Error:
+     *      status: 200
+     *      data: Object { "401" : "false" }
+     */
     app.get('/members/isLoggedIn', function(req, res) {
         if (req.user) {
             var loggedInUser = {
@@ -231,6 +292,20 @@ exports.route = function(app) {
         }
     });
 
+    /*
+     * This endpoint retrieves the entries for all the active ACM officers from
+     * the database. It does so by finding all entries in the 'users' collection
+     * that have the boolean flag "officer" set to true.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { "200" : officers } where "officers" is a list of the officers'
+     *      user objects.
+     *  Error:
+     *      status: 200
+     *      data: { "500": err } where "err" is the error message.
+     */
     app.get('/members/officers', function(req, res) {
         req.db.collection('users').find({
             officer: true
@@ -243,6 +318,20 @@ exports.route = function(app) {
         });
     });
 
+    /*
+     * This endpoint retrieves ACM Google Calendar data from the publically-available
+     * XML feed. It then collects the next (read: upcoming) three entries and sends
+     * them back as an array of objects.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { "200" : events } where "events" is an array of event objects.
+     *  Error:
+     *      If XML request fails:
+     *          status: 200
+     *          data: { "500" : err } where "err" is the error message returned
+     */
     app.get('/events/calendar', function(req, res) {
         var parser = new FeedParser(),
             rssEntries = [],
