@@ -1,8 +1,13 @@
 footer {
 	background: #303030;
 	color: #888;
-	padding-top: 10px;
+	display: table;
+	width: 100%;
+	padding-left: 45px;
+	padding-right: 45px;
 	padding-bottom: 10px;
+	padding-top: 10px;
+	border-top: 1px solid rgba(0,0,0,.2);
 
 	p {
 		margin: 0px;
@@ -10,13 +15,11 @@ footer {
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 14px;
 		letter-spacing: 0.4px;
+		text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.6);
 	}
 
 	.copyright {
 		float: none;
-		padding-left: 15px;
-		padding-top: 15px;
-		padding-bottom: 15px;
 	}
 
 	.powered-by {
@@ -29,17 +32,12 @@ footer {
 	footer {
 		.copyright {
 			float: left;
-			padding-left: 15px;
-			padding-top: 15px;
-			padding-bottom: 15px;
+			display: block;
 		}
 
 		.powered-by {
 			display: block;
 			float: right;
-			padding-top: 15px;
-			padding-bottom: 15px;
-			padding-right: 15px;
 		}
 	}
 }

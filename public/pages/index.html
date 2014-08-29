@@ -27,14 +27,14 @@
         <viewport>
             <!-- Navigation -->
             <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" data-ng-controller="NavCtrl">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" ng-click="toggleMobileNavMenu()">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <a class="navbar-brand page-scroll" data-ng-click="scrollTo()">Temple ACM</a>
-                    </div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" ng-click="toggleMobileNavMenu()">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand page-scroll" data-ng-click="scrollTo()">Temple ACM</a>
+                </div>
 
+<<<<<<< HEAD
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                         <ul class="nav navbar-nav">
@@ -64,48 +64,93 @@
                         <div style="display: none;" id="session-panel">
                             <div><img ng-src={{loggedInUser.picture}} />  {{loggedInUser.userName}}</div>
                             <a id="sign-out" class="btn btn-danger" ng-click="logout()">Sign Out</a>
+=======
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="about">About</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="events">Events</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="officers">Officers</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="contact">Contact</a>
+                        </li>
+                        <li ng-if="!isLoggedIn">
+                            <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
+                        </li>
+                        <li ng-if="!isLoggedIn">
+                            <a id="sign-in" class="btn btn-primary" data-ng-href="#/login" >Sign In</a>
+                        </li>
+                    </ul>
+                    <div style="display: none;" id="session-panel">
+                        <div class="picture" ng-bg-img="{{loggedInUser.picture}}"></div>
+                        <div class="who">
+                            <span class="user">{{loggedInUser.userName}}</span>
+                            <span class="is-logged-in">is logged in</span>
+                        </div>
+                        <div class="sign-out">
+                            <a class="btn btn-danger" ng-click="logout()">Sign Out</a>
+>>>>>>> 091424465d0d39d849f0e5d954fd06d8e588d926
                         </div>
                     </div>
-                    <!-- /.navbar-collapse -->
                 </div>
-                <!-- /.container -->
+                <!-- /.navbar-collapse -->
             </nav>
 
-            <!-- Intro Header -->
+            <!-- Intro Slider -->
             <header>
                 <!-- Filled in by the slider directive -->
                 <slider></slider>
             </header>
 
             <!-- About Section -->
-            <section id="about" class="container content-section text-center">
+            <section id="about" class="content-section text-center">
                 <div class="row">
+                    <h2 class="heading">About Us</h2>
+                    <!-- Split into rows to make grid formatting work -->
                     <div class="col-lg-6 col-xs-12 featurette-left">
-                        <div class="col-sm-6 col-xs-12">
-                            <i class="fa fa-desktop"></i>
-                            <h2>We Love<br>Computing.</h2>
-                            <div class="separator"></div>
-                            <p>We're dedicated to expanding the academic and professional knowledge of computing across campus. We are also dedicated to helping our students and faculty to cooperate and grow together. We are proud to be evangelists of our craft, and hope to enable some incredible technologists.</p>
+                        <div class="topic-cardholder col-sm-6 col-xs-12">
+                            <div class="topic-card">
+                                <i class="fa fa-desktop"></i>
+                                <h2>We Love<br>Computing</h2>
+                                <div class="separator"></div>
+                                <p>We're dedicated to expanding the academic and professional knowledge of computing across campus. We are also dedicated to helping our students and faculty to cooperate and grow together. We are proud to be evangelists of our craft, and hope to enable some incredible technologists.</p>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <i class="fa fa-users"></i>
-                            <h2>We Are a<br>Community.</h2>
-                            <div class="separator"></div>
-                            <p>We welcome people of all majors and creeds to join our meetings and events. We contend to connect students not only with a vast network of companies, but also to the ever-growing community of their peers. We can achieve anything through camraderie, dilligence and creativity.</p>
+                        <div class="topic-cardholder col-sm-6 col-xs-12">
+                            <div class="topic-card">
+                                <i class="fa fa-users"></i>
+                                <h2>We Are a<br>Community</h2>
+                                <div class="separator"></div>
+                                <p>We welcome people of all majors and creeds to join our meetings and events. We contend to connect students not only with a vast network of companies, but also to the ever-growing community of their peers. We can achieve anything through camraderie, dilligence and creativity.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-xs-12 featurette-right">
-                        <div class="col-sm-6 col-xs-12">
-                            <i class="fa fa-gears"></i>
-                            <h2>We Crave<br>Innovation.</h2>
-                            <div class="separator"></div>
-                            <p>We think that innovation is the key driver of technology. We try to emphasize the value of brainstorming at meetings and have a great culture around communal support for ideas within the group. While what we have already is great, life without iteration and progress is just boring.</p>
+                        <div class="topic-cardholder col-sm-6 col-xs-12">
+                            <div class="topic-card">
+                                <i class="fa fa-gears"></i>
+                                <h2>We Crave<br>Innovation</h2>
+                                <div class="separator"></div>
+                                <p>We think that innovation is the key driver of technology. We try to emphasize the value of brainstorming at meetings and have a great culture around communal support for ideas within the group. While what we have already is great, life without iteration and progress is just boring.</p>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <i class="fa fa-globe"></i>
-                            <h2>We Support<br>Open&nbsp;Source.</h2>
-                            <div class="separator"></div>
-                            <p>We support the open source movement and the technology thereof. We think that socializing the software development process is a beautiful. We use Github to collaborate on new projects as an organization. Knowing &amp; changing how your software behaves is almost as important as building it.</p>
+                        <div class="topic-cardholder col-sm-6 col-xs-12">
+                            <div class="topic-card">
+                                <i class="fa fa-globe"></i>
+                                <h2>We Support<br>Open&nbsp;Source</h2>
+                                <div class="separator"></div>
+                                <p>We support the open source movement and the technology thereof. We think that socializing the software development process is a beautiful. We use Github to collaborate on new projects as an organization. Knowing &amp; changing how your software behaves is almost as important as building it.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +189,7 @@
             </section>
 
             <!-- Officers Section -->
-            <section id="officers" class="container content-section text-center" data-ng-controller="OfficersCtrl">
+            <section id="officers" class="content-section text-center" data-ng-controller="OfficersCtrl">
                 <div class="row">
                     <h2>Our Officers</h2>
                     <div style="width: 100%; display: block;">
@@ -159,7 +204,9 @@
                                     <div class="picture" ng-bg-img="{{officer.picture}}"></div>
                                     <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
                                     <h5 class="title">{{officer.title}}</h5>
-                                    <p ng-bind-html="officer.bio"></p>
+                                    <div class="bio">
+                                        <p ng-bind-html="officer.bio"></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="officer-ad {{adWidth}}">
@@ -217,40 +264,7 @@
 
             <!-- Footer -->
             <footer>
-                <div class="container text-center">
-                    <p class="copyright">Copyright &copy; Temple ACM 2014</p>
-                    <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
-                </div>
+                <p class="copyright">Copyright &copy; Temple ACM 2014</p>
+                <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
             </footer>
-
-            <!-- Card Section -->
-            <overlay>
-                <div class="cardholder">
-                    <div class="card">
-                        <register><viewholder data-ng-include="'/static/partials/register.html'"></viewholder></register>
-                        <login><viewholder data-ng-include="'/static/partials/login.html'"></viewholder></login>
-                        <emailus><viewholder data-ng-include="'/static/partials/emailus.html'"></viewholder></emailus>
-                    </div>
-                </div>
-            </overlay>
-
-            <!-- Vendor JS -->
-
-            <!-- jQuery Version 1.11.0 -->
-            <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
-            <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>
-            <!-- Bootstrap 3.2.0 -->
-            <!-- <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script> -->
-            <!-- Angular 1.2.0 -->
-            <script src="/static/vendor/angular/angular.min.js"></script>
-            <!-- Angular-toastr Version something-or-other --!>
-            <script src="/static/vendor/toastr/toastr.min.js"></script>
-            <!-- Google Maps API -->
-            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-            <!-- Livereload -->
-
-            <!-- Custom JS -->
-            <script src="/static/js/main.js"></script>
-        </viewport>
-    </body>
 </html>
