@@ -34,37 +34,6 @@
                     <a class="navbar-brand page-scroll" data-ng-click="scrollTo()">Temple ACM</a>
                 </div>
 
-<<<<<<< HEAD
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-                        <ul class="nav navbar-nav">
-                            <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                            <li class="hidden">
-                                <a href="#page-top"></a>
-                            </li>
-                            <li>
-                                <a class="page-scroll link" data-section="about">About</a>
-                            </li>
-                            <li>
-                                <a class="page-scroll link" data-section="events">Events</a>
-                            </li>
-                            <li>
-                                <a class="page-scroll link" data-section="officers">Officers</a>
-                            </li>
-                            <li>
-                                <a class="page-scroll link" data-section="contact">Contact</a>
-                            </li>
-                            <li ng-if="!isLoggedIn">
-                                <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
-                            </li>
-                            <li ng-if="!isLoggedIn">
-                                <a id="sign-in" class="btn btn-primary" data-ng-href="#/login" >Sign In</a>
-                            </li>
-                        </ul>
-                        <div style="display: none;" id="session-panel">
-                            <div><img ng-src={{loggedInUser.picture}} />  {{loggedInUser.userName}}</div>
-                            <a id="sign-out" class="btn btn-danger" ng-click="logout()">Sign Out</a>
-=======
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
@@ -99,7 +68,6 @@
                         </div>
                         <div class="sign-out">
                             <a class="btn btn-danger" ng-click="logout()">Sign Out</a>
->>>>>>> 091424465d0d39d849f0e5d954fd06d8e588d926
                         </div>
                     </div>
                 </div>
@@ -267,4 +235,35 @@
                 <p class="copyright">Copyright &copy; Temple ACM 2014</p>
                 <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
             </footer>
+
+            <!-- Card Section -->
+            <overlay>
+                <div class="cardholder">
+                    <div class="card">
+                        <register><viewholder data-ng-include="'/static/partials/register.html'"></viewholder></register>
+                        <login><viewholder data-ng-include="'/static/partials/login.html'"></viewholder></login>
+                        <emailus><viewholder data-ng-include="'/static/partials/emailus.html'"></viewholder></emailus>
+                    </div>
+                </div>
+            </overlay>
+
+            <!-- Vendor JS -->
+
+            <!-- jQuery Version 1.11.0 -->
+            <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+            <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>
+            <!-- Bootstrap 3.2.0 -->
+            <!-- <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script> -->
+            <!-- Angular 1.2.0 -->
+            <script src="/static/vendor/angular/angular.min.js"></script>
+            <!-- Angular-toastr Version something-or-other --!>
+            <script src="/static/vendor/toastr/toastr.min.js"></script>
+            <!-- Google Maps API -->
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+            <!-- Livereload -->
+
+            <!-- Custom JS -->
+            <script src="/static/js/main.js"></script>
+        </viewport>
+    </body>
 </html>
