@@ -89,11 +89,14 @@ nav a.navbar-brand {
     }
     #session-panel {
         float: left;
+        width: 100%;
         height: 50px;
         margin-left: 10px;
         margin-right: 10px;
         font-family: "Helvetica Neue", Arial, sans-serif;
         text-transform: none;
+        margin-left: 0px;
+        margin-right: 0px;
 
         .picture {
         	float: left;
@@ -125,9 +128,9 @@ nav a.navbar-brand {
         }
 
         .sign-out {
-        	float: left;
+            float: right;
+            width: auto;
         	height: 100%;
-        	width: 0px;
         	display: block;
         	overflow: hidden;
         	-webkit-transition: width .3s ease-in-out;
@@ -151,7 +154,7 @@ nav a.navbar-brand {
 
         &:hover {
         	.sign-out {
-        		width: 125px;
+        		width: auto;
         	}
         }
     }
@@ -184,7 +187,18 @@ nav a.navbar-brand {
         }
 
         #session-panel {
-            display: block;
+            width: auto;
+
+            .sign-out {
+                float: left;
+                width: 0px;
+            }
+
+            &:hover {
+                .sign-out {
+                    width: 125px;
+                }
+            }
         }
         .nav li a#sign-in {
             margin-left: 0px;

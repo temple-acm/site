@@ -321,8 +321,8 @@
 						$rootScope.loggedInUser = data["200"];
 						$('#session-panel').css('display', 'block');
 					} else {
-                        $rootScope.isLoggedIn = false;
-                    }
+						$rootScope.isLoggedIn = false;
+					}
 				});
 
 				// Logout function
@@ -330,6 +330,10 @@
 					loginService.logOut().success(function(data, status, headers, config) {
 						$('#session-panel').css('display', 'none');
 						$rootScope.isLoggedIn = false;
+						// Hide the dropdown if it isn't already hidden
+						if (!$dropdown.hasClass('collapse')) {
+							$dropdown.addClass('collapse');
+						}
 					}).error(function(data, status, headers, config) {
 						toastr.error("Could not log out. Check that you have a connection to the Internet.");
 					});
@@ -440,13 +444,13 @@
 					if ($scope.registration.$valid) {
 						service.registerUser(user).success(function(data, status, headers, config) {
 							if ("200" in data) {
-                                $rootScope.me = data["200"];
-							    // Pass the id as a reference
-							    $rootScope.registered = true;
-							    service.redirectToPaypal(data["200"].userName);
-                            } else {
-                                toastr.error("Could not submit registration form.");
-                            }
+								$rootScope.me = data["200"];
+								// Pass the id as a reference
+								$rootScope.registered = true;
+								service.redirectToPaypal(data["200"].userName);
+							} else {
+								toastr.error("Could not submit registration form.");
+							}
 						});
 					} else {
 						toastr.warning('The form is not yet complete. Please ensure the form is valid.');
@@ -519,18 +523,18 @@
 				$scope.eventsLoaded = false;
 				// Code that handles the "Upcoming Events" section of the main page goes here
 				service.getEvents().success(function(events) {
-                    if ("200" in events) {
-                        events = events["200"]; // trying this
-					    // HTML escape the description field
-					    for (var i = 0; i < events.length; i++) {
-						    events[i].description = $sce.trustAsHtml(events[i].description);
-					    }
-					    // Now its safe to show the events
-					    $scope.events = events;
-					    $scope.eventsLoaded = true;
-                    } else {
-                        console.log("Could not load events.");
-                    }
+					if ("200" in events) {
+						events = events["200"]; // trying this
+						// HTML escape the description field
+						for (var i = 0; i < events.length; i++) {
+							events[i].description = $sce.trustAsHtml(events[i].description);
+						}
+						// Now its safe to show the events
+						$scope.events = events;
+						$scope.eventsLoaded = true;
+					} else {
+						console.log("Could not load events.");
+					}
 				});
 			}
 		]);
@@ -546,31 +550,31 @@
 				$scope.officersLoaded = false;
 				// Code that handles the "Officers" section of the main page goes here
 				service.getOfficers().success(function(officers) {
-                    if ("200" in officers) {
-                        officers = officers["200"]; // trying this
-					    // HTML escape the description field
-					    for (var i = 0; i < officers.length; i++) {
-						    officers[i].bio = $sce.trustAsHtml(officers[i].bio);
-						    officers[i].title = officers[i].title || 'Officer';
-					    }
-					    // Now we can show the officers
-					    $scope.officers = officers;
-					    if ($scope.officers.length % 4 === 0) {
-						    $scope.adWidth = 'col-md-12  col-sm-12 col-xs-12';
-					    } else {
-						    var mod = 4 - ($scope.officers.length % 4);
-						    $scope.adWidth = 'col-md-' + (mod * 3);
-						    if ($scope.officers.length % 2 === 0) {
-							    $scope.adWidth += ' col-sm-12';
-						    } else {
-							    $scope.adWidth += ' col-sm-6';
-						    }
-						    $scope.adWidth += ' col-xs-12';
-					    }
-					    $scope.officersLoaded = true;
-                    } else {
-                        console.log("Could not load officers.");
-                    }
+					if ("200" in officers) {
+						officers = officers["200"]; // trying this
+						// HTML escape the description field
+						for (var i = 0; i < officers.length; i++) {
+							officers[i].bio = $sce.trustAsHtml(officers[i].bio);
+							officers[i].title = officers[i].title || 'Officer';
+						}
+						// Now we can show the officers
+						$scope.officers = officers;
+						if ($scope.officers.length % 4 === 0) {
+							$scope.adWidth = 'col-md-12  col-sm-12 col-xs-12';
+						} else {
+							var mod = 4 - ($scope.officers.length % 4);
+							$scope.adWidth = 'col-md-' + (mod * 3);
+							if ($scope.officers.length % 2 === 0) {
+								$scope.adWidth += ' col-sm-12';
+							} else {
+								$scope.adWidth += ' col-sm-6';
+							}
+							$scope.adWidth += ' col-xs-12';
+						}
+						$scope.officersLoaded = true;
+					} else {
+						console.log("Could not load officers.");
+					}
 				});
 			}
 		]);
@@ -615,21 +619,21 @@
 				$scope.submit = function(user) {
 					if ($scope.login.$valid) {
 						service.logInUser(user).success(function(data, status, headers, config) {
-                            if ("200" in data) {
-							    $rootScope.isLoggedIn = true;
-							    $rootScope.loggedInUser = data["200"];
-							    $rootScope.hideCard();
+							if ("200" in data) {
+								$rootScope.isLoggedIn = true;
+								$rootScope.loggedInUser = data["200"];
+								$rootScope.hideCard();
 
-							    $scope.incompleteForm = false;
-							    $scope.invalidCredentials = false;
+								$scope.incompleteForm = false;
+								$scope.invalidCredentials = false;
 
-							    $('#session-panel').css('display', 'block');
-                            } else {
-                                $scope.incompleteForm = false;
-                                $scope.invalidCredentials = true;
-                                // Refocus the password field
-                                $('#login-form #password-text').val('').focus();
-                            }
+								$('#session-panel').css('display', 'block');
+							} else {
+								$scope.incompleteForm = false;
+								$scope.invalidCredentials = true;
+								// Refocus the password field
+								$('#login-form #password-text').val('').focus();
+							}
 						});
 					} else {
 						$scope.incompleteForm = true;
