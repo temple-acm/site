@@ -64,8 +64,9 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-12">
-                        <label for="membershipNum">ACM Membership Number</label>
-                        <input type="text" class="form-control" name="membership" id="membershipNum" ng-model="user.membership" placeholder="If you have an ACM National account, put your membership number here.">
+                        <label for="membership-num" style="margin-bottom: 0px;">ACM Membership Number<span class="red-asterisk">*</span></label>
+                        <p class="upload-label help-block" style="margin-top: 0px; margin-bottom: 10px;">We need your ACM national membership number. If you haven't signed up with national yet, <a href="https://campus.acm.org/public/qj/quickjoin/qj_control.cfm?promo=PWEBTOP&form_type=Student">click here</a>.</p>
+                        <input type="text" class="form-control" name="membership" id="membership-num" ng-model="user.membership" placeholder="If you have an ACM National account, put your membership number here." required>
                     </div>
                 </div>
                 <div class="form-group">
