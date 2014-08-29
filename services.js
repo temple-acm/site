@@ -176,7 +176,7 @@ exports.route = function(app) {
         else if (!newUser.bio && newUser.bio.length > 0) res.send(500, 'bio property is invalid.');
         else if (!newUser.major && newUser.major.length > 0) res.send(500, 'major property is invalid.');
         else if (!newUser.studentLevel && newUser.studentLevel.length > 0) res.send(500, 'studentLevel property is invalid.');
-        else if (!newUser.password && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/ig.test(newUser.password)) res.send(500, 'password property is invalid.');
+        else if (!newUser.password && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/ig.test(newUser.password)) res.send(500, 'password property is invalid.');
         else {
             // TODO double check the user name
             // TODO double check the email
