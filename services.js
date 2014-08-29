@@ -172,7 +172,7 @@ exports.route = function(app) {
         if (!newUser.userName && newUser.userName.length > 0) res.send(500, 'userName property is invalid.');
         else if (!newUser.firstName && newUser.firstName.length > 0) res.send(500, 'firstName property is invalid.');
         else if (!newUser.lastName && newUser.lastName.length > 0) res.send(500, 'lastName property is invalid.');
-        else if (!newUser.email && newUser.email.length > 0) res.send(500, 'email property is invalid.');
+        else if (!newUser.email && newUser.email.length > 0 && /^.*@.*$/i.test(newUser.email)) res.send(500, 'email property is invalid.');
         else if (!newUser.bio && newUser.bio.length > 0) res.send(500, 'bio property is invalid.');
         else if (!newUser.major && newUser.major.length > 0) res.send(500, 'major property is invalid.');
         else if (!newUser.studentLevel && newUser.studentLevel.length > 0) res.send(500, 'studentLevel property is invalid.');
@@ -202,7 +202,7 @@ exports.route = function(app) {
             paid: true
         }, {}, function(err) {
             if (err) {
-                console.log('Could not mark user "', userName, '" paid.', err);
+                console.log('Could not mark user "', userName, '" paid.');
             } else {
                 console.log('User "', userName, '" is marked paid.');
             }
