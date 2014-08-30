@@ -68,42 +68,47 @@
 		}
 	]);
 	// Text change directive
-	module.directive('ngTextChange', [
+	module.directive('ngTextChange', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attrs) {
+				var delay = attrs.ngTextChangeDelay || 100;
 
-		function() {
-			return {
-				restrict: 'A',
-				link: function(scope, element, attrs) {
-					var delay = attrs.ngTextChangeDelay || 100;
+				var typingTimer;
+				var fireEvent = function() {
+					scope.$eval(attrs.ngTextChange);
+				};
 
-					var typingTimer;
-					var fireEvent = function() {
-						scope.$eval(attrs.ngTextChange);
-					};
-
-					element.keyup(function() {
-						clearTimeout(typingTimer);
-						typingTimer = setTimeout(fireEvent, delay);
-					});
-					element.keydown(function() {
-						clearTimeout(typingTimer);
-					});
-					element.blur(function() {
-						clearTimeout(typingTimer);
-						fireEvent();
-					});
-				}
-			};
-		}
-	]);
+				element.keyup(function() {
+					clearTimeout(typingTimer);
+					typingTimer = setTimeout(fireEvent, delay);
+				});
+				element.keydown(function() {
+					clearTimeout(typingTimer);
+				});
+				element.blur(function() {
+					clearTimeout(typingTimer);
+					fireEvent();
+				});
+			}
+		};
+	});
 	// Background image loading directive
 	module.directive('ngBgImg', function() {
 		return function(scope, element, attrs) {
 			attrs.$observe('ngBgImg', function(value) {
-				element.css({
-					'background-image': 'url(' + value + ')',
-					'background-size': 'cover'
-				});
+				var args = {};
+				if (value && value !== '') {
+					args['background-image'] = 'url(' + value + ')';
+					args['background-size'] = 'cover';
+				} else if (attrs['default'] && attrs['default'] !== '') {
+					args['background-image'] = 'url(' + attrs['default'] + ')';
+					args['background-size'] = 'cover';
+				} else {
+					args['background-color'] = '#bcbcbc';
+				}
+
+				element.css(args);
 			});
 		};
 	});
