@@ -33,7 +33,7 @@ gulp.task('server', function() {
     }).on('start', function() {
         setTimeout(function() {
             open('https://localhost:3000/');
-        }, 1000);
+        }, 3000);
     });
 });
 // Task responsible for assembling js
