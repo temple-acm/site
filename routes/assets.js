@@ -16,7 +16,7 @@ exports.route = function(app) {
 		req.db.collection('slides').find().sort({
 			order: 1
 		}).toArray(function(err, results) {
-			res.json(results);
+			res.status(200).json(results);
 		});
 	});
 };
