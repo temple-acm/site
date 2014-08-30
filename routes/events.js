@@ -45,6 +45,7 @@ exports.route = function(app) {
 				this.pipe(parser);
 			})
 			.on('error', function(err) {
+                logger.log('error', err);
 				res.status(200).json({
 					'500': 'Error retriving calendar data'
 				});

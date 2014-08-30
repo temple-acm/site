@@ -9,6 +9,7 @@ exports.route = function(app) {
 			paid: true
 		}, {}, function(err) {
 			if (err) {
+                logger.log('error', err);
 				console.log('Could not mark user "', userName, '" paid.');
 			} else {
 				console.log('User "', userName, '" is marked paid.');
