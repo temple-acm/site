@@ -75,7 +75,7 @@ exports.route = function(app) {
 				userName: userName
 			}).toArray(function(err, results) {
 				if (err) {
-					res.status(500).json(err);
+					res.status(500).json('Error looking up users');
 				} else {
 					res.status(200).send(!results || results.length === 0);
 				}
@@ -140,7 +140,7 @@ exports.route = function(app) {
 			req.db.collection('users').save(newUser, function(err, createdUser) {
 				if (err) {
 					res.status(200).json({
-						'500': err
+						'500': 'Error saving new user'
 					});
 				} else {
 					res.status(200).json({
@@ -259,10 +259,17 @@ exports.route = function(app) {
 	app.get('/members/officers', function(req, res) {
 		req.db.collection('users').find({
 			officer: true
-		}).toArray(function(err, officers) {
+		},
+        {
+            firstName:1,
+            lastName:1,
+            picture:1,
+            title:1,
+            bio:1
+        }).toArray(function(err, officers) {
 			if (err) {
 				res.status(200).json({
-					'500': err
+					'500': "Error retrieving officers"
 				});
 			} else {
 				res.status(200).json({

@@ -46,7 +46,7 @@ exports.route = function(app) {
 			})
 			.on('error', function(err) {
 				res.status(200).json({
-					'500': err
+					'500': 'Error retriving calendar data'
 				});
 			});
 		// Called when the parser grabs an RSS entry
