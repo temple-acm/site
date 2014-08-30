@@ -5,3 +5,4 @@ public/css/main.css
 node_modules/
 *.log
 public/vendor
+public/dist

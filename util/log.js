@@ -21,14 +21,12 @@ const DEFAULT_LOGS_FOLDER_NAME = "logs";
 var logPath = path.join(__dirname, DEFAULT_LOGS_FOLDER_NAME);
 if (!fs.existsSync(logPath) || !fs.statSync(logPath).isDirectory()) {
     // Log path doesn't exist, so we need to create it
-    console.log("UH OH: Log folder path '" + logPath + "' isn't a thing - fixing that.");
+    console.log("Log folder path '" + logPath + "' isn't a thing - fixing that.");
     try {
         fs.mkdirSync(logPath);
-        console.log("PHEW: Ok, the log folder was created successfully.");
     } catch (err) {
         // If we can't create the log path, we're in a wold of hurt
-        console.log("UH OH: Dude, I couldn't create the log folder:: " + err.message + ".");
-        console.log("UH OH: Now Exiting.");
+        console.log("UH OH: Dude, I couldn't create the log folder: ", err);
         exit(1);
     }
 }
