@@ -17,7 +17,7 @@ var toISODateString = function(d) {
 	return d.getUTCFullYear() + '-' + padDigit(d.getUTCMonth() + 1) + '-' + padDigit(d.getUTCDate()) + 'T' + padDigit(d.getUTCHours()) + ':' + padDigit(d.getUTCMinutes()) + ':' + padDigit(d.getUTCSeconds()) + 'Z';
 };
 
-/******************************** MEMBER ROUTES *******************************/
+/******************************** EVENTS ROUTES *******************************/
 
 exports.route = function(app) {
 	/*

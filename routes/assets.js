@@ -4,7 +4,7 @@ var path = require('path');
 
 var INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'pages', 'index.html');
 
-/******************************** MEMBER ROUTES *******************************/
+/******************************** ASSET ROUTES ********************************/
 
 exports.route = function(app) {
 	// Main page route
