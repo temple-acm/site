@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var fs = require('fs');
 var rename = require('gulp-rename');
+var open = require('open');
 // CSS related build tools
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
@@ -29,6 +30,10 @@ gulp.task('server', function() {
         script: 'server.js',
         ext: 'js',
         ignore: ['public/*']
+    }).on('start', function() {
+        setTimeout(function() {
+            open('https://localhost:3000/');
+        }, 1000);
     });
 });
 // Task responsible for assembling js
@@ -45,16 +50,10 @@ gulp.task('js', function() {
         .pipe(uglify())
         .pipe(gulp.dest('public/dist'));
 });
-// Task responsible for livereloading
-gulp.task('reload', function() {
-    livereload.changed();
-});
-
+// Task readies for deployment
+gulp.task('deploy', ['less', 'js'], function() {});
+// Starts the dev server
 gulp.task('default', ['less', 'js', 'server'], function() {
-    livereload.listen({
-        key: fs.readFileSync('ssl/key.pem'),
-        cert: fs.readFileSync('ssl/cert.crt')
-    });
     gulp.watch('public/js/**', ['js']);
     gulp.watch('public/less/**', ['less']);
 });
