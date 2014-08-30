@@ -17,9 +17,7 @@ gulp.task('less', function() {
     // Build it
     gulp.src(['public/less/main.less'])
         .pipe(less())
-        .pipe(gulp.dest('public/dist'));
-    // Minify it
-    gulp.src('public/dist/main.css')
+        .pipe(gulp.dest('public/dist'))
         .pipe(rename('main.min.css'))
         .pipe(minifyCSS())
         .pipe(gulp.dest('public/dist'));
@@ -43,9 +41,7 @@ gulp.task('js', function() {
         .pipe(sourcemaps.init())
         .pipe(concat('main.js'))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('public/dist'));
-    // Minify it
-    gulp.src('public/dist/main.js')
+        .pipe(gulp.dest('public/dist'))
         .pipe(rename('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('public/dist'));
