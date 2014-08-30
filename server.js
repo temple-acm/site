@@ -7,7 +7,7 @@
 
 var fs = require('fs'); // Node.js internal filesystem module
 var path = require('path'); // Node.js internal pathing utility module
-var https = require('https');
+var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
 var express = require('express'),
     morgan = require('morgan'), // Logger
@@ -87,8 +87,8 @@ app.use('/static/vendor', express.static(path.join(__dirname, 'public', 'vendor'
 // Start the app by listening on <port>
 var port = process.env.TUACM_PORT || 3000;
 // Create an HTTPS service
-https.createServer(httpsOpts, app).listen(port, '0.0.0.0');
-logger.info('HTTPS server started on port 0.0.0.0:%d.', port);
+http.createServer(app).listen(port, '0.0.0.0');
+logger.info('HTTP server started on port 0.0.0.0:%d.', port);
 
 /******************************************* EXPORTS **********************************************/
 
