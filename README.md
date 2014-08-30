@@ -39,7 +39,7 @@ Install dependencies:
     
   Then open a browser and go to:
 
-    http://localhost:3000
+    https://localhost:3000
     
   OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
 
