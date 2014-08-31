@@ -39,6 +39,7 @@
     "nodemailer": "latest",
     "passport": "latest",
     "passport-local": "latest",
+    "paypal-ipn": "^1.0.1",
     "peer": "latest",
     "request": "^2.40.0",
     "serve-favicon": "latest",
