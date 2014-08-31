@@ -35,6 +35,7 @@ gulp.task('html', function() {
         .pipe(replace('{{.css}}', '.css'))
         .pipe(replace('{{.js}}', '.js'))
         .pipe(replace('{{.html}}', '.html'))
+        .pipe(replace('</body>', '<script src="http://localhost:35729/livereload.js"></script></body>'))
         .pipe(gulp.dest('public/dist'));
     gulp.src(['public/partials/*.html'])
         .pipe(rename({
