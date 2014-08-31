@@ -93,7 +93,6 @@ app.use(ErrorHandler({
 // File server endpoints for static assets
 app.use('/static/dist', express.static(path.join(__dirname, 'public', 'dist')));
 app.use('/static/img', express.static(path.join(__dirname, 'public', 'img')));
-app.use('/static/partials', express.static(path.join(__dirname, 'public', 'partials')));
 app.use('/static/vendor', express.static(path.join(__dirname, 'public', 'vendor')));
 // Start the app by listening on <port>
 var port = parseInt(process.env.TUACM_PORT);
