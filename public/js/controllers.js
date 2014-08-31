@@ -3,6 +3,7 @@
 	if (!app) app = window._$_app = angular.module('site', ['directives', 'services', 'controllers']);
 	// Some constants / variables
 	var EMAIL_REGEX = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i;
+	var PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/;
 	// Main Controller
 	module.controller('MainCtrl', ['$scope', '$location', '$rootScope',
 		function($scope, $location, $rootScope) {
@@ -331,7 +332,7 @@
 			$scope.onPasswordChanged = function() {
 				var pass = $('#register-form #password-text').val();
 				var conf = $('#register-form #confirm-password-text').val();
-				if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/gm.test(pass)) {
+				if (PASSWORD_REGEX.test(pass)) {
 					if (pass === conf) {
 						$('#register-form #password-indicator').addClass('good');
 						$('#register-form #password-indicator').html('This password is valid.');

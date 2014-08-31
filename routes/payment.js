@@ -6,13 +6,13 @@ exports.route = function(app) {
 		req.db.collection('users').update({
 			userName: userName
 		}, {
-			paid: true
+			paid: true,
+			dateLastPaid: (new Date()).getTime()
 		}, {}, function(err) {
 			if (err) {
-                logger.log('error', err);
-				console.log('Could not mark user "', userName, '" paid.');
+				logger.log('error', 'could not mark user paid', err);
 			} else {
-				console.log('User "', userName, '" is marked paid.');
+				logger.log('debug', 'User "', userName, '" is marked paid.');
 			}
 		});
 	};

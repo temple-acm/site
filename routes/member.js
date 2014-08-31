@@ -1,5 +1,6 @@
 var passport = require('passport'),
 	bcrypt = require('bcrypt'),
+	async = require('async'),
 	ObjectId = require('mongodb').ObjectID,
 	LocalStrategy = require('passport-local').Strategy;
 
@@ -48,6 +49,8 @@ passport.deserializeUser(function(req, id, done) {
 /******************************* MODULE HELPERS *******************************/
 
 var SALT_FACTOR = 10;
+var EMAIL_REGEX = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i;
+var PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/;
 // Helper function to create password hashes
 var saltAndHash = function(password) {
 	var salt = bcrypt.genSaltSync(SALT_FACTOR);
@@ -146,46 +149,120 @@ exports.route = function(app) {
 		// TODO we need better validations here
 		var newUser = {};
 
-		newUser.userName = req.body.userName;
-		newUser.firstName = req.body.firstName;
-		newUser.lastName = req.body.lastName;
-		newUser.email = req.body.email;
+		newUser.userName = req.body.userName; // Required
+		newUser.firstName = req.body.firstName; // Required
+		newUser.lastName = req.body.lastName; // Required
+		newUser.email = req.body.email; // Required
 		newUser.github = req.body.github;
 		newUser.twitter = req.body.twitter;
 		newUser.facebook = req.body.facebook;
-		newUser.bio = req.body.bio;
-		newUser.major = req.body.major;
-		newUser.studentLevel = req.body.studentLevel;
-		newUser.membership = req.body.membership;
-		newUser.password = req.body.password;
+		newUser.bio = req.body.bio; // Required
+		newUser.major = req.body.major; // Required
+		newUser.studentLevel = req.body.studentLevel; // Required
+		newUser.membership = req.body.membership; // Required
+		newUser.password = req.body.password; // Required
 		newUser.picture = req.body.picture;
 		newUser.paid = false;
+		newUser.dateLastPaid = null;
 		newUser.officer = false;
+		newUser.dateRegistered = (new Date()).getTime();
 
-		if (!newUser.userName && newUser.userName.length > 0) res.status(500).send('userName property is invalid.');
-		else if (!newUser.firstName && newUser.firstName.length > 0) res.status(500).send('firstName property is invalid.');
-		else if (!newUser.lastName && newUser.lastName.length > 0) res.status(500).send('lastName property is invalid.');
-		else if (!newUser.email && newUser.email.length > 0 && /^.*@.*$/i.test(newUser.email)) res.status(500).send('email property is invalid.');
-		else if (!newUser.bio && newUser.bio.length > 0) res.status(500).send('bio property is invalid.');
-		else if (!newUser.major && newUser.major.length > 0) res.status(500).send('major property is invalid.');
-		else if (!newUser.studentLevel && newUser.studentLevel.length > 0) res.status(500).send('studentLevel property is invalid.');
-		else if (!newUser.password && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/ig.test(newUser.password)) res.status(500).send('password property is invalid.');
-		else {
-			// TODO double check the user name
-			// TODO double check the email
-			// Salt the password before it goes into the db
-			newUser.password = saltAndHash(newUser.password);
-			// Insert the new user
-			req.db.collection('users').save(newUser, function(err, createdUser) {
+		if (!newUser.userName || typeof newUser.userName !== 'string' || newUser.userName.length <= 0) {
+			res.status(400).send('userName property is invalid.');
+		} else if (!newUser.firstName || typeof newUser.firstName !== 'string' || newUser.firstName.length <= 0) {
+			res.status(400).send('firstName property is invalid.');
+		} else if (!newUser.lastName || typeof newUser.lastName !== 'string' || newUser.lastName.length <= 0) {
+			res.status(400).send('lastName property is invalid.');
+		} else if (!newUser.email || typeof newUser.email !== 'string' || newUser.email.length <= 0 || !EMAIL_REGEX.test(newUser.email)) {
+			res.status(400).send('email property is invalid.');
+		} else if (!newUser.bio || typeof newUser.bio !== 'string' || newUser.bio.length <= 0) {
+			res.status(400).send('bio property is invalid.');
+		} else if (!newUser.major || typeof newUser.major !== 'string' || newUser.major.length <= 0) {
+			res.status(400).send('major property is invalid.'); // TODO check major from list of majors
+		} else if (!newUser.studentLevel || typeof newUser.studentLevel !== 'string' || newUser.studentLevel.length <= 0) {
+			res.status(400).send('studentLevel property is invalid.');
+		} else if (!newUser.password || typeof newUser.password !== 'string' || !PASSWORD_REGEX.test(newUser.password)) {
+			res.status(400).send('password property is invalid.');
+		} else if (!newUser.membership || typeof newUser.membership !== 'string' || newUser.membership.length <= 0) {
+			res.status(400).send('membership property is invalid.');
+		} else {
+			async.parallel({
+				userName: function(cb) {
+					req.db.collection('users').find({
+						userName: newUser.userName
+					}).toArray(function(err, results) {
+						if (err) {
+							cb(err);
+						} else {
+							cb(undefined, !results || results.length === 0);
+						}
+					});
+				},
+				email: function(cb) {
+					req.db.collection('users').find({
+						email: newUser.email
+					}).toArray(function(err, results) {
+						if (err) {
+							cb(err);
+						} else {
+							cb(undefined, !results || results.length === 0);
+						}
+					});
+				},
+				membership: function(cb) {
+					req.db.collection('users').find({
+						membership: newUser.membership
+					}).toArray(function(err, results) {
+						if (err) {
+							cb(err);
+						} else {
+							cb(undefined, !results || results.length === 0);
+						}
+					});
+				}
+			}, function(err, results) {
 				if (err) {
-					logger.log('error', err);
+					logger.log('error', 'issue while registering user', err);
 					res.status(200).json({
-						'500': 'Error saving new user'
+						'500': 'Internal server error'
 					});
 				} else {
-					res.status(200).json({
-						'200': createdUser
-					});
+					if (!results.userName) {
+						res.status(200).json({
+							'500': 'userName is already taken'
+						});
+					} else if (!results.email) {
+						res.status(200).json({
+							'500': 'email is already taken'
+						});
+					} else if (!results.membership) {
+						res.status(200).json({
+							'500': 'membership is already taken'
+						});
+					} else {
+						// We're clear to register this user
+						newUser.password = saltAndHash(newUser.password);
+						// Insert the new user
+						req.db.collection('users').save(newUser, function(err, createdUser) {
+							if (err) {
+								logger.log('error', 'could not register user', err);
+								res.status(200).json({
+									'500': 'Error saving new user'
+								});
+							} else {
+								var strippedUser = {
+									userName: createdUser.userName,
+									picture: createdUser.picture,
+									firstName: createdUser.firstName,
+									lastName: createdUser.lastName
+								};
+
+								res.status(200).json({
+									'200': strippedUser
+								});
+							}
+						});
+					}
 				}
 			});
 		}
