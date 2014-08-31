@@ -91,11 +91,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="separator"></div>
-                    </div>
                     <div class="col-md-12 col-xs-12 col-sm-12" style="float: left; text-align: center;">
-                        <button ng-click="submit(user)" class="btn btn-success btn-submit">Continue Registration</button>
+                        <div class="alert alert-danger" ng-if="incompleteForm" style="text-align: center; font-size: 14px; margin-top: 0px;" role="alert"><span style="font-weight: bold;">Oops.</span> Make sure you finish filling out all the required fields before trying to register.</div>
+                        <div class="alert alert-danger" ng-if="requestFailed" style="text-align: center; font-size: 14px; margin-top: 0px;" role="alert"><span style="font-weight: bold;">Oh snap!</span> There&nbsp;was&nbsp;an&nbsp;issue&nbsp;submitting&nbsp;your&nbsp;registration. If&nbsp;this&nbsp;error&nbsp;persists, please&nbsp;try&nbsp;again&nbsp;later.</div>
+                        <button ng-click="submit(user)" class="btn btn-success btn-submit" style="width: 100%;">Continue Registration</button>
                     </div>
                 </div>
             </form>

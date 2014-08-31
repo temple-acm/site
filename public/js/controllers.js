@@ -212,6 +212,9 @@
 	module.controller('RegisterCtrl', ['$scope', '$rootScope', 'RegisterSvc',
 		function($scope, $rootScope, service) {
 			$rootScope.registered = false;
+			// Form status flags (trigger the footer alerts)
+			$scope.incompleteForm = false;
+			$scope.requestFailed = false;
 
 			$scope.submit = function(user) {
 				if ($scope.registration.$valid) {
@@ -220,13 +223,26 @@
 							$rootScope.me = data['200'];
 							// Pass the id as a reference
 							$rootScope.registered = true;
-							service.redirectToPaypal(data["200"].userName);
+							$scope.incompleteForm = false;
+							$scope.requestFailed = false;
+							service.redirectToPaypal(data['200'].userName);
 						} else {
-							toastr.error("Could not submit registration form.");
+							$scope.incompleteForm = false;
+							$scope.requestFailed = true;
+							// Focus the bottom of the form
+							$('overlay').animate({
+								scrollTop: $('overlay')[0].scrollHeight
+							}, 1500, 'easeInOutExpo');
 						}
 					});
 				} else {
-					toastr.warning('The form is not yet complete. Please ensure the form is valid.');
+					// TODO scroll to bottom of form
+					$scope.incompleteForm = true;
+					$scope.requestFailed = false;
+					// Focus the bottom of the form
+					$('overlay').animate({
+						scrollTop: $('overlay')[0].scrollHeight
+					}, 1500, 'easeInOutExpo');
 				}
 			};
 
