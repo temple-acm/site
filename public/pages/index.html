@@ -10,7 +10,7 @@
 
         <title>Temple ACM</title>
         <!-- Custom CSS -->
-        <link href="/static/dist/main.min.css" rel="stylesheet">
+        <link href="/static/dist/main{{.css}}" rel="stylesheet">
         <!-- Custom Fonts: Font Awesome (for icons), Roboto (for text), Montserrat (for headings) -->
         <link href="/static/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400' rel='stylesheet' type='text/css'>
@@ -240,9 +240,9 @@
             <overlay>
                 <div class="cardholder">
                     <div class="card">
-                        <register><viewholder data-ng-include="'/static/partials/register.html'"></viewholder></register>
-                        <login><viewholder data-ng-include="'/static/partials/login.html'"></viewholder></login>
-                        <emailus><viewholder data-ng-include="'/static/partials/emailus.html'"></viewholder></emailus>
+                        <register><viewholder data-ng-include="'/static/dist/register.partial{{.html}}'"></viewholder></register>
+                        <login><viewholder data-ng-include="'/static/dist/login{.partial{.html}}'"></viewholder></login>
+                        <emailus><viewholder data-ng-include="'/static/dist/emailus.partial{{.html}}'"></viewholder></emailus>
                     </div>
                 </div>
             </overlay>
@@ -259,7 +259,7 @@
             <!-- Google Maps API -->
             <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
             <!-- Application JS -->
-            <script src="/static/dist/main.min.js"></script>
+            <script src="/static/dist/main{{.js}}"></script>
         </viewport>
     </body>
 </html>

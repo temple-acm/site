@@ -18,7 +18,7 @@ const ERROR_LOG_NAME = "error.log";
 const DEFAULT_LOGS_FOLDER_NAME = "logs";
 
 // Lets first ensure that our log path exists
-var logPath = path.join(__dirname, DEFAULT_LOGS_FOLDER_NAME);
+var logPath = process.env.TUACM_LOGPATH || path.join(__dirname, DEFAULT_LOGS_FOLDER_NAME);
 if (!fs.existsSync(logPath) || !fs.statSync(logPath).isDirectory()) {
     // Log path doesn't exist, so we need to create it
     console.log("Log folder path '" + logPath + "' isn't a thing - fixing that.");

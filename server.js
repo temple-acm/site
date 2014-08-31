@@ -28,19 +28,30 @@ var routes = require('./routes');
 
 /******************************************** MODULE **********************************************/
 
-// Load configurations
-var httpsOpts = {
-    cert: fs.readFileSync(process.env.TUACM_SSL_CERT || 'ssl/cert.crt'),
-    key: fs.readFileSync(process.env.TUACM_SSL_KEY || 'ssl/key.pem')
-};
-// if test env, load example file
-var env = process.env.NODE_ENV; // Defaults to dev. env.
+// Ensure we have the env variables we need
+if (!process.env.TUACM_LOGPATH) {
+    console.log('TUACM_LOGPATH is invalid; now exiting.');
+    process.exit(1);
+}
+if (!process.env.TUACM_MONGO_URL) {
+    console.log('TUACM_MONGO_URL is invalid; now exiting.');
+    process.exit(1);
+}
+if (!process.env.TUACM_SESSION_SECRET) {
+    console.log('TUACM_SESSION_SECRET is invalid; now exiting.');
+    process.exit(1);
+}
+if (!process.env.TUACM_PORT || typeof parseInt(process.env.TUACM_PORT) !== 'number') {
+    console.log('TUACM_PORT is invalid; now exiting.');
+    process.exit(1);
+}
+
 // Define the express app
 var app = express();
 var mongoDb = undefined;
 app.use(favicon(path.join(__dirname, 'public', 'img', 'icons', 'favicon.ico')));
 app.use(morgan('dev', {
-    stream: fs.createWriteStream(path.join('util', 'logs', 'access.log'), {
+    stream: fs.createWriteStream(path.join(process.env.TUACM_LOGPATH, 'access.log'), {
         flags: 'a',
         encoding: 'utf8'
     })
@@ -58,12 +69,12 @@ app.use(function(req, res, next) {
     next();
 });
 // Connects to mongo and sets up session shit
-MongoClient.connect(process.env.TUACM_MONGO_URL || 'mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm', function(err, db) {
+MongoClient.connect(process.env.TUACM_MONGO_URL, function(err, db) {
     if (err) throw err;
     // Session stuff
     mongoDb = db;
     app.use(session({
-        secret: (process.env.TUACM_SESSION_SECRET || 'MEAN'),
+        secret: process.env.TUACM_SESSION_SECRET,
         // TODO restrict db creds to env vars
         store: new MongoStore({
             db: mongoDb,
@@ -85,7 +96,7 @@ app.use('/static/img', express.static(path.join(__dirname, 'public', 'img')));
 app.use('/static/partials', express.static(path.join(__dirname, 'public', 'partials')));
 app.use('/static/vendor', express.static(path.join(__dirname, 'public', 'vendor')));
 // Start the app by listening on <port>
-var port = process.env.TUACM_PORT || 3000;
+var port = parseInt(process.env.TUACM_PORT);
 // Create an HTTPS service
 http.createServer(app).listen(port, '0.0.0.0');
 logger.info('HTTP server started on port 0.0.0.0:%d.', port);
