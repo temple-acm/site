@@ -32,6 +32,15 @@
 					}
 				});
 			};
+			this.isMembershipFree = function(membership) {
+				return $http({
+					method: 'GET',
+					url: '/members/membership/isFree',
+					params: {
+						membership: membership
+					}
+				});
+			};
 			this.registerUser = function(user) {
 				return $http({
 					method: 'POST',

@@ -103,6 +103,25 @@ exports.route = function(app) {
 		}
 	});
 
+	// Check if a membership number is free
+	app.get('/members/membership/isFree', function(req, res) {
+		var membership = req.param('membership');
+		if (!membership) {
+			res.status(400).send('Membership parameter required.');
+		} else {
+			req.db.collection('users').find({
+				membership: membership
+			}).toArray(function(err, results) {
+				if (err) {
+					logger.log('error', err);
+					res.status(500).json('Error looking up users');
+				} else {
+					res.status(200).send(!results || results.length === 0);
+				}
+			});
+		}
+	});
+
 	/*
 	 * This endpoint registers members. It takes in a serialized object with all
 	 * the fields enumerated below, performs validation on them, and then commits

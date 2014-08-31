@@ -295,6 +295,39 @@
 				}
 			};
 
+			$scope.onMembershipChanged = function() {
+				var val = $('#register-form #membership-num').val();
+				if (val) {
+					service.isMembershipFree($('#register-form #membership-num').val()).success(function(isFree) {
+						if (isFree !== 'false') {
+							$('#register-form #membership-num-indicator').addClass('good');
+							$('#register-form #membership-num-indicator').html('This membership number is not in use.');
+							// Mark the field valid
+							if ($scope.registration)
+								$scope.registration.membership.$setValidity('membership', true);
+						} else {
+							$('#register-form #membership-num-indicator').removeClass('good');
+							$('#register-form #membership-num-indicator').html('This membership number is in use.');
+							// Mark the field invalid
+							if ($scope.registration)
+								$scope.registration.membership.$setValidity('membership', false);
+						}
+					}).error(function() {
+						$('#register-form #membership-num-indicator').removeClass('good');
+						$('#register-form #membership-num-indicator').html('There was a problem connecting to the server.');
+						// Mark the field invalid
+						if ($scope.registration)
+							$scope.registration.membership.$setValidity('membership', false);
+					});
+				} else {
+					$('#register-form #membership-num-indicator').removeClass('good');
+					$('#register-form #membership-num-indicator').html('Membership number is required.');
+					// Mark the field invalid
+					if ($scope.registration)
+						$scope.registration.membership.$setValidity('membership', false);
+				}
+			};
+
 			$scope.onPasswordChanged = function() {
 				var pass = $('#register-form #password-text').val();
 				var conf = $('#register-form #confirm-password-text').val();
