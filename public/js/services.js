@@ -23,6 +23,15 @@
 					}
 				});
 			};
+			this.isEmailFree = function(email) {
+				return $http({
+					method: 'GET',
+					url: '/members/email/isFree',
+					params: {
+						email: email
+					}
+				});
+			};
 			this.registerUser = function(user) {
 				return $http({
 					method: 'POST',

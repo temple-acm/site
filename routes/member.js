@@ -75,7 +75,26 @@ exports.route = function(app) {
 				userName: userName
 			}).toArray(function(err, results) {
 				if (err) {
-                    logger.log('error', err);
+					logger.log('error', err);
+					res.status(500).json('Error looking up users');
+				} else {
+					res.status(200).send(!results || results.length === 0);
+				}
+			});
+		}
+	});
+
+	// Check if an email is free
+	app.get('/members/email/isFree', function(req, res) {
+		var email = req.param('email');
+		if (!email) {
+			res.status(400).send('Email parameter required.');
+		} else {
+			req.db.collection('users').find({
+				email: email
+			}).toArray(function(err, results) {
+				if (err) {
+					logger.log('error', err);
 					res.status(500).json('Error looking up users');
 				} else {
 					res.status(200).send(!results || results.length === 0);
@@ -140,7 +159,7 @@ exports.route = function(app) {
 			// Insert the new user
 			req.db.collection('users').save(newUser, function(err, createdUser) {
 				if (err) {
-                    logger.log('error', err);
+					logger.log('error', err);
 					res.status(200).json({
 						'500': 'Error saving new user'
 					});
@@ -178,7 +197,7 @@ exports.route = function(app) {
 	app.post('/members/login', function(req, res, next) {
 		passport.authenticate('local', function(err, user, info) {
 			if (err) {
-                logger.log('error', err);
+				logger.log('error', err);
 				return res.status(200).json({
 					'500': 'Internal Passport error'
 				}); // This may never be called, since it's an internal Passport error
@@ -262,16 +281,15 @@ exports.route = function(app) {
 	app.get('/members/officers', function(req, res) {
 		req.db.collection('users').find({
 			officer: true
-		},
-        {
-            firstName:1,
-            lastName:1,
-            picture:1,
-            title:1,
-            bio:1
-        }).toArray(function(err, officers) {
+		}, {
+			firstName: 1,
+			lastName: 1,
+			picture: 1,
+			title: 1,
+			bio: 1
+		}).toArray(function(err, officers) {
 			if (err) {
-                logger.log('error', err);
+				logger.log('error', err);
 				res.status(200).json({
 					'500': "Error retrieving officers"
 				});

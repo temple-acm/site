@@ -1,6 +1,8 @@
 (function(module, app) {
 	// Create app if it does not already exist
 	if (!app) app = window._$_app = angular.module('site', ['directives', 'services', 'controllers']);
+	// Some constants / variables
+	var EMAIL_REGEX = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i;
 	// Main Controller
 	module.controller('MainCtrl', ['$scope', '$location', '$rootScope',
 		function($scope, $location, $rootScope) {
@@ -213,8 +215,8 @@
 			$scope.submit = function(user) {
 				if ($scope.registration.$valid) {
 					service.registerUser(user).success(function(data, status, headers, config) {
-						if ("200" in data) {
-							$rootScope.me = data["200"];
+						if ('200' in data) {
+							$rootScope.me = data['200'];
 							// Pass the id as a reference
 							$rootScope.registered = true;
 							service.redirectToPaypal(data["200"].userName);
@@ -235,8 +237,8 @@
 							$('#register-form #user-id-indicator').addClass('good');
 							$('#register-form #user-id-indicator').html('This user id is available.');
 							// Mark the field valid
-
-							$scope.registration.userId.$setValidity('id', true);
+							if ($scope.registration)
+								$scope.registration.userId.$setValidity('id', true);
 						} else {
 							$('#register-form #user-id-indicator').removeClass('good');
 							$('#register-form #user-id-indicator').html('This user id is taken.');
@@ -257,6 +259,39 @@
 					// Mark the field invalid
 					if ($scope.registration)
 						$scope.registration.userId.$setValidity('id', false);
+				}
+			};
+
+			$scope.onEmailChanged = function() {
+				var val = $('#register-form #email-text').val();
+				if (EMAIL_REGEX.test(val)) {
+					service.isEmailFree($('#register-form #email-text').val()).success(function(isFree) {
+						if (isFree !== 'false') {
+							$('#register-form #email-indicator').addClass('good');
+							$('#register-form #email-indicator').html('This email is not in use.');
+							// Mark the field valid
+							if ($scope.registration)
+								$scope.registration.email.$setValidity('email', true);
+						} else {
+							$('#register-form #email-indicator').removeClass('good');
+							$('#register-form #email-indicator').html('This email is in use.');
+							// Mark the field invalid
+							if ($scope.registration)
+								$scope.registration.email.$setValidity('email', false);
+						}
+					}).error(function() {
+						$('#register-form #email-indicator').removeClass('good');
+						$('#register-form #email-indicator').html('There was a problem connecting to the server.');
+						// Mark the field invalid
+						if ($scope.registration)
+							$scope.registration.email.$setValidity('email', false);
+					});
+				} else {
+					$('#register-form #email-indicator').removeClass('good');
+					$('#register-form #email-indicator').html('Email format invalid.');
+					// Mark the field invalid
+					if ($scope.registration)
+						$scope.registration.email.$setValidity('email', false);
 				}
 			};
 

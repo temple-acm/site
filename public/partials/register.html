@@ -15,7 +15,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="email-text">Email Address<span class="red-asterisk">*</span></label>
-                        <input type="email" class="form-control" name="email" id="email-text" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" required>
+                        <input type="text" class="form-control flat-bottomed" name="email" id="email-text" ng-model="user.email" placeholder="e.g. jsmith@temple.edu" ng-text-change="onEmailChanged()" required>
+                        <span class="indicator" id="email-indicator">No email provided.</span>
                     </div>
                 </div>
                 <div class="form-group">
