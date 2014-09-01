@@ -59,8 +59,8 @@ The variables we use are as follows:
 To setup the environment variables properly, decrypt env.sh.gpg: ```gpg env.sh.gpg```.
 Then, run env.sh to setup environment variables for production:
 ```
-    chmod +x env.sh
-    ./env.sh
+chmod +x env.sh
+./env.sh
 ```
 
 To manage and query our data, we use [Robomongo](http://robomongo.org).
