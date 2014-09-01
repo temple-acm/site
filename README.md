@@ -62,7 +62,10 @@ Once you have decrypted the environment script, run env.sh to setup environment 
 chmod +x env.sh
 ./env.sh
 ```
-
+Following this, you need to compile production ready versions of our assets using the gulp build tool:
+```
+gulp deploy
+```
 To manage and query our data, we use [Robomongo](http://robomongo.org).
 
 ## Questions?
