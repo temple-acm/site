@@ -12,6 +12,7 @@ If you are not recognized as a contributor, you need to _fork this repository_ a
 ## Prerequisites
 * UNIX Development Environment (OSX, BSD, Linux) - If you're on Windows, try [this guide](http://www.howtogeek.com/howto/11287/how-to-run-ubuntu-in-windows-7-with-vmware-player/)
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/)
+* Make - The ```make``` command must be installed manually on some distros (e.g. for ubuntu you need to ```apt-get install build-essential```)
 
 ### Tools Prerequisites
 * [Bower](http://bower.io/) - Web package manager:
