@@ -39,7 +39,7 @@ Install dependencies:
     
   Then open a browser and go to:
 
-    https://localhost:3000
+    http://localhost:3000
     
   OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
 
@@ -47,8 +47,7 @@ Install dependencies:
 In production we change the way we make a few concessions:
 - Mongo DB, our database, is run locally on the same box as the web server instead hosted by [Compose](http://compose.io)
 - We use environment variables for sensitive information instead of the development defaults
-- We use [HAProxy](http://haproxy.org) for reverse proxying
-- We *only* support HTTPS
+- We use [HAProxy](http://haproxy.org) for reverse proxying and HTTPS configuration
 
 The variables we use are as follows:
 - TUACM_LOGPATH - The path where logs will be put
@@ -59,12 +58,12 @@ The variables we use are as follows:
 To setup the environment variables in ideal fashion for production, decrypt env.sh.gpg with gpg: ```gpg env.sh.gpg```.
 Once you have decrypted the environment script, run env.sh to setup environment variables for production:
 ```
-chmod +x env.sh
-./env.sh
+$ chmod +x env.sh
+$ ./env.sh
 ```
 Following this, you need to compile production ready versions of our assets using the gulp build tool:
 ```
-gulp deploy
+$ gulp deploy
 ```
 To manage and query our data, we use [Robomongo](http://robomongo.org).
 
@@ -72,7 +71,7 @@ To manage and query our data, we use [Robomongo](http://robomongo.org).
 Come and ask for assistance or just hangout in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
 
 ## Credits
-Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your lord and savior [Sandile Keswa](https://github.com/skeswa/).
+Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your brogrammer-in-chief [Sandile Keswa](https://github.com/skeswa/). Also, you know, [Sri Ramanujam](https://github.com/SriRamanujam).
 
 ## License
 (The MIT License)
