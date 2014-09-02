@@ -27,7 +27,7 @@ if (!fs.existsSync(logPath) || !fs.statSync(logPath).isDirectory()) {
     } catch (err) {
         // If we can't create the log path, we're in a wold of hurt
         console.log("UH OH: Dude, I couldn't create the log folder: ", err);
-        exit(1);
+        process.exit(1);
     }
 }
 // We're asking winston to write to log files in addition to the command line. Also, we want errors
