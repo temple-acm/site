@@ -60,7 +60,7 @@ To setup the environment variables in ideal fashion for production, decrypt env.
 Once you have decrypted the environment script, run env.sh to setup environment variables for production:
 ```
 $ chmod +x env.sh
-$ ./env.sh
+$ source env.sh
 ```
 Following this, you need to compile production ready versions of our assets using the gulp build tool:
 ```
