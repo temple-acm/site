@@ -6,7 +6,7 @@ exports.route = function(app) {
 	// Updates the "paid" field for that user in the database.
 	app.post('/members/payments/callback/:userName', function(req, res) {
 		// IPN requires that we send a 200 immediately
-		res.send(200);
+		res.status(200).send();
 		var userName = req.param('userName');
 		ipn.verify(req.body, function(err, msg) {
 			if (err) {
