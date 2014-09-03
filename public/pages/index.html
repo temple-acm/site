@@ -69,8 +69,7 @@
                         </div>
                         <div class="sign-out">
                             <a class="btn btn-default flat-right" ng-click="pay()" ng-hide="loggedInUser.paid">Pay</a>
-                            <a class="btn btn-primary flat-right" ng-click="profile()" ng-class="{'flat-left': (!loggedInUser.paid)}">Profile</a>
-                            <a class="btn btn-danger flat-left" ng-click="logout()">Sign Out</a>
+                            <a class="btn btn-danger" ng-click="logout()" ng-class="{'flat-left': (!loggedInUser.paid)}">Sign Out</a>
                         </div>
                     </div>
                 </div>
