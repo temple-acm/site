@@ -66,7 +66,7 @@ exports.route = function(app) {
 				var data, when, where, desc, status, evt;
 				// Parse the rss entry
 				evt = {
-					title: rssEntries[i].title,
+					title: entities.decodeHTML(rssEntries[i].title),
 					link: rssEntries[i].link
 				};
 				// 2 fields are hidden in the "desciption" rss field
