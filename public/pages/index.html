@@ -57,17 +57,19 @@
                             <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
                         </li>
                         <li ng-if="!isLoggedIn">
-                            <a id="sign-in" class="btn btn-primary" data-ng-href="#/login" >Sign In</a>
+                            <a id="sign-in" class="btn btn-primary" data-ng-href="#/login">Sign In</a>
                         </li>
                     </ul>
                     <div style="display: none;" id="session-panel">
                         <div class="picture" ng-bg-img="{{loggedInUser.picture}}" default="/static/img/default-avatar.jpg"></div>
-                        <div class="who">
+                        <div class="who" ng-class="{'not-paid': (!loggedInUser.paid)}">
                             <span class="user">{{loggedInUser.userName}}</span>
-                            <span class="is-logged-in">is logged in</span>
+                            <span class="is-logged-in" ng-show="loggedInUser.paid">is logged in</span>
+                            <span class="not-paid" ng-hide="loggedInUser.paid">not paid</span>
                         </div>
                         <div class="sign-out">
-                            <a class="btn btn-danger" ng-click="logout()">Sign Out</a>
+                            <a class="btn btn-default" ng-click="pay()" ng-hide="loggedInUser.paid" ng-class="{'flat-right': (!loggedInUser.paid)}">Pay</a>
+                            <a class="btn btn-danger" ng-click="logout()" ng-class="{'flat-left': (!loggedInUser.paid)}">Sign Out</a>
                         </div>
                     </div>
                 </div>

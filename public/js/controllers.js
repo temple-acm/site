@@ -82,8 +82,8 @@
 		}
 	]);
 	// Navigation Controller
-	module.controller('NavCtrl', ['$scope', '$rootScope', '$location', 'LoginSvc',
-		function($scope, $rootScope, $location, loginService) {
+	module.controller('NavCtrl', ['$scope', '$rootScope', '$location', 'LoginSvc', 'RegisterSvc',
+		function($scope, $rootScope, $location, loginService, registerService) {
 			// I don't know what I'm doing, but this regulates the logged-in status of users
 			$scope.logInChecked = false;
 			$rootScope.isLoggedIn = false;
@@ -111,6 +111,13 @@
 					toastr.error("Could not log out. Check that you have a connection to the Internet.");
 				});
 			};
+			// For the pay button
+			$scope.pay = function() {
+				if ($rootScope.loggedInUser && $rootScope.loggedInUser.userName) {
+					registerService.redirectToPaypal($rootScope.loggedInUser.userName);
+				}
+			};
+
 			var $viewport = $('viewport'),
 				$navbar = $('.navbar-fixed-top'),
 				$nav = $('nav ul li a.page-scroll'),

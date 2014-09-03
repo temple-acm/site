@@ -309,6 +309,7 @@ exports.route = function(app) {
 								userName: user[0].userName,
 								firstName: user[0].firstName,
 								lastName: user[0].lastName,
+								paid: user[0].paid || false,
 								picture: user[0].picture
 							}
 						}); // We can add more fields here if needed
@@ -345,13 +346,14 @@ exports.route = function(app) {
 	 */
 	app.get('/members/isLoggedIn', function(req, res) {
 		if (req.user) {
-			var loggedInUser = {
-				userName: req.user[0].userName,
-				firstName: req.user[0].firstName,
-				picture: req.user[0].picture
-			}
 			res.status(200).send({
-				'200': loggedInUser
+				'200': {
+					userName: req.user[0].userName,
+					firstName: req.user[0].firstName,
+					lastName: req.user[0].lastName,
+					paid: req.user[0].paid || false,
+					picture: req.user[0].picture
+				}
 			});
 		} else {
 			res.status(200).send({

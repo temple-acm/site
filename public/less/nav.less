@@ -97,6 +97,7 @@ nav a.navbar-brand {
         text-transform: none;
         margin-left: 0px;
         margin-right: 0px;
+        overflow: hidden;
 
         .picture {
         	float: left;
@@ -111,6 +112,11 @@ nav a.navbar-brand {
         	float: left;
         	margin-left: 10px;
         	margin-top: 7px;
+            margin-right: 10px;
+
+            &.not-paid {
+                margin-top: 4px;
+            }
 
         	.user {
         		display: block;
@@ -125,36 +131,76 @@ nav a.navbar-brand {
         		font-size: 9px;
         		font-family: @heading-font;
         	}
+            .not-paid {
+                display: block;
+                background-color: #c9302c;
+                border-color: #ac2925;
+                border-radius: 2px;
+                text-transform: uppercase;
+                font-size: 9px;
+                font-family: @heading-font;
+                text-align: center;
+                padding: 2px 8px;
+                margin-top: 2px;
+            }
         }
 
         .sign-out {
             float: right;
-            width: auto;
+            margin-right: 0px;
+            padding-right: 0px;
         	height: 100%;
         	display: block;
         	overflow: hidden;
-        	-webkit-transition: width .3s ease-in-out;
-            -moz-transition: width .3s ease-in-out;
-            transition: width .3s ease-in-out;
+        	-webkit-transition: margin-right .5s ease-in-out;
+            -moz-transition: margin-right .5s ease-in-out;
+            transition: margin-right .5s ease-in-out;
 
-        	.btn {
-        		padding: 6px 15px;
-	            border-radius: 38px;
-	            margin: 7px 10px;
-	            margin-right: 0px;
-	            display: inline-block;
+            .btn-danger {
+                &:hover {
+                    color: #fff;
+                    background-color: #c9302c;
+                    border-color: #ac2925;
+                }
+            }
 
-	            &:hover {
-	                color: #fff;
-	                background-color: #c9302c;
-	                border-color: #ac2925;
-	            }
-        	}
+            .btn-default {
+                color: #9e1b34;
+                border-color: #ddd;
+
+                &:hover {
+                    color: #9e1b34;
+                    border-color: #ddd;
+                    background-color: #eee;
+                }
+            }
+
+            .btn.flat-left {
+                margin-left: -4px;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+                padding-left: 10px;
+            }
+
+            .btn.flat-right {
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+                padding-right: 10px;
+            }
+
+            .btn {
+                padding: 6px 15px;
+                border-radius: 38px;
+                margin: 7px 10px;
+                margin-right: 0px;
+                display: inline-block;
+                border: none;
+            }
         }
 
         &:hover {
         	.sign-out {
-        		width: auto;
+        		margin-right: 0px;
         	}
         }
     }
@@ -189,15 +235,16 @@ nav a.navbar-brand {
         #session-panel {
             width: auto;
             margin-left: 15px;
+            padding-right: 10px;
 
             .sign-out {
                 float: left;
-                width: 0px;
+                margin-right: -300px;
             }
 
             &:hover {
                 .sign-out {
-                    width: 125px;
+                    margin-right: 0px;
                 }
             }
         }
