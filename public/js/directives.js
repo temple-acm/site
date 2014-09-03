@@ -15,7 +15,8 @@
 					el.append('<arrow class=\'next\'><i class=\'fa fa-angle-right\'></i></arrow>');
 					// Grab le slides
 					$http.get('/slides').success(function(data) {
-						conveyor = el.find('conveyor');
+						var conveyor = el.find('conveyor');
+						var $conveyor = $('conveyor');
 						// Add le slides
 						var conveyorWidth = (100 * data.length) + '%';
 						var slideWidth = (100.0 / data.length) + '%';
@@ -30,13 +31,18 @@
 						// Start sliding
 						var intervalId;
 						var position = 0;
+						var updateSlide = function(position) {
+							$conveyor.stop().animate({
+								marginLeft: ((-100 * position) + '%')
+							}, 1000, 'easeInOutExpo');
+						}
 						var nextSlide = function() {
 							if (position + 1 === data.length) {
 								position = 0;
 							} else {
 								position++;
 							}
-							conveyor.css('marginLeft', (-100 * position) + '%');
+							updateSlide(position);
 						};
 						var prevSlide = function() {
 							if (position - 1 === -1) {
@@ -44,17 +50,17 @@
 							} else {
 								position--;
 							}
-							conveyor.css('marginLeft', (-100 * position) + '%');
+							updateSlide(position);
 						};
-						intervalId = setInterval(nextSlide, SLIDER_DELAY);
+						// intervalId = setInterval(nextSlide, SLIDER_DELAY);
 						// When the cursor is on the slider - don't slide
-						el.mouseenter(function() {
-							clearInterval(intervalId);
-						});
+						// el.mouseenter(function() {
+						// 	clearInterval(intervalId);
+						// });
 						// When the cursor is on the slider - don't slide
-						el.mouseleave(function() {
-							intervalId = setInterval(nextSlide, SLIDER_DELAY);
-						});
+						// el.mouseleave(function() {
+						// 	intervalId = setInterval(nextSlide, SLIDER_DELAY);
+						// });
 						// Bind arrow click events
 						el.find('arrow.prev').click(function() {
 							prevSlide();
