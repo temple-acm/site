@@ -115,12 +115,38 @@
 				$navbar = $('.navbar-fixed-top'),
 				$nav = $('nav ul li a.page-scroll'),
 				$section = $('section'),
-				$dropdown = $('.navbar-main-collapse');
+				$dropdown = $('.navbar-main-collapse'),
+				internalPathRef = '/';
+
+			// Internal record of where our sections are on the page
+			var sectionPositionMap = {};
+			// Re-calculates the position map
+			var recalculateSectionPositions = $rootScope.recalculateSectionPositions = function() {
+				var $el, currentTop = $viewport.scrollTop();
+				for (var i = 0; i < $section.size(); i++) {
+					$el = $($section.get(i));
+					sectionPositionMap[$el.attr('id')] = {
+						top: currentTop + $el.position().top,
+						height: $el.height()
+					};
+				}
+				// Reconsider nav
+				adjustNav();
+			};
+			// Update section map when the window size changes
+			$(window).resize(function() {
+				// Give the DOM sometime to figure itself out
+				setTimeout(recalculateSectionPositions, 200);
+			});
+			// Update section map when the DOM is ready
+			$(recalculateSectionPositions);
+
 			// Nav UI Events
 			$nav.click(function() {
 				var section = $(this).data('section');
 				$scope.scrollTo(section);
 			});
+
 			// UI routing
 			var route = function(url) {
 				if (!url) {
@@ -152,28 +178,32 @@
 				}
 			};
 			var adjustNav = function() {
-				if ($viewport.scrollTop() > 50) {
+				var currentTop = $viewport.scrollTop();
+
+				if (currentTop > 50) {
 					$navbar.addClass('top-nav-collapse');
 				} else {
 					$navbar.removeClass('top-nav-collapse');
 				}
 
-				var $el;
-				for (var i = 0; i < $section.size(); i++) {
-					$el = $($section.get(i));
-					if ($el.position().top <= 50 && (($el.position().top + ($el.height()))) >= -45) {
+				for (var sectionId in sectionPositionMap) {
+					var top = sectionPositionMap[sectionId].top,
+						height = sectionPositionMap[sectionId].height;
+
+					if (currentTop >= (top - 45) && currentTop <= ((top - 45) + height)) {
 						$nav.removeClass('active');
-						$('nav ul li a[data-section=\'' + $el.attr('id') + '\']').addClass('active');
+						$('nav ul li a[data-section=\'' + sectionId + '\']').addClass('active');
 						return;
 					}
 				}
+				// Means we ain't in a section
 				$nav.removeClass('active');
 			};
 			// Animation helpers
 			var beforeScrollAnimation = function() {
 				$viewport.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e) {
 					if (e.which > 0 || e.type == 'mousedown' || e.type == 'mousewheel') {
-						$viewport.stop();
+						$viewport.stop(true);
 					}
 				});
 			};
@@ -184,21 +214,25 @@
 			};
 			// Listen for url changes
 			$scope.$on('$locationChangeSuccess', function() {
-				route($location.path());
+				var path = $location.path();
+				if (path !== internalPathRef) {
+					route($location.path());
+				}
 			});
 			// Listen for scroll
 			$viewport.on('scroll', adjustNav);
 			// Utility scope exports
 			$scope.scrollTo = function(section) {
 				if (!section) {
+					internalPathRef = '/';
 					beforeScrollAnimation();
 					$viewport.stop().animate({
 						scrollTop: 0
 					}, 1500, 'easeInOutExpo', afterScrollAnimation);
 				} else {
 					var $anchor = $('section#' + section);
+					internalPathRef = '/' + section;
 					window.location = '#/' + section;
-					$location.path('/' + section).replace();
 					if ($anchor.get(0)) {
 						beforeScrollAnimation();
 						$viewport.stop().animate({
@@ -210,6 +244,7 @@
 						$dropdown.addClass('collapse');
 					}
 				}
+				console.log('scroll to', section);
 			};
 			// Export scroll to for non-angular access
 			window.$scrollTo = $scope.scrollTo;
@@ -402,6 +437,8 @@
 					// Now its safe to show the events
 					$scope.events = events;
 					$scope.eventsLoaded = true;
+					// Update the section position map
+					setTimeout($scope.recalculateSectionPositions, 200);
 				} else {
 					console.log("Could not load events.");
 				}
@@ -442,6 +479,8 @@
 						$scope.adWidth += ' col-xs-12';
 					}
 					$scope.officersLoaded = true;
+					// Update the section position map
+					setTimeout($scope.recalculateSectionPositions, 200);
 				} else {
 					console.log("Could not load officers.");
 				}
