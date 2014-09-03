@@ -22,7 +22,7 @@
 						conveyor.width(conveyorWidth);
 						for (var i = 0; i < data.length; i++) {
 							var slide = $('<slide style=\'width: ' + slideWidth + '; background-image: url(' + data[i].image + ');\'></slide>');
-							slide.html('<shade style="opacity: ' + (data[i].darkness || '0') + ';">' + data[i].html + '</shade>');
+							slide.html(data[i].html);
 							slide.appendTo(conveyor);
 						}
 						// Show the slider
