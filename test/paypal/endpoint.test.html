@@ -1,10 +1,11 @@
 <html>
 	<body>
 		<p>This test registers a user with the userName 'testguy' registered. The fake email account we're using is called <b>testguy@temple.edu</b>. The password is <b>testguy123</b>.</p>
-		<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+		<!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> -->
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_s-xclick">
 			<input type="hidden" name="hosted_button_id" value="9M38CDYV8EHEJ">
-			<input type="hidden" name="notify_url" value="http://acm.temple.edu/members/payments/callback/testguy">
+			<input type="hidden" name="notify_url" value="http://stage.tuacm.org/members/payments/callback/samuelcouch">
 			<input type="submit" value="Submit Request">
 		</form>
 	</body>

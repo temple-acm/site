@@ -169,6 +169,19 @@
 				}
 				$nav.removeClass('active');
 			};
+			// Animation helpers
+			var beforeScrollAnimation = function() {
+				$viewport.bind('scroll mousedown DOMMouseScroll mousewheel keyup', function(e) {
+					if (e.which > 0 || e.type == 'mousedown' || e.type == 'mousewheel') {
+						$viewport.stop();
+					}
+				});
+			};
+			var afterScrollAnimation = function() {
+				$viewport.unbind('scroll mousedown DOMMouseScroll mousewheel keyup');
+				// Re-listen for scroll
+				$viewport.on('scroll', adjustNav);
+			};
 			// Listen for url changes
 			$scope.$on('$locationChangeSuccess', function() {
 				route($location.path());
@@ -178,17 +191,19 @@
 			// Utility scope exports
 			$scope.scrollTo = function(section) {
 				if (!section) {
+					beforeScrollAnimation();
 					$viewport.stop().animate({
 						scrollTop: 0
-					}, 1500, 'easeInOutExpo');
+					}, 1500, 'easeInOutExpo', afterScrollAnimation);
 				} else {
 					var $anchor = $('section#' + section);
 					window.location = '#/' + section;
 					$location.path('/' + section).replace();
 					if ($anchor.get(0)) {
+						beforeScrollAnimation();
 						$viewport.stop().animate({
 							scrollTop: ($anchor.offset().top + $viewport.scrollTop() - 40)
-						}, 1500, 'easeInOutExpo');
+						}, 1500, 'easeInOutExpo', afterScrollAnimation);
 					}
 					// Hide the dropdown if it isn't already hidden
 					if (!$dropdown.hasClass('collapse')) {

@@ -21,9 +21,9 @@
 						var slideWidth = (100.0 / data.length) + '%';
 						conveyor.width(conveyorWidth);
 						for (var i = 0; i < data.length; i++) {
-							$('<slide style=\'width: ' + slideWidth + '; background-image: url(' + data[i].image + ');\'/>')
-								.html(data[i].html)
-								.appendTo(conveyor);
+							var slide = $('<slide style=\'width: ' + slideWidth + '; background-image: url(' + data[i].image + ');\'></slide>');
+							slide.html('<shade style="opacity: ' + (data[i].darkness || '0') + ';">' + data[i].html + '</shade>');
+							slide.appendTo(conveyor);
 						}
 						// Show the slider
 						el.css('opacity', 1.0);
