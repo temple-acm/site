@@ -431,7 +431,9 @@ exports.route = function(app) {
 						csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
 						if (i === members.length - 1) {
 							// We're done
-							res.status(200).type('text/csv').send(csv);
+							res.status(200).type('text/csv').set({
+								'Content-Disposition': 'attachment; filename="members.csv"',
+							}).send(csv);
 						}
 					});
 				}
