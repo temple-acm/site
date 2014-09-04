@@ -52,15 +52,15 @@
 							}
 							updateSlide(position);
 						};
-						// intervalId = setInterval(nextSlide, SLIDER_DELAY);
+						intervalId = setInterval(nextSlide, SLIDER_DELAY);
 						// When the cursor is on the slider - don't slide
-						// el.mouseenter(function() {
-						// 	clearInterval(intervalId);
-						// });
+						el.mouseenter(function() {
+							clearInterval(intervalId);
+						});
 						// When the cursor is on the slider - don't slide
-						// el.mouseleave(function() {
-						// 	intervalId = setInterval(nextSlide, SLIDER_DELAY);
-						// });
+						el.mouseleave(function() {
+							intervalId = setInterval(nextSlide, SLIDER_DELAY);
+						});
 						// Bind arrow click events
 						el.find('arrow.prev').click(function() {
 							prevSlide();
