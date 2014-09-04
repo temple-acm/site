@@ -45,7 +45,7 @@ exports.route = function(app) {
 				this.pipe(parser);
 			})
 			.on('error', function(err) {
-                logger.log('error', err);
+				logger.log('error', err);
 				res.status(200).json({
 					'500': 'Error retriving calendar data'
 				});
@@ -104,5 +104,11 @@ exports.route = function(app) {
 				'200': events
 			});
 		});
+	});
+
+	/********************************** TRANSIENT EVENT REDIRECTS *********************************/
+
+	app.get('/mixer', function(req, res) {
+		res.redirect('http://www.eventbrite.com/e/acm-networking-event-tickets-12939517445');
 	});
 };
