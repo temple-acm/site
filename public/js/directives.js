@@ -4,7 +4,7 @@
 	// Slider directive
 	module.directive('slider', ['$http',
 		function($http) {
-			var SLIDER_DELAY = 5000;
+			var SLIDER_DELAY = 7000;
 
 			return {
 				restrict: 'E',
@@ -34,7 +34,7 @@
 						var updateSlide = function(position) {
 							$conveyor.stop().animate({
 								marginLeft: ((-100 * position) + '%')
-							}, 1000, 'easeInOutExpo');
+							}, 1000, 'easeInOutExpo', resetTimer);
 						}
 						var nextSlide = function() {
 							if (position + 1 === data.length) {
@@ -52,15 +52,10 @@
 							}
 							updateSlide(position);
 						};
-						intervalId = setInterval(nextSlide, SLIDER_DELAY);
-						// When the cursor is on the slider - don't slide
-						el.mouseenter(function() {
+						var resetTimer = function() {
 							clearInterval(intervalId);
-						});
-						// When the cursor is on the slider - don't slide
-						el.mouseleave(function() {
 							intervalId = setInterval(nextSlide, SLIDER_DELAY);
-						});
+						};
 						// Bind arrow click events
 						el.find('arrow.prev').click(function() {
 							prevSlide();
