@@ -46,22 +46,22 @@ exports.route = function(app) {
 	});
 };
 
-exports.finish = function(app) {
-	app.use(function(req, res, next) {
-		res.status(404);
-		// respond with html page
-		if (req.accepts('html')) {
-			res.sendFile(NOT_FOUND_PATH);
-			return;
-		}
-		// respond with json
-		if (req.accepts('json')) {
-			res.send({
-				error: 'Page was not found'
-			});
-			return;
-		}
-		// default to plain-text. send()
-		res.type('txt').send('Page was not found.');
-	});
-};
+// exports.finish = function(app) {
+// 	app.use(function(req, res, next) {
+// 		res.status(404);
+// 		// respond with html page
+// 		if (req.accepts('html')) {
+// 			res.sendFile(NOT_FOUND_PATH);
+// 			return;
+// 		}
+// 		// respond with json
+// 		if (req.accepts('json')) {
+// 			res.send({
+// 				error: 'Page was not found'
+// 			});
+// 			return;
+// 		}
+// 		// default to plain-text. send()
+// 		res.type('txt').send('Page was not found.');
+// 	});
+// };
