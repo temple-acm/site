@@ -69,22 +69,25 @@ app.use(function(req, res, next) {
     next();
 });
 // Connects to mongo and sets up session shit
+logger.info('Waiting for mongo connection...');
 MongoClient.connect(process.env.TUACM_MONGO_URL, function(err, db) {
-    if (err) throw err;
-    // Session stuff
-    mongoDb = db;
-    app.use(session({
-        secret: process.env.TUACM_SESSION_SECRET,
-        // TODO restrict db creds to env vars
-        store: new MongoStore({
-            db: mongoDb,
-            collection: 'sessions'
-        }),
-        resave: true,
-        saveUninitialized: true
-    }));
-    // Bootstrap the application routes
-    routes.setup(app);
+    if (err) logger.error('Could not connect to mongo', err);
+    else {
+        // Session stuff
+        mongoDb = db;
+        app.use(session({
+            secret: process.env.TUACM_SESSION_SECRET,
+            // TODO restrict db creds to env vars
+            store: new MongoStore({
+                db: mongoDb,
+                collection: 'sessions'
+            }),
+            resave: true,
+            saveUninitialized: true
+        }));
+        // Bootstrap the application routes
+        routes.setup(app);
+    }
 });
 app.use(ErrorHandler({
     dumpExceptions: true,

@@ -18,10 +18,30 @@ gulp.task('less', function() {
     gulp.src(['public/less/main.less'])
         .pipe(less())
         .pipe(gulp.dest('public/dist'));
+    gulp.src(['public/less/recruiting.less'])
+        .pipe(less())
+        .pipe(gulp.dest('public/dist'));
+    gulp.src(['public/less/404.less'])
+        .pipe(less())
+        .pipe(gulp.dest('public/dist'));
 });
 gulp.task('less-prod', function() {
     // Build it
     gulp.src(['public/less/main.less'])
+        .pipe(less())
+        .pipe(rename({
+            extname: '.min.css'
+        }))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('public/dist'));
+    gulp.src(['public/less/recruiting.less'])
+        .pipe(less())
+        .pipe(rename({
+            extname: '.min.css'
+        }))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('public/dist'));
+    gulp.src(['public/less/404.less'])
         .pipe(less())
         .pipe(rename({
             extname: '.min.css'

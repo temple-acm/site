@@ -22,5 +22,9 @@ exports.setup = function(app) {
 		if (typeof routeModules[i].route === 'function') {
 			routeModules[i].route(app);
 		}
+		// Run post configuration last
+		if (typeof routeModules[i].finish === 'function') {
+			routeModules[i].finish(app);
+		}
 	}
 };
