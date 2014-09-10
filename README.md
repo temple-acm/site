@@ -26,7 +26,7 @@ $ npm install -g gulp
 ```
 
 ## Running the Site
-The quickest way to get started with MEAN is to clone the project and utilize it like this:
+The fastest way to get started with MEAN is to clone the project and utilize it like this:
 
 Install dependencies:
 
