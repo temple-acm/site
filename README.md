@@ -3,7 +3,7 @@
 Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Getting Source
-To download the source of the website, you'll need to [fork this repository](https://github.com/temple-acm/site/fork) abd use *git's clone feature*. That way, when you make changes you can submit a pull request to update the actual website.
+To download the source code of the website, you'll need to [fork this repository](https://github.com/temple-acm/site/fork) abd use *git's clone feature*. That way, when you make changes you can submit a pull request to update the actual website.
 ```
 git clone git@github.com:/<YOUR GITHUB USER NAME>/site
 ```
@@ -26,7 +26,7 @@ $ npm install -g gulp
 ```
 
 ## Running the Site
-The quickest way to get started with MEAN is to clone the project and utilize it like this:
+The fastest way to get started with MEAN is to clone the project and utilize it like this:
 
 Install dependencies:
 
@@ -94,3 +94,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
