@@ -3,14 +3,19 @@ var fs = require('fs');
 var path = require('path');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
+var async = require('async');
 var minifyCSS = require('gulp-minify-css');
 var concat = require('gulp-concat');
+var http = require('http');
+var git = require('gulp-git');
+var exec = require('child_process').exec;
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var livereload = require('gulp-livereload');
 var minifyHtml = require('gulp-minify-html');
 var replace = require('gulp-replace');
 var nodemon = require('gulp-nodemon');
+var express = require('express');
 
 // Task responsible for less
 gulp.task('less', function() {
@@ -118,6 +123,34 @@ gulp.task('js-prod', function() {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/dist'));
 });
+
+// This shit waits on the webhook
+gulp.task('githook', function() {
+    var app = express();
+    app.get('/githook', function(req, res) {
+         async.series([
+            function(cb) {
+                git.pull('origin', 'revamp', {}, cb);
+            },
+            function(cb) {
+                gulp.start('deploy');
+                cb();
+            },
+            function(cb) {
+                exec('forever restartall', cb);
+            }
+         ], function(err) {
+            if (err) {
+                res.status(500).json(err);
+                console.log(err);
+            } else {
+                res.status(200).send();
+            }
+         });
+    });
+    http.createServer(app).listen(4000, '0.0.0.0')
+});
+
 // Task readies for deployment
 gulp.task('build', ['less', 'js', 'html'], function() {});
 gulp.task('deploy', ['less-prod', 'js-prod', 'html-prod'], function() {});
