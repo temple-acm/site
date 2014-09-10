@@ -127,7 +127,7 @@ gulp.task('js-prod', function() {
 // This shit waits on the webhook
 gulp.task('githook', function() {
     var app = express();
-    app.get('/githook', function(req, res) {
+    app.post('/githook', function(req, res) {
          async.series([
             function(cb) {
                 git.pull('origin', 'revamp', {}, cb);
