@@ -85,6 +85,16 @@
 					url: '/members/logout'
 				});
 			};
+			this.resetPassword = function(pass, token) {
+				return $http({
+					method: 'POST',
+					url: '/members/resetPassword',
+					data: {
+						newPassword: pass,
+						passwordResetToken: token
+					}
+				});
+			};
 		}
 	]);
 	module.service('OfficersSvc', ['$http',

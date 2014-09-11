@@ -558,4 +558,73 @@
 			};
 		}
 	]);
+	// Reset Password Controller
+	module.controller('ResetPasswordCtrl', ['$scope', 'LoginSvc',
+		function($scope, service) {
+			var TOKEN_REGEX = /\/([a-zA-Z0-9]+)$/;
+
+			$scope.invalidForm = false;
+			$scope.resetFailed = false;
+
+			$scope.onPasswordChanged = function() {
+				var pass = $('#reset-password-form #password-text').val();
+				var conf = $('#reset-password-form #confirm-password-text').val();
+				if (PASSWORD_REGEX.test(pass)) {
+					if (pass === conf) {
+						$('#reset-password-form #password-indicator').addClass('good');
+						$('#reset-password-form #password-indicator').html('This password is valid.');
+						// Mark the field valid
+						if ($scope.registration)
+							$scope.registration.password.$setValidity('pass', true);
+					} else {
+						$('#reset-password-form #password-indicator').removeClass('good');
+						$('#reset-password-form #password-indicator').html('The passwords don\'t match.');
+						// Mark the field invalid
+						if ($scope.registration)
+							$scope.registration.password.$setValidity('pass', false);
+					}
+				} else {
+					$('#reset-password-form #password-indicator').removeClass('good');
+					$('#reset-password-form #password-indicator').html('Password format invalid.');
+					// Mark the field invalid
+					if ($scope.registration)
+						$scope.registration.password.$setValidity('pass', false);
+				}
+			};
+
+			$scope.submit = function(user) {
+				if ($scope.resetpass.$valid) {
+					var token;
+					if (window.location.pathname.match(TOKEN_REGEX)) {
+						token = window.location.pathname.match(TOKEN_REGEX)[1];
+					} else {
+						$scope.invalidForm = false;
+						$scope.resetFailed = true;
+						return;
+					}
+
+					service.resetPassword(user.password, token).success(function(data, status, headers, config) {
+						if ('200' in data) {
+							$scope.invalidForm = false;
+							$scope.resetFailed = false;
+							window.location.replace('/');
+						} else {
+							$scope.invalidForm = false;
+							$scope.resetFailed = true;
+							// Refocus the password field
+							$('#reset-password-form #password-text').val('').focus();
+						}
+					}).error(function() {
+						$scope.invalidForm = false;
+						$scope.resetFailed = true;
+						// Refocus the password field
+						$('#reset-password-form #password-text').val('').focus();
+					});
+				} else {
+					$scope.invalidForm = true;
+					$scope.resetFailed = false;
+				}
+			};
+		}
+	]);
 })(angular.module('controllers', ['services']), window._$_app);

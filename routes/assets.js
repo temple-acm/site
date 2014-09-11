@@ -2,18 +2,23 @@ var path = require('path');
 
 /******************************* MODULE HELPERS *******************************/
 
-var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH;
+var INDEX_PAGE_PATH,
+	RECRUITING_PAGE_PATH,
+	RESET_PASSWORD_PAGE_PATH,
+	NOT_FOUND_PATH;
 // Use minified html for production
 if (process.env.TUACM_DEV) {
 	// Development
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.html');
 	RECRUITING_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'recruiting.html');
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.html');
+	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.html');
 } else {
 	// Production
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.min.html');
 	RECRUITING_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'recruiting.min.html');
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.min.html');
+	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.min.html');
 }
 
 /******************************** ASSET ROUTES ********************************/
@@ -29,9 +34,22 @@ exports.route = function(app) {
 	app.get('/recruiting', function(req, res) {
 		res.sendFile(RECRUITING_PAGE_PATH);
 	});
-	// Obligatory 404 page
-	app.get('/recruiting', function(req, res) {
-		res.sendFile(RECRUITING_PAGE_PATH);
+	// Password reset page
+	app.get('/settings/password/reset/:token', function(req, res) {
+		var token = req.param('token');
+		if (!token) {
+			res.sendFile(NOT_FOUND_PATH);
+		} else {
+			req.db.collection('users').find({
+				passwordResetToken: token
+			}).toArray(function(err, users) {
+				if (err || !users || users.length < 1) {
+					res.sendFile(NOT_FOUND_PATH);
+				} else {
+					res.sendFile(RESET_PASSWORD_PAGE_PATH);
+				}
+			});
+		}
 	});
 
 	/**** ASSET FETCHING ROUTES ****/
