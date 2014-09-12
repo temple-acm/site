@@ -133,6 +133,12 @@ gulp.task('githook', function() {
                 git.pull('origin', 'revamp', {}, cb);
             },
             function(cb) {
+                exec('npm install', cb);
+            },
+            function(cb) {
+                exec('bower install', cb);
+            },
+            function(cb) {
                 gulp.start('deploy');
                 cb();
             },
@@ -141,7 +147,7 @@ gulp.task('githook', function() {
             }
          ], function(err) {
             if (err) {
-                res.status(500).json(err);
+                res.status(500).send();
                 console.log(err);
             } else {
                 res.status(200).send();
