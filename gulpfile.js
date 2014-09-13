@@ -16,6 +16,7 @@ var minifyHtml = require('gulp-minify-html');
 var replace = require('gulp-replace');
 var nodemon = require('gulp-nodemon');
 var express = require('express');
+var crypto = require('crypto');
 
 // Task responsible for less
 gulp.task('less', function() {
@@ -128,31 +129,42 @@ gulp.task('js-prod', function() {
 gulp.task('githook', function() {
     var app = express();
     app.post('/githook', function(req, res) {
-         async.series([
-            function(cb) {
-                git.pull('origin', 'revamp', {}, cb);
-            },
-            function(cb) {
-                exec('npm install', cb);
-            },
-            function(cb) {
-                exec('bower install', cb);
-            },
-            function(cb) {
-                gulp.start('deploy');
-                cb();
-            },
-            function(cb) {
-                exec('forever restartall', cb);
-            }
-         ], function(err) {
-            if (err) {
-                res.status(500).send();
-                console.log(err);
-            } else {
-                res.status(200).send();
-            }
-         });
+        console.log(res.headers['X-Hub-Signature']);
+        xHubSig = res.headers['X-Hub-Signature'].substring(4);
+        hmac = crypto.createHmac('sha1', process.env.GITHUB_SECRET || 'thisissosecret');
+        hmac.write(res.body);
+        computedHubSig = hmac.digest('hex');
+        console.log(computedHubSig);
+        if computedHubSig === xHubSig {
+            async.series([
+               function(cb) {
+                   git.pull('origin', 'revamp', {}, cb);
+               },
+               function(cb) {
+                   exec('npm install', cb);
+               },
+               function(cb) {
+                   exec('bower install', cb);
+               },
+               function(cb) {
+                   gulp.start('deploy');
+                   cb();
+               },
+               function(cb) {
+                   exec('forever restartall', cb);
+               }
+            ], function(err) {
+               if (err) {
+                   res.status(500).send();
+                   console.log(err);
+               } else {
+                   res.status(200).send();
+               }
+            });
+        } else {
+            res.status(500).send();
+            console.log("Digests don't match");
+        }
     });
     http.createServer(app).listen(4000, '0.0.0.0')
 });
