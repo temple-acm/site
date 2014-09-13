@@ -129,7 +129,7 @@ gulp.task('js-prod', function() {
 // This shit waits on the webhook
 gulp.task('githook', function() {
     var app = express();
-    app.use(bodyParser.text({'type': 'application/json'});
+    app.use(bodyParser.text({'type': 'application/json'}));
     app.post('/githook', function(req, res) {
         xHubSig = req.headers['x-hub-signature'].substring(5);
         hmac = crypto.createHmac('sha1', process.env.GITHUB_SECRET || 'thisissosecret');
