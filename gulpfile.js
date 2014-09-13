@@ -16,6 +16,7 @@ var minifyHtml = require('gulp-minify-html');
 var replace = require('gulp-replace');
 var nodemon = require('gulp-nodemon');
 var express = require('express');
+var bodyParser = require('body-parser');
 var crypto = require('crypto');
 
 // Task responsible for less
@@ -128,13 +129,12 @@ gulp.task('js-prod', function() {
 // This shit waits on the webhook
 gulp.task('githook', function() {
     var app = express();
+    app.use(bodyParser.text({'type': 'application/json'});
     app.post('/githook', function(req, res) {
-        console.log(req.headers['x-hub-signature']);
-        xHubSig = req.headers['x-hub-signature'].substring(4);
+        xHubSig = req.headers['x-hub-signature'].substring(5);
         hmac = crypto.createHmac('sha1', process.env.GITHUB_SECRET || 'thisissosecret');
-        hmac.write(res.body);
+        hmac.write(req.body);
         computedHubSig = hmac.digest('hex');
-        console.log(computedHubSig);
         if (computedHubSig === xHubSig) {
             async.series([
                function(cb) {
