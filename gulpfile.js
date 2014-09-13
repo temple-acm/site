@@ -135,7 +135,7 @@ gulp.task('githook', function() {
         hmac.write(res.body);
         computedHubSig = hmac.digest('hex');
         console.log(computedHubSig);
-        if computedHubSig === xHubSig {
+        if (computedHubSig === xHubSig) {
             async.series([
                function(cb) {
                    git.pull('origin', 'revamp', {}, cb);
