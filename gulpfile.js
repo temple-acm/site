@@ -129,8 +129,8 @@ gulp.task('js-prod', function() {
 gulp.task('githook', function() {
     var app = express();
     app.post('/githook', function(req, res) {
-        console.log(res.headers['X-Hub-Signature']);
-        xHubSig = res.headers['X-Hub-Signature'].substring(4);
+        console.log(req.headers['x-hub-signature']);
+        xHubSig = req.headers['x-hub-signature'].substring(4);
         hmac = crypto.createHmac('sha1', process.env.GITHUB_SECRET || 'thisissosecret');
         hmac.write(res.body);
         computedHubSig = hmac.digest('hex');
