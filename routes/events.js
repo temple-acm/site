@@ -111,7 +111,7 @@ exports.route = function(app) {
 	app.get('/mixer', function(req, res) {
 		res.redirect('http://www.eventbrite.com/e/acm-networking-event-tickets-12939517445');
 	});
-	app.get('/mixer', function(req, res) {
+	app.get('/microsoft', function(req, res) {
 		res.redirect('https://www.eventbrite.com/e/microsoft-venture-capital-tickets-12925688081');
 	});
 };
