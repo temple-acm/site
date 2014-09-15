@@ -32,9 +32,9 @@ var sendForgotPassword = function(to, name, token) {
 
     transporter.sendMail(forgotPasswordMailOptions, function(error, info) {
         if (error) {
-            console.log(error);
+            logger.error('Could not send email', error);
         } else {
-            console.log('Message sent: ' + info.response);
+            logger.info('Message sent: ' + info.response);
         }
     });
 };

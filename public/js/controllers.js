@@ -44,12 +44,14 @@
 				});
 			};
 			var showCard = function() {
-				$('body').addClass('noscroll');
-				$overlay.css('display', 'block');
-				$overlay.css('opacity', '1.0');
-				setTimeout(function() {
-					$cardHolder.css('top', '0px');
-				}, ANIM_DELAY);
+				if ($overlay.css('display') !== 'block') {
+					$('body').addClass('noscroll');
+					$overlay.css('display', 'block');
+					$overlay.css('opacity', '1.0');
+					setTimeout(function() {
+						$cardHolder.css('top', '0px');
+					}, ANIM_DELAY);
+				}
 			};
 			// Card specific scope functions
 			$scope.showRegistration = function() {
@@ -57,6 +59,7 @@
 				$('overlay register').css('display', 'block');
 				$('overlay login').css('display', 'none');
 				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'none');
 				// Resize the card
 				$('.cardholder').removeClass('small').addClass('large');
 				showCard();
@@ -66,6 +69,7 @@
 				$('overlay register').css('display', 'none');
 				$('overlay login').css('display', 'block');
 				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'none');
 				// Resize the card
 				$('.cardholder').removeClass('large').addClass('small');
 				showCard();
@@ -75,6 +79,17 @@
 				$('overlay register').css('display', 'none');
 				$('overlay login').css('display', 'none');
 				$('overlay emailus').css('display', 'block');
+				$('overlay forgot-password').css('display', 'none');
+				// Resize the card
+				$('.cardholder').removeClass('small').addClass('large');
+				showCard();
+			};
+			$scope.showForgotPassword = function() {
+				// Show & hide the right divs
+				$('overlay register').css('display', 'none');
+				$('overlay login').css('display', 'none');
+				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'block');
 				// Resize the card
 				$('.cardholder').removeClass('small').addClass('large');
 				showCard();
@@ -456,6 +471,34 @@
 	module.controller('EmailCtrl', ['$scope',
 		function() {
 			// TODO: Code that handles the "Email Us" form goes here
+		}
+	]);
+	// Forgot Password Controller
+	module.controller('ForgotPasswordCtrl', ['$scope', '$rootScope', 'LoginSvc',
+		function($scope, $rootScope, service) {
+			$scope.submitted = false;
+			$scope.submissionError = false;
+			$scope.incompleteForm = false;
+
+			$scope.submit = function(data) {
+				if (!data || (!data.userName && !data.email)) {
+					$scope.incompleteForm = true;
+					$scope.submissionError = false;
+					$scope.submitted = false;
+				} else {
+					$scope.incompleteForm = false;
+					$scope.submissionError = false;
+					$scope.submitted = true;
+					service.forgotPassword(data.userName, data.email).success(function(result) {
+						if ('200' in result) {
+							setTimeout($rootScope.hideCard, 1000);
+						} else {
+							$scope.submissionError = true;
+							$scope.submitted = false;
+						}
+					});
+				}
+			};
 		}
 	]);
 	// Officers Controller

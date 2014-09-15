@@ -95,6 +95,16 @@
 					}
 				});
 			};
+			this.forgotPassword = function(userName, email) {
+				return $http({
+					method: 'POST',
+					url: '/members/forgotPassword',
+					data: {
+						userName: userName,
+						email: email
+					}
+				});
+			};
 		}
 	]);
 	module.service('OfficersSvc', ['$http',
