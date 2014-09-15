@@ -355,14 +355,14 @@ exports.route = function(app) {
 			if (err || users.length < 1) {
 				if (err) logger.log('error', err);
 				res.status(200).json({
-					'500': 'Could not find user'
+					'200': {}
 				});
 			} else {
 				var user = users[0];
 				// Check if the user has an email
 				if (!user.email) {
 					res.status(200).json({
-						'500': 'User does not have an email'
+						'200': {}
 					});
 					return;
 				}

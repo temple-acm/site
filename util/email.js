@@ -9,8 +9,8 @@ var logger = require('./log');
 /******************************************* MODULE ***********************************************/
 
 // TODO make this HTTPS friendly
-var FORGOT_PASSWORD_EMAIL_TEMPLATE = 'Hello {{name}},\n\nAs per your request, here is a link you can use to reset your password:\n\nhttp://acm.temple.edu/settings/password/reset/{{token}}\n\nFor your protection, this link is only good for an hour after this email was sent. If you have any questions or did not request a password reset, pease contact us anytime at tuacm.temple.edu.\n\nBest regards, Temple ACM\n\nhttp://acm.temple.edu';
-var PASSWORD_RESET_SUCCESS_EMAIL_TEMPLATE = 'Hello {{name}},\n\nYour Temple ACM account password was recently reset. If you have any questions or did not request a password reset, pease contact us anytime at tuacm.temple.edu.\n\nBest regards, Temple ACM\n\nhttp://acm.temple.edu';
+var FORGOT_PASSWORD_EMAIL_TEMPLATE = 'Hello {{name}},\n\nAs per your request, here is a link you can use to reset your password:\n\nhttp://acm.temple.edu/settings/password/reset/{{token}}\n\nFor your protection, this link is only good for an hour after this email was sent. If you have any questions or did not request a password reset, please contact us anytime at tuacm@temple.edu.\n\nBest regards, Temple ACM\n\nhttp://acm.temple.edu';
+var PASSWORD_RESET_SUCCESS_EMAIL_TEMPLATE = 'Hello {{name}},\n\nYour Temple ACM account password was recently reset. If you have any questions or did not request a password reset, please contact us anytime at tuacm@temple.edu.\n\nBest regards, Temple ACM\n\nhttp://acm.temple.edu';
 
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({

@@ -34,6 +34,10 @@ exports.route = function(app) {
 	app.get('/recruiting', function(req, res) {
 		res.sendFile(RECRUITING_PAGE_PATH);
 	});
+	// The 404 page - so stangers may stare in adoration
+	app.get('/404', function(req, res) {
+		res.sendFile(NOT_FOUND_PATH);
+	});
 	// Password reset page
 	app.get('/settings/password/reset/:token', function(req, res) {
 		var token = req.param('token');
