@@ -2,6 +2,16 @@
 var fs = require('fs'),
 	path = require('path');
 
+var NOT_FOUND_PATH;
+// Use minified html for production
+if (process.env.TUACM_DEV) {
+	// Development
+	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.html');
+} else {
+	// Production
+	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.min.html');
+}
+
 // Sweep through all the routes we have; put them in a list
 var routeModules = [];
 var fileNames = fs.readdirSync(__dirname);
@@ -27,4 +37,22 @@ exports.setup = function(app) {
 			routeModules[i].finish(app);
 		}
 	}
+	// Handles 404s
+	app.use(function(req, res, next) {
+		res.status(404);
+		// respond with html page
+		if (req.accepts('html')) {
+			res.sendFile(NOT_FOUND_PATH);
+			return;
+		}
+		// respond with json
+		if (req.accepts('json')) {
+			res.send({
+				error: 'Page was not found'
+			});
+			return;
+		}
+		// default to plain-text. send()
+		res.type('txt').send('Page was not found.');
+	});
 };
