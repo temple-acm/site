@@ -2,7 +2,10 @@ var path = require('path');
 
 /******************************* MODULE HELPERS *******************************/
 
-var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH;
+var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH, ROBOTS_PATH;
+
+// Set up robots.txt
+ROBOTS_PATH = path.join(__dirname, '..', 'public', 'robots.txt');
 // Use minified html for production
 if (process.env.TUACM_DEV) {
 	// Development
@@ -33,7 +36,9 @@ exports.route = function(app) {
 	app.get('/recruiting', function(req, res) {
 		res.sendFile(RECRUITING_PAGE_PATH);
 	});
-
+    app.get('/robots.txt', function(req, res) {
+        res.sendFile(ROBOTS_PATH);
+    });
 	/**** ASSET FETCHING ROUTES ****/
 
 	// Get the slides
