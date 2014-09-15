@@ -13,7 +13,7 @@ section#events {
 			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
 			border-radius: 2px;
 			overflow-x: hidden;
-			overflow-y: auto;
+			overflow-y: hidden;
 			padding: 24px;
 			color: #1b769e;
 			height: 200px;
@@ -22,6 +22,15 @@ section#events {
 				text-align: left;
 				margin-bottom: 5px;
 			}
+            .description {
+                overflow-x: hidden;
+                overflow-y: auto;
+                height: 83px;
+                -ms-overflow-style: none;
+            }
+            .description::-webkit-scrollbar {
+                display: none;
+            }
 			.when,
 			.where {
 				text-align: left;

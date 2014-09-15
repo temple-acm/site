@@ -67,9 +67,9 @@ $ gulp deploy
 ```
 To manage and query our data, we use [Robomongo](http://robomongo.org).
 
-To automatically rebuild and redeploy our production website when we make changes to the source upstream, we utilize [Github webhooks(https://developer.github.com/webhooks/) and a specialized gulp task:
+To automatically rebuild and redeploy our production website when we make changes to the source upstream, we utilize [Github webhooks](https://developer.github.com/webhooks/) and a specialized gulp task:
 ```
-gulp githook
+$ gulp githook
 ```
 
 ## Questions?
