@@ -32,6 +32,7 @@
     "express": "latest",
     "express-session": "latest",
     "feedparser": "^0.19.1",
+    "gulp-git": "^0.5.0",
     "method-override": "latest",
     "mkdirp": "latest",
     "mongodb": "^1.4.7",

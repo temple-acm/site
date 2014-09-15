@@ -3,14 +3,21 @@ var fs = require('fs');
 var path = require('path');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
+var async = require('async');
 var minifyCSS = require('gulp-minify-css');
 var concat = require('gulp-concat');
+var http = require('http');
+var git = require('gulp-git');
+var exec = require('child_process').exec;
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var livereload = require('gulp-livereload');
 var minifyHtml = require('gulp-minify-html');
 var replace = require('gulp-replace');
 var nodemon = require('gulp-nodemon');
+var express = require('express');
+var bodyParser = require('body-parser');
+var crypto = require('crypto');
 
 // Task responsible for less
 gulp.task('less', function() {
@@ -120,6 +127,50 @@ gulp.task('js-prod', function() {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/dist'));
 });
+
+// This shit waits on the webhook
+gulp.task('githook', function() {
+    var app = express();
+    app.use(bodyParser.text({'type': 'application/json'}));
+    app.post('/githook', function(req, res) {
+        xHubSig = req.headers['x-hub-signature'].substring(5);
+        hmac = crypto.createHmac('sha1', process.env.GITHUB_SECRET || 'thisissosecret');
+        hmac.write(req.body);
+        computedHubSig = hmac.digest('hex');
+        if (computedHubSig === xHubSig) {
+            async.series([
+               function(cb) {
+                   git.pull('origin', 'revamp', {}, cb);
+               },
+               function(cb) {
+                   exec('npm install', cb);
+               },
+               function(cb) {
+                   exec('bower install', cb);
+               },
+               function(cb) {
+                   gulp.start('deploy');
+                   cb();
+               },
+               function(cb) {
+                   exec('forever restartall', cb);
+               }
+            ], function(err) {
+               if (err) {
+                   res.status(500).send();
+                   console.log(err);
+               } else {
+                   res.status(200).send();
+               }
+            });
+        } else {
+            res.status(500).send();
+            console.log("Digests don't match");
+        }
+    });
+    http.createServer(app).listen(4000, '0.0.0.0')
+});
+
 // Task readies for deployment
 gulp.task('build', ['less', 'js', 'html'], function() {});
 gulp.task('deploy', ['less-prod', 'js-prod', 'html-prod'], function() {});

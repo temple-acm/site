@@ -1,17 +1,17 @@
 # Temple ACM Site
 
-Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which basically uses javascript/json at every layer (browser, server and database). The technologies involved are as follows: [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
+Temple ACM's site is built off of the [MEAN](http://mean.io) stack, which uses Javascript/JSON at every layer (browser, server and database). The technologies involved are [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/).
 
 ## Getting Source
-To download the source of the website, you'll need to [fork this repository](https://github.com/temple-acm/site/fork) abd use *git's clone feature*. That way, when you make changes you can submit a pull request to update the actual website.
+To download the source code of the website, you'll need to [fork this repository](https://github.com/temple-acm/site/fork). That way, when you make changes you can submit a pull request to update the actual website.
 ```
 git clone git@github.com:/<YOUR GITHUB USER NAME>/site
 ```
 
 ## Prerequisites
-* UNIX Development Environment (OSX, BSD, Linux) - If you're on Windows, try [this guide](http://www.howtogeek.com/howto/11287/how-to-run-ubuntu-in-windows-7-with-vmware-player/)
-* Node.js - Download and Install [Node.js](http://www.nodejs.org/download/)
-* Make - The ```make``` command must be installed manually on some distros (e.g. for ubuntu you need to ```apt-get install build-essential```)
+* UNIX Development Environment (OSX, BSD, Linux) - If you're on Windows, your best bet is to use a VM. Try [this guide](http://www.howtogeek.com/howto/11287/how-to-run-ubuntu-in-windows-7-with-vmware-player/)
+* Node.js - Download and install [Node.js](http://www.nodejs.org/download/)
+* Make - The ```make``` command must be installed manually on some distros (e.g. for Debian-based Linux distributions you need to ```sudo apt-get install build-essential```)
 
 ### Tools Prerequisites
 * [Bower](http://bower.io/) - Web package manager:
@@ -26,7 +26,7 @@ $ npm install -g gulp
 ```
 
 ## Running the Site
-The quickest way to get started with MEAN is to clone the project and utilize it like this:
+The fastest way to get started with the MEAN stack is to clone the project from your forked repo and utilize it like this:
 
 Install dependencies:
 
@@ -44,18 +44,18 @@ Install dependencies:
   OR, if you are on Windows, and therefore running the server in a VM, replace 'localhost' with IP address of the VM.
 
 ## Production Setup
-In production we change the way we make a few concessions:
-- Mongo DB, our database, is run locally on the same box as the web server instead hosted by [Compose](http://compose.io)
+In production we change a few fundamental aspects of our deployment:
+- Mongo DB, our database, is run locally on the same box as the web server instead of being hosted by [Compose](http://compose.io)
 - We use environment variables for sensitive information instead of the development defaults
 - We use [HAProxy](http://haproxy.org) for reverse proxying and HTTPS configuration
 
 The variables we use are as follows:
-- TUACM_LOGPATH - The path where logs will be put
+- TUACM_LOGPATH - The path where logs will be stored
 - TUACM_PORT - The port that the web server is listening for HTTP requests on
 - TUACM_SESSION_SECRET - The secret used for salting session tokens
 - TUACM_MONGO_URL - The connection string for mongo
 
-To setup the environment variables in ideal fashion for production, decrypt env.sh.gpg with gpg: ```gpg env.sh.gpg```.
+To set up the environment variables in ideal fashion for production, decrypt env.sh.gpg with gpg: ```gpg env.sh.gpg```.
 Once you have decrypted the environment script, run env.sh to setup environment variables for production:
 ```
 $ chmod +x env.sh
@@ -67,11 +67,16 @@ $ gulp deploy
 ```
 To manage and query our data, we use [Robomongo](http://robomongo.org).
 
+To automatically rebuild and redeploy our production website when we make changes to the source upstream, we utilize [Github webhooks](https://developer.github.com/webhooks/) and a specialized gulp task:
+```
+$ gulp githook
+```
+
 ## Questions?
-Come and ask for assistance or just hangout in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
+Come and ask for assistance or just hang out in our [Slack](http://tuacm.slack.com) channel. Use ```@group``` to notify everyone in the group of your message.
 
 ## Credits
-Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your brogrammer-in-chief [Sandile Keswa](https://github.com/skeswa/). Also, you know, [Sri Ramanujam](https://github.com/SriRamanujam).
+Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/), and made possible by the good people at [linnovate](http://www.linnovate.net/). Also thank your brogrammer-in-chief [Sandile Keswa](https://github.com/skeswa/). Also also thanks to DevOps superhero [Sri Ramanujam](https://github.com/SriRamanujam).
 
 ## License
 (The MIT License)
@@ -94,3 +99,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
