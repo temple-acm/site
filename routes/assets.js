@@ -1,6 +1,6 @@
 var path = require('path');
 
-/******************************* MODULE HELPERS *******************************/
+//------------------------------ MODULE HELPERS ------------------------------//
 
 var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH, ROBOTS_PATH;
 
@@ -19,10 +19,10 @@ if (process.env.TUACM_DEV) {
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.min.html');
 }
 
-/******************************** ASSET ROUTES ********************************/
+//------------------------------- ASSET ROUTES -------------------------------//
 
 exports.route = function(app) {
-	/**** PAGES ****/
+	//--- PAGES ---//
 
 	// Main page route
 	app.get('/', function(req, res) {
@@ -39,7 +39,8 @@ exports.route = function(app) {
     app.get('/robots.txt', function(req, res) {
         res.sendFile(ROBOTS_PATH);
     });
-	/**** ASSET FETCHING ROUTES ****/
+
+	//--- ASSET FETCHING ROUTES ---//
 
 	// Get the slides
 	app.get('/slides', function(req, res) {
