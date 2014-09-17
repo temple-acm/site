@@ -368,8 +368,6 @@ exports.route = function(app) {
 				}
 				// Generate a token
 				var token = passwordResetToken();
-				// Send an email with this information
-				emailUtil.sendForgotPassword(user.email, user.firstName + ' ' + user.lastName, token);
 				// Set the password reset token
 				req.db.collection('users').update({
 					userName: user.userName
@@ -386,9 +384,25 @@ exports.route = function(app) {
 						});
 						logger.log('error', 'could not set the password reset token', err);
 					} else {
+						// Send an email with this information
+						emailUtil.sendForgotPassword(user.email, user.firstName + ' ' + user.lastName, token);
+						// Send response back
 						res.status(200).send({
 							'200': {}
 						});
+						// Kill this token after an hour
+						setTimeout(function() {
+							logger.info('Killing password reset token ' + token);
+							req.db.collection('users').update({
+								userName: user.userName
+							}, {
+								$unset: {
+									passwordResetToken: ''
+								}
+							}, {
+								multi: false
+							}, function() {});
+						}, 3600000);
 					}
 				});
 			}

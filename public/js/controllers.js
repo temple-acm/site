@@ -491,7 +491,14 @@
 					$scope.submitted = true;
 					service.forgotPassword(data.userName, data.email).success(function(result) {
 						if ('200' in result) {
-							setTimeout($rootScope.hideCard, 1000);
+							$rootScope.hideCard();
+							setTimeout(function() {
+								$scope.$apply(function() {
+									$scope.submitted = false;
+									$scope.submissionError = false;
+									$scope.incompleteForm = false;
+								});
+							}, 1500);
 						} else {
 							$scope.submissionError = true;
 							$scope.submitted = false;
