@@ -6,7 +6,7 @@ var passport = require('passport'),
 var emailUtil = require('../util/email'),
 	logger = require('../util/log');
 
-/*************************** PASSPORT CONFIGURATION ***************************/
+//-------------------------- PASSPORT CONFIGURATION --------------------------//
 
 // Setting up passport strategy (used for authentication)
 passport.use('local', new LocalStrategy({
@@ -48,7 +48,7 @@ passport.deserializeUser(function(req, id, done) {
 	});
 });
 
-/******************************* MODULE HELPERS *******************************/
+//------------------------------ MODULE HELPERS ------------------------------//
 
 var SALT_FACTOR = 10;
 var EMAIL_REGEX = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i;
@@ -63,7 +63,7 @@ var passwordResetToken = function() {
 	return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 };
 
-/******************************** MEMBER CONFIG *******************************/
+//------------------------------- MEMBER CONFIG ------------------------------//
 
 exports.configure = function(app) {
 	// Attach passport to express app
@@ -71,7 +71,7 @@ exports.configure = function(app) {
 	app.use(passport.session());
 };
 
-/******************************** MEMBER ROUTES *******************************/
+//------------------------------- MEMBER ROUTES ------------------------------//
 
 exports.route = function(app) {
 	// Check if a user name is free
