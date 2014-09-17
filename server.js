@@ -37,6 +37,14 @@ if (!process.env.TUACM_MONGO_URL) {
     console.log('TUACM_MONGO_URL is invalid; now exiting.');
     process.exit(1);
 }
+if (!process.env.TUACM_GMAIL_EMAIL) {
+    console.log('TUACM_GMAIL_EMAIL is invalid; now exiting.');
+    process.exit(1);
+}
+if (!process.env.TUACM_GMAIL_PASSWORD) {
+    console.log('TUACM_GMAIL_PASSWORD is invalid; now exiting.');
+    process.exit(1);
+}
 if (!process.env.TUACM_SESSION_SECRET) {
     console.log('TUACM_SESSION_SECRET is invalid; now exiting.');
     process.exit(1);

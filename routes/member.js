@@ -3,6 +3,8 @@ var passport = require('passport'),
 	async = require('async'),
 	ObjectId = require('mongodb').ObjectID,
 	LocalStrategy = require('passport-local').Strategy;
+var emailUtil = require('../util/email'),
+	logger = require('../util/log');
 
 //-------------------------- PASSPORT CONFIGURATION --------------------------//
 
@@ -55,6 +57,10 @@ var PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/;
 var saltAndHash = function(password) {
 	var salt = bcrypt.genSaltSync(SALT_FACTOR);
 	return bcrypt.hashSync(password, salt);
+};
+// Helper to generate a password reset token
+var passwordResetToken = function() {
+	return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 };
 
 //------------------------------- MEMBER CONFIG ------------------------------//
@@ -327,6 +333,124 @@ exports.route = function(app) {
 	app.get('/members/logout', function(req, res) {
 		req.logout();
 		res.status(200).send('true');
+	});
+
+	app.post('/members/forgotPassword', function(req, res) {
+		var userName = req.body.userName;
+		var email = req.body.email;
+
+		var query = {};
+		if (typeof userName === 'string') {
+			query.userName = userName;
+		} else if (typeof email === 'string') {
+			query.email = email;
+		} else {
+			res.status(200).send({
+				'400': 'either userName or email parameter is required'
+			});
+			return;
+		}
+
+		req.db.collection('users').find(query).toArray(function(err, users) {
+			if (err || users.length < 1) {
+				if (err) logger.log('error', err);
+				res.status(200).json({
+					'200': {}
+				});
+			} else {
+				var user = users[0];
+				// Check if the user has an email
+				if (!user.email) {
+					res.status(200).json({
+						'200': {}
+					});
+					return;
+				}
+				// Generate a token
+				var token = passwordResetToken();
+				// Set the password reset token
+				req.db.collection('users').update({
+					userName: user.userName
+				}, {
+					$set: {
+						passwordResetToken: token
+					}
+				}, {
+					multi: false
+				}, function(err) {
+					if (err) {
+						res.status(200).send({
+							'500': 'There was an internal error while setting the password reset token'
+						});
+						logger.log('error', 'could not set the password reset token', err);
+					} else {
+						// Send an email with this information
+						emailUtil.sendForgotPassword(user.email, user.firstName + ' ' + user.lastName, token);
+						// Send response back
+						res.status(200).send({
+							'200': {}
+						});
+						// Kill this token after an hour
+						setTimeout(function() {
+							logger.info('Killing password reset token ' + token);
+							req.db.collection('users').update({
+								userName: user.userName
+							}, {
+								$unset: {
+									passwordResetToken: ''
+								}
+							}, {
+								multi: false
+							}, function() {});
+						}, 3600000);
+					}
+				});
+			}
+		});
+	});
+
+	/*
+	 * Resets the password of the currently logged in user. If there is nobody
+	 * logged in, or if the password is ill-formatted, then this call fails.
+	 */
+	app.post('/members/resetPassword', function(req, res) {
+		var newPassword = req.body.newPassword;
+		var passwordResetToken = req.body.passwordResetToken;
+		if (typeof newPassword !== 'string' || !PASSWORD_REGEX.test(newPassword)) {
+			res.status(200).send({
+				'400': 'newPassword parameter was invalid'
+			});
+		} else if (typeof passwordResetToken !== 'string') {
+			res.status(200).send({
+				'400': 'passwordResetToken parameter was invalid'
+			});
+		} else {
+			var saltedNewPassword = saltAndHash(newPassword);
+			// Set the password in the database then update the session
+			req.db.collection('users').update({
+				passwordResetToken: passwordResetToken
+			}, {
+				$set: {
+					password: saltedNewPassword
+				},
+				$unset: {
+					passwordResetToken: ''
+				}
+			}, {
+				multi: false
+			}, function(err) {
+				if (err) {
+					res.status(200).send({
+						'500': 'There was an internal error while updating the user password'
+					});
+					logger.log('error', 'could not mark user paid', err);
+				} else {
+					res.status(200).send({
+						'200': 'password was successfully reset'
+					});
+				}
+			});
+		}
 	});
 
 	/*

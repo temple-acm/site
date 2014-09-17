@@ -105,6 +105,8 @@ gulp.task('server', function() {
             TUACM_LOGPATH: path.join(__dirname, 'logs'),
             TUACM_MONGO_URL: 'mongodb://tuacm:tuacm@kahana.mongohq.com:10045/tuacm',
             TUACM_SESSION_SECRET: 'thisIsSoSecretBro',
+            TUACM_GMAIL_EMAIL: 'test.temple.acm@gmail.com',
+            TUACM_GMAIL_PASSWORD: 'TestTemple450',
             TUACM_PORT: '3000'
         }
     });

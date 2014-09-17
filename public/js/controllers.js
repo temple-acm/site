@@ -44,12 +44,14 @@
 				});
 			};
 			var showCard = function() {
-				$('body').addClass('noscroll');
-				$overlay.css('display', 'block');
-				$overlay.css('opacity', '1.0');
-				setTimeout(function() {
-					$cardHolder.css('top', '0px');
-				}, ANIM_DELAY);
+				if ($overlay.css('display') !== 'block') {
+					$('body').addClass('noscroll');
+					$overlay.css('display', 'block');
+					$overlay.css('opacity', '1.0');
+					setTimeout(function() {
+						$cardHolder.css('top', '0px');
+					}, ANIM_DELAY);
+				}
 			};
 			// Card specific scope functions
 			$scope.showRegistration = function() {
@@ -57,6 +59,7 @@
 				$('overlay register').css('display', 'block');
 				$('overlay login').css('display', 'none');
 				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'none');
 				// Resize the card
 				$('.cardholder').removeClass('small').addClass('large');
 				showCard();
@@ -66,6 +69,7 @@
 				$('overlay register').css('display', 'none');
 				$('overlay login').css('display', 'block');
 				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'none');
 				// Resize the card
 				$('.cardholder').removeClass('large').addClass('small');
 				showCard();
@@ -75,6 +79,17 @@
 				$('overlay register').css('display', 'none');
 				$('overlay login').css('display', 'none');
 				$('overlay emailus').css('display', 'block');
+				$('overlay forgot-password').css('display', 'none');
+				// Resize the card
+				$('.cardholder').removeClass('small').addClass('large');
+				showCard();
+			};
+			$scope.showForgotPassword = function() {
+				// Show & hide the right divs
+				$('overlay register').css('display', 'none');
+				$('overlay login').css('display', 'none');
+				$('overlay emailus').css('display', 'none');
+				$('overlay forgot-password').css('display', 'block');
 				// Resize the card
 				$('.cardholder').removeClass('small').addClass('large');
 				showCard();
@@ -458,6 +473,41 @@
 			// TODO: Code that handles the "Email Us" form goes here
 		}
 	]);
+	// Forgot Password Controller
+	module.controller('ForgotPasswordCtrl', ['$scope', '$rootScope', 'LoginSvc',
+		function($scope, $rootScope, service) {
+			$scope.submitted = false;
+			$scope.submissionError = false;
+			$scope.incompleteForm = false;
+
+			$scope.submit = function(data) {
+				if (!data || (!data.userName && !data.email)) {
+					$scope.incompleteForm = true;
+					$scope.submissionError = false;
+					$scope.submitted = false;
+				} else {
+					$scope.incompleteForm = false;
+					$scope.submissionError = false;
+					$scope.submitted = true;
+					service.forgotPassword(data.userName, data.email).success(function(result) {
+						if ('200' in result) {
+							$rootScope.hideCard();
+							setTimeout(function() {
+								$scope.$apply(function() {
+									$scope.submitted = false;
+									$scope.submissionError = false;
+									$scope.incompleteForm = false;
+								});
+							}, 1500);
+						} else {
+							$scope.submissionError = true;
+							$scope.submitted = false;
+						}
+					});
+				}
+			};
+		}
+	]);
 	// Officers Controller
 	module.controller('OfficersCtrl', ['$scope', '$sce', 'OfficersSvc',
 		function($scope, $sce, service) {
@@ -554,6 +604,75 @@
 				} else {
 					$scope.incompleteForm = true;
 					$scope.invalidCredentials = false;
+				}
+			};
+		}
+	]);
+	// Reset Password Controller
+	module.controller('ResetPasswordCtrl', ['$scope', 'LoginSvc',
+		function($scope, service) {
+			var TOKEN_REGEX = /\/([a-zA-Z0-9]+)$/;
+
+			$scope.invalidForm = false;
+			$scope.resetFailed = false;
+
+			$scope.onPasswordChanged = function() {
+				var pass = $('#reset-password-form #password-text').val();
+				var conf = $('#reset-password-form #confirm-password-text').val();
+				if (PASSWORD_REGEX.test(pass)) {
+					if (pass === conf) {
+						$('#reset-password-form #password-indicator').addClass('good');
+						$('#reset-password-form #password-indicator').html('This password is valid.');
+						// Mark the field valid
+						if ($scope.registration)
+							$scope.registration.password.$setValidity('pass', true);
+					} else {
+						$('#reset-password-form #password-indicator').removeClass('good');
+						$('#reset-password-form #password-indicator').html('The passwords don\'t match.');
+						// Mark the field invalid
+						if ($scope.registration)
+							$scope.registration.password.$setValidity('pass', false);
+					}
+				} else {
+					$('#reset-password-form #password-indicator').removeClass('good');
+					$('#reset-password-form #password-indicator').html('Password format invalid.');
+					// Mark the field invalid
+					if ($scope.registration)
+						$scope.registration.password.$setValidity('pass', false);
+				}
+			};
+
+			$scope.submit = function(user) {
+				if ($scope.resetpass.$valid) {
+					var token;
+					if (window.location.pathname.match(TOKEN_REGEX)) {
+						token = window.location.pathname.match(TOKEN_REGEX)[1];
+					} else {
+						$scope.invalidForm = false;
+						$scope.resetFailed = true;
+						return;
+					}
+
+					service.resetPassword(user.password, token).success(function(data, status, headers, config) {
+						if ('200' in data) {
+							$scope.invalidForm = false;
+							$scope.resetFailed = false;
+							window.location.replace('/');
+						} else {
+							$scope.invalidForm = false;
+							$scope.resetFailed = true;
+							// Refocus the password field
+							$('#reset-password-form #password-text').val('').focus();
+						}
+					}).error(function() {
+						$scope.invalidForm = false;
+						$scope.resetFailed = true;
+						// Refocus the password field
+						$('#reset-password-form #password-text').val('').focus();
+					});
+				} else {
+					$scope.invalidForm = true;
+					$scope.resetFailed = false;
 				}
 			};
 		}
