@@ -166,9 +166,19 @@ exports.route = function(app) {
 	 *          data: { "500" : err } where "err" is the error message returned
 	 */
 	app.get('/events/calendar', function(req, res) {
+		// The array of events
 		var events = [];
+
+		// Get the event count
+		var eventCount = parseInt(req.param('count'));
+		if (!eventCount) {
+			eventCount = UPCOMING_EVENTS_LIMIT;
+		}
+		// Calculate how many weeks to query for assuming approx. 2.5 events per week
+		var weekCount = Math.ceil(eventCount / 2.5);
+
 		// Grab the calendar data
-		async.parallel(newEventQuerySet(events, 7, 3), function(err) {
+		async.parallel(newEventQuerySet(events, 7, weekCount), function(err) {
 			if (err) {
 				logger.log('error', err);
 				res.status(200).json({
@@ -177,8 +187,8 @@ exports.route = function(app) {
 			} else {
 				// Sort the events array
 				events.sort(eventComparator);
-				// Limit the events array to predefined limit
-				events = events.slice(0, UPCOMING_EVENTS_LIMIT);
+				// Limit the events array to event count
+				events = events.slice(0, eventCount);
 				// Return the events array
 				res.status(200).json({
 					'200': events
