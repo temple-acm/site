@@ -174,8 +174,8 @@ exports.route = function(app) {
 		if (!eventCount) {
 			eventCount = UPCOMING_EVENTS_LIMIT;
 		}
-		// Calculate how many weeks to query for assuming approx. 2.5 events per week
-		var weekCount = Math.ceil(eventCount / 2.5);
+		// Calculate how many weeks to query for assuming approx. 2 events per week
+		var weekCount = Math.ceil(eventCount / 2);
 
 		// Grab the calendar data
 		async.parallel(newEventQuerySet(events, 7, weekCount), function(err) {
