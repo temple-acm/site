@@ -20,7 +20,8 @@ var express = require('express'),
     MongoStore = require('connect-mongo')(session),
     busboy = require('connect-busboy');
 var passport = require('passport');
-
+var acl = require('acl');
+var mongoBackend = undefined;
 /*************************************** INTERNAL IMPORTS *****************************************/
 
 var logger = require('./util/log'); // Our custom logging utility
@@ -83,6 +84,8 @@ MongoClient.connect(process.env.TUACM_MONGO_URL, function(err, db) {
     else {
         // Session stuff
         mongoDb = db;
+        // ACL stuff
+        mongoBackend = new acl.mongodbBackend(db, 'acl_');
         app.use(session({
             secret: process.env.TUACM_SESSION_SECRET,
             // TODO restrict db creds to env vars

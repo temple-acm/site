@@ -5,6 +5,7 @@ var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 var emailUtil = require('../util/email'),
 	logger = require('../util/log');
+    acl = require('acl');
 
 //-------------------------- PASSPORT CONFIGURATION --------------------------//
 
@@ -262,7 +263,14 @@ exports.route = function(app) {
 									firstName: createdUser.firstName,
 									lastName: createdUser.lastName
 								};
-
+                                // Ah, more nested callbacks.
+                                acl.allow(userName, 'members', function(err) {
+                                    if (err) {
+                                        res.status(200).json({
+                                            '500' : 'Error saving new user'
+                                        });
+                                    }
+                                });
 								res.status(200).json({
 									'200': strippedUser
 								});
@@ -443,7 +451,7 @@ exports.route = function(app) {
 					res.status(200).send({
 						'500': 'There was an internal error while updating the user password'
 					});
-					logger.log('error', 'could not mark user paid', err);
+					logger.log('error', 'could not reset password', err);
 				} else {
 					res.status(200).send({
 						'200': 'password was successfully reset'
