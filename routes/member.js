@@ -531,47 +531,4 @@ exports.route = function(app) {
 		});
 	});
 
-	/*
-	 * This endpoint exports our members list to CSV. You must be logged in to do this.
-	 * The CSV is organized such that the columns of the document are denoted First Name,
-	 * Last Name, Email, Member Number.
-	 *
-	 * Output:
-	 *  Success:
-	 *      status: 200
-	 *      data: the CSV of members
-	 *      user objects.
-	 *  Error:
-	 *      status: 200
-	 *      data: { "500": err } where "err" is the error message.
-	 */
-	app.get('/members/export/csv', function(req, res) {
-		if (req.user && req.user[0].officer) {
-			req.db.collection('users').find({}, {
-				firstName: 1,
-				lastName: 1,
-				email: 1,
-				membership: 1
-			}).toArray(function(err, members) {
-				if (err) {
-					logger.log('error', err);
-					res.status(500).send('Error retrieving members for CSV');
-				} else {
-					// Build the CSV
-					var csv = 'First Name,Last Name,Email,Member Number\n';
-					members.forEach(function(member, i) {
-						csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
-						if (i === members.length - 1) {
-							// We're done
-							res.status(200).type('text/csv').set({
-								'Content-Disposition': 'attachment; filename="members.csv"',
-							}).send(csv);
-						}
-					});
-				}
-			});
-		} else {
-			res.status(403).send();
-		}
-	});
 };
