@@ -689,4 +689,15 @@
             });
         }
     ]);
+    module.controller('OfficerAdminCtrl', ['$scope', 'OfficersSvc', 'OfficersAdminSvc',
+        function($scope, officersSvc, officersAdminSvc) {
+        $scope.officersLoaded = false;
+        officersSvc.getOfficers().success(function(data, status, headers, config) {
+            $scope.officerData = data["200"];
+            $scope.officersLoaded = true;
+        }).error(function() {
+            console.log("error loading officers");
+        });
+        }
+    ]);
 })(angular.module('controllers', ['services']), window._$_app);

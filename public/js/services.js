@@ -55,28 +55,48 @@
 	]);
     // Admin services
     module.service('SlideAdminSvc', ['$http',
-    function($http) {
-        this.getAllSlides = function() {
-            return $http({
-                method: 'GET',
-                url: '/admin/allSlides'
-            });
-        };
-        this.addSlide = function(slideData) {
-            return $http({
-                method: 'POST',
-                url: '/admin/addSlide',
-                data: slideData
-            });
-        };
-        this.getSingleSlide = function(slideData) {
-            return $http({
-                method: 'GET',
-                url: '/admin/getSlide',
-                data: slideData
-            });
-        };
-    }]);
+        function($http) {
+            this.getAllSlides = function() {
+                return $http({
+                    method: 'GET',
+                    url: '/admin/allSlides'
+                });
+            };
+            this.addSlide = function(slideData) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/addSlide',
+                    data: slideData
+                });
+            };
+            this.getSingleSlide = function(slideData) {
+                return $http({
+                    method: 'GET',
+                    url: '/admin/getSlide',
+                    data: slideData
+                });
+            };
+        }
+    ]);
+
+    module.service('OfficersAdminSvc', ['$http',
+        function($http) {
+            this.addOfficer = function(newOfficerData) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/addOfficer',
+                    data: newOfficerData
+                });
+            };
+            this.removeOfficer = function(officerData) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/removeOfficer',
+                    data: officerData
+                });
+            };
+        }
+    ]);
 	// Service that handles events
 	module.service('EventSvc', ['$http',
 		function($http) {

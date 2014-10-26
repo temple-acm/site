@@ -121,11 +121,41 @@
                 </div>
             </section>
 
-            <section id="officersAdmin" class="content-section" >
-                <h2>Officers</h2>
-                <div style="width: 100%; display: block;" ng-hide="officersLoaded">
-                    <div style="display: block; width: 100%; text-align: center;">
-                        <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
+            <section id="officersAdmin" class="content-section" data-ng-controller="OfficerAdminCtrl">
+                <div class="row">
+                    <h2>Officers</h2>
+                    <div style="width: 100%; display: block;" ng-hide="officersLoaded">
+                        <div style="display: block; width: 100%; text-align: center;">
+                            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
+                        </div>
+                    </div>
+                    <div style="width: 100%; display: block;" ng-show="officersLoaded">
+                        <div class="officer-cardholder col-md-3 col-sm-6 col-xs-12" ng-repeat="officer in officerData">
+                            <div class="officer-card">
+                                <div class="picture" ng-bg-img="{{officer.picture}}"></div>
+                                <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
+                                <input class="form-control" placeholder="Title: {{officer.title}}"></input>
+                                <textarea class="form-control">{{officer.bio}}</textarea>
+                                <div class="officer-admin-buttons">
+                                    <a class="btn btn-danger" ng-click="removeOcifer()">Remove Officer</a>
+                                    <a class="btn btn-update" ng-click="updateOfficer()">Save Changes</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; display: block;" ng-show="officersLoaded">
+                            <div class="officer-ad col-md-3 col-sm-6 col-xs-12">
+                                <div class="officer-ad-card">
+                                    <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
+                                        <div style="display: table-cell; vertical-align: middle;">
+                                            <h1>Promote an Officer</h1>
+                                            <a class="btn btn-default btn-lg">
+                                                <i class="fa fa-child"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

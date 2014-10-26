@@ -1,4 +1,86 @@
+@officersColor: #494949;
+
 section#officersAdmin {
-    background-color: #494949;
-    color: #222222;
+    background-color: @officersColor;
+    padding-left: 50px;
+    padding-right: 50px;
+
+    h2 {
+        text-align: center;
+        color: lighten(@officersColor, 50%);
+    }
+
+    .officer-ad {
+        height: 425px;
+        padding: 10px;
+
+        .officer-ad-card {
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, 0.3);
+            height: 100%;
+
+            h1 {
+                font-size: 50px;
+                color: rgba(0, 0, 0, 0.45);
+                text-align: center;
+            }
+
+            .btn {
+                color: @officersColor;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+                font-size: 100px;
+                display: block;
+                background-color: rgba(0, 0, 0, 0.45);
+                border-color: rgba(0, 0, 0, 0.1);
+
+                &:hover {
+                    color: #ffffff;
+                    background-color: rgba(0, 0, 0, 0.65);
+                }
+            }
+        }
+    }
+
+    .officer-cardholder {
+        padding: 10px;
+
+        .officer-card {
+            display: block;
+            background-color: #fff;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            padding: 24px;
+            color: @officersColor;
+            height: 405px;
+
+            .picture {
+                width: 120px;
+                height: 120px;
+                border-radius: 60px;
+                background-color: #ccc;
+                background-position: center;
+                margin: 0 auto;
+            }
+
+            .name {
+                text-align: center;
+                margin-top: 10px;
+                margin-bottom: 5px;
+                font-size: 20px;
+            }
+
+            input, textarea {
+                margin-bottom: 5px;
+                color: #000;
+            }
+
+            .officer-admin-buttons {
+                text-align: center;
+            }
+        }
+    }
 }
