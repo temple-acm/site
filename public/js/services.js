@@ -53,6 +53,30 @@
 			};
 		}
 	]);
+    // Admin services
+    module.service('SlideAdminSvc', ['$http',
+    function($http) {
+        this.getAllSlides = function() {
+            return $http({
+                method: 'GET',
+                url: '/admin/allSlides'
+            });
+        };
+        this.addSlide = function(slideData) {
+            return $http({
+                method: 'POST',
+                url: '/admin/addSlide',
+                data: slideData
+            });
+        };
+        this.getSingleSlide = function(slideData) {
+            return $http({
+                method: 'GET',
+                url: '/admin/getSlide',
+                data: slideData
+            });
+        };
+    }]);
 	// Service that handles events
 	module.service('EventSvc', ['$http',
 		function($http) {

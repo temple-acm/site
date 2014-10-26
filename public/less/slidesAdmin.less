@@ -1,0 +1,100 @@
+@slidesColor: #6695af;
+
+section#slidesAdmin {
+    background-color: @slidesColor;
+    padding-left: 50px;
+    padding-right: 50px;
+
+    .slide-ad {
+        height: 570px;
+        padding: 10px;
+
+        .slide-ad-card {
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, 0.3);
+            height: 100%;
+
+            h1 {
+                font-size: 50px;
+                color: rgba(0, 0, 0, 0.45);
+                text-align: center;
+            }
+
+            .btn {
+                color: @slidesColor;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                background-color: rgba(0, 0, 0, 0.45);
+                border-color: rgba(0, 0, 0, 0.1);
+
+                &:hover {
+                    color: #ffffff;
+                    background-color: rgba(0, 0, 0, 0.65);
+                }
+            }
+        }
+    }
+
+    h2 {
+        text-align: center;
+        color: lighten(@slidesColor, 50%);
+    }
+
+    .slide-cardholder {
+        padding: 10px;
+
+        h5 {
+            margin-bottom: 0px;
+        }
+
+        .slide-card {
+            display: block;
+            background-color: #fff;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            padding: 24px;
+            color: @slidesColor;
+            min-height: 550px;
+
+            .slide-image-container {
+                height: 190px;
+
+                .slide-image {
+                    width: 250px;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+
+            .slide-action-buttons {
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-control {
+                margin-bottom: 5px;
+            }
+
+            textarea {
+                display: block;
+                margin-bottom: 13px;
+                box-sizing: border-box;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                height: 110px;
+                color: #000;
+            }
+        }
+    }
+}

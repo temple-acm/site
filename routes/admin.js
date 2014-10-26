@@ -7,8 +7,9 @@ var passport = require('passport'),
     acl = require('acl'),
     ObjectId = require('mongodb').ObjectID;
 
-exports.route = function(app) {
+acl = new acl(new acl.memoryBackend()); // TODO: This needs to be changed to mongo backend in prod
 
+exports.route = function(app) {
     /*
      * This endpoint fetches a single slide's data from the database.
      *
@@ -30,7 +31,7 @@ exports.route = function(app) {
      */
     app.get('/admin/getSlide', acl.middleware(1), function(req, res) {
         if (req.body.slideOrderNum) {
-            req.db.findOne({
+            req.db.collection('slides').findOne({
                 order: req.body.slideOrderNum
             }, {
                 limit: 1
@@ -51,6 +52,35 @@ exports.route = function(app) {
                 '500' : 'Unspecified error'
             });
         }
+    });
+
+    /*
+     * This endpoint simply gives you all the slides present in the backend 
+     * database. 
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: JSON describing all the slides in the backend
+     *  Failure:
+     *      status: 200
+     *      daat: { '500' : 'Unspecified error' }
+     *  Unauthorized access:
+     *      status: 403
+     */
+    app.get('/admin/allSlides', function(req, res) {
+        req.db.collection('slides').find({}, {
+            'sort': [[ 'order', 'asc' ]]
+        }).toArray(function(err, data) {
+            if (err) {
+                console.log('error', 'Error retrieving slides from database: ' + err);
+                res.status(200).send({
+                    '500': 'Unspecified error'
+                });
+            } else {
+                res.status(200).send(data);
+            }
+        });
     });
 
     /*
@@ -138,7 +168,7 @@ exports.route = function(app) {
             // wow how do you mess this up
             logger.log('error', 'slide ObjectID not present', err);
             res.status(200).send({
-                '500' : 'Unspecified error
+                '500' : 'Unspecified error'
             });
         }
     });
@@ -183,9 +213,9 @@ exports.route = function(app) {
                 } else {
                     acl.removeUserRoles(req.body.accountName, 'admin', function(err) {
                         if (err) {
+                            logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
                             res.status(200).send({
-                                logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
-                                '500' 'Unspecified error'
+                                '500': 'Unspecified error'
                             });
                         }
                     });
@@ -272,8 +302,8 @@ exports.route = function(app) {
                     } else {
                         acl.addUserRoles(req.body.accountName, 'admin', function(err) {
                             if (err) {
+                                logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
                                 res.status(200).send({
-                                    logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
                                     '500' : 'Unspecified error'
                                 });
                             }

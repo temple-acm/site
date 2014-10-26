@@ -677,4 +677,16 @@
 			};
 		}
 	]);
+    // Adding on this monstrosity, we now move on to dealing with admin stuff
+    module.controller('SlideAdminCtrl', ['$scope', 'SlideAdminSvc', 
+        function($scope, slideAdminService) {
+            $scope.slidesLoaded = false;
+            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                $scope.slidesLoaded = true;
+                $scope.slideData = data;
+            }).error(function() {
+                console.log("error loading slides");
+            });
+        }
+    ]);
 })(angular.module('controllers', ['services']), window._$_app);

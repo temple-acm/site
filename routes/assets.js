@@ -13,6 +13,7 @@ if (process.env.TUACM_DEV) {
 	RECRUITING_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'recruiting.html');
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.html');
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.html');
+    ADMIN_PATH=path.join(__dirname, '..', 'public', 'dist', 'admin.html' );
 } else {
 	// Production
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.min.html');
@@ -38,6 +39,11 @@ exports.route = function(app) {
 	app.get('/404', function(req, res) {
 		res.sendFile(NOT_FOUND_PATH);
 	});
+    // Admin testing. NOT FOR ACTUAL PROD USE SINCE THIS NEEDS INTEGRATING
+    // TODO: REPLACE WITH ACTUAL PROD USE
+    app.get('/admin', function(req, res) {
+        res.sendFile(ADMIN_PATH);
+    });
 	// Password reset page
 	app.get('/settings/password/reset/:token', function(req, res, next) {
 		var token = req.param('token');
