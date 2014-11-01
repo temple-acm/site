@@ -169,11 +169,41 @@
                 </div>
             </section>
 
-            <section id="membersAdmin" >
+            <section id="membersAdmin" ng-controller="MemberAdminCtrl">
                 <h2>Member Administration</h2>
                 <div style="width: 100%; display: block;" ng-hide="membersLoaded">
                     <div style="display: block; width: 100%; text-align: center;">
                         <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
+                    </div>
+                </div>
+                <div style="display: block;" ng-show="membersLoaded">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Officer</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="member in loadedMembers">
+                                    <td>{{ member.firstName }} {{ member.lastName }}</td>
+                                    <td>{{ member.email }}</td>
+                                    <td>
+                                        <span ng-if="{{ member.officer }}">
+                                            ✓
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>

@@ -97,6 +97,17 @@
             };
         }
     ]);
+
+    module.service('MembersAdminSvc', ['$http',
+        function($http) {
+            this.getMembers = function() {
+                return $http({
+                    method: 'GET',
+                    url: '/admin/getMembers',
+                });
+            };
+        }
+    ]);
 	// Service that handles events
 	module.service('EventSvc', ['$http',
 		function($http) {

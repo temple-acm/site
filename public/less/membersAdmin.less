@@ -1,3 +1,18 @@
+@membersColor: #ccb366;
+
 section#membersAdmin {
-    background-color: #ccb366;
+    background-color: @membersColor;
+    padding-left: 50px;
+    padding-right: 50px;
+
+    h2 {
+        text-align: center;
+        color: lighten(@membersColor, 50%);
+    }
+
+    table {
+        border-radius: 3px;
+        background-color: lighten(@membersColor, 8%);
+    }
+
 }

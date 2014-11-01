@@ -321,6 +321,38 @@ exports.route = function(app) {
             });
         }
     });
+
+    /*
+     * This endpoint sends back an object containing basic information about all
+     * members. Specifically, it returns the firstName, lastName, email, and officer fields
+     * of every user.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: an object containing the fields above for each officer
+     *  Error:
+     *      Database error:
+     *          status: 200
+     *          data: { "500" : "Unspecified error" }
+     *      Access forbidden:
+     *          status: 402
+     */
+    app.get('/admin/getMembers', function(req, res) {
+        req.db.collection('users').find({}, {
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            officer: 1
+        }).toArray(function(err, members) {
+            if (err) {
+                logger.log('error', 'Error retrieving db data for getMembers(): ' + err);
+                res.status(200).send({'500': 'Unspecified Error'});
+            } else {
+                res.status(200).send(members);
+            }
+        });
+    });
     /*
      * This endpoint exports our members list to CSV. You must be logged in to do this.
      * The CSV is organized such that the columns of the document are denoted First Name,

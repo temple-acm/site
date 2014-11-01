@@ -700,4 +700,15 @@
         });
         }
     ]);
+    module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc',
+        function($scope, membersAdminSvc) {
+            $scope.membersLoaded = false;
+            membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+                $scope.loadedMembers = data;
+                $scope.membersLoaded = true;
+            }).error(function() {
+                console.log("error loading members");
+            });
+        }
+    ]);
 })(angular.module('controllers', ['services']), window._$_app);
