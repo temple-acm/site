@@ -98,6 +98,9 @@ MongoClient.connect(process.env.TUACM_MONGO_URL, function(err, db) {
         }));
         // Bootstrap the application routes
         routes.setup(app);
+        var port = parseInt(process.env.TUACM_PORT);
+        http.createServer(app).listen(port, '0.0.0.0');
+        logger.info('HTTP server started on port 0.0.0.0:%d.', port);
     }
 });
 app.use(ErrorHandler({
@@ -109,10 +112,7 @@ app.use('/static/dist', express.static(path.join(__dirname, 'public', 'dist')));
 app.use('/static/img', express.static(path.join(__dirname, 'public', 'img')));
 app.use('/static/vendor', express.static(path.join(__dirname, 'public', 'vendor')));
 // Start the app by listening on <port>
-var port = parseInt(process.env.TUACM_PORT);
 // Create an HTTPS service
-http.createServer(app).listen(port, '0.0.0.0');
-logger.info('HTTP server started on port 0.0.0.0:%d.', port);
 
 /******************************************* EXPORTS **********************************************/
 
