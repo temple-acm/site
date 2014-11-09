@@ -17,6 +17,8 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400' rel='stylesheet' type='text/css'>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/mode-html.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -96,7 +98,7 @@
                                 <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
                                     <div style="display: table-cell; vertical-align: middle;">
                                         <h1>Add A Slide</h1>
-                                        <a class="btn btn-default btn-lg">
+                                        <a class="btn btn-default btn-lg" ng-click="addSlide()">
                                             <span class="glyphicon glyphicon-plus" style="font-size: 250px"></span>
                                         </a>
                                     </div>
@@ -110,7 +112,7 @@
                                     <img class="slide-image" ng-src={{slide.image}} />
                                 </div>
                                 <span>Image url:</span><input class="form-control" placeholder="{{slide.image}}"></input>
-                                <span>HTML:</span><textarea class="form-control">{{slide.html}}</textarea>
+                                <span>HTML:</span><textarea readonly class="form-control" ng-click="initializeEditor(slide)">{{slide.html}}</textarea>
                                 <div class="slide-action-buttons">
                                     <a class="btn btn-danger" ng-click="removeSlide()">Remove Slide</a>
                                     <a class="btn btn-update" ng-click="updateSlide()">Save Changes</a>
@@ -212,6 +214,18 @@
                 <p class="copyright">Copyright &copy; Temple ACM 2014</p>
                 <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
             </footer>
+
+            <overlay ng-controller="SlideAdminCtrl">
+                <div id="slide-editor">
+                    <div id="editor" class="empty">
+                    </div>
+
+                    <button class="btn" style="display: block;" ng-click="saveEditorChanges(slide)">
+                        <i class="fa fa-floppy-o"></i>
+                    </button>
+                </div>
+            </overlay>
+
             <!-- Javascript stuffs -->
             <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
             <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>

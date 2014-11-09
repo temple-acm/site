@@ -678,7 +678,7 @@
 		}
 	]);
     // Adding on this monstrosity, we now move on to dealing with admin stuff
-    module.controller('SlideAdminCtrl', ['$scope', 'SlideAdminSvc', 
+    module.controller('SlideAdminCtrl', ['$scope', 'SlideAdminSvc',
         function($scope, slideAdminService) {
             $scope.slidesLoaded = false;
             slideAdminService.getAllSlides().success(function(data, status, headers, config) {
@@ -686,6 +686,35 @@
                 $scope.slideData = data;
             }).error(function() {
                 console.log("error loading slides");
+            });
+            var editor = ace.edit("editor");
+            editor.getSession().setMode("ace/mode/html");
+            var editingSlide = null;
+            $scope.initializeEditor = function(slide) {
+                editor.getSession().setValue(slide.html);
+                editingSlide = slide;
+                $('body').addClass('noscroll');
+                $('overlay').css('display', 'block');
+                $('overlay').css('opacity', '1.0');
+                $('overlay slide-editor').css('display', 'block');
+            };
+            $scope.closeEditor = function() {
+                $('overlay slide-editor').css('display', 'none');
+                $('overlay').css('opacity', '0.0');
+                $('overlay').css('display', 'none');
+                $('body').removeClass('noscroll');
+            };
+            $scope.saveEditorChanges = function() {
+                console.log("Saving editor changes");
+                var thingy = editor.getSession().getValue();
+                console.log(thingy);
+                console.log(editingSlide);
+                $scope.closeEditor();
+            };
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    $scope.closeEditor();
+                }
             });
         }
     ]);

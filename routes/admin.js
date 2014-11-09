@@ -125,6 +125,36 @@ exports.route = function(app) {
     });
 
     /*
+     * This endpoint updates a specific slide, referenced by ObjectID. It will
+     * overwrite the database values for order, image, and html with the values
+     * passed in, whatever they might be.
+     * 
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { '200' : 'OK' }
+     *  Failure:
+     *      Unauthorized access:
+     *          status: 403
+     *      DB Error:
+     *          status: 200
+     *          data: { '500' : 'Unspecified error' }
+     */
+    app.post('/admin/updateSlide', function(req, res) {
+        slideObjectId = new ObjectId(req.body._id);
+        req.db.collection('slides').update({
+            _id: slideObjectId
+        },
+        { $set:
+            {
+                image: req.body.image,
+                html: req.body.html,
+                order: req.body.order
+            }
+        });
+    });
+
+    /*
      * This endpoint removes a banner slide from the database.
      * It takes as its single argument an ObjectID corresponding to the slide
      * entry that is to be deleted.
