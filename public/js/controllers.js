@@ -678,26 +678,8 @@
 		}
 	]);
     // Adding on this monstrosity, we now move on to dealing with admin stuff
-    module.controller('SlideAdminCtrl', ['$scope', 'SlideAdminSvc',
-        function($scope, slideAdminService) {
-            $scope.slidesLoaded = false;
-            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
-                $scope.slidesLoaded = true;
-                $scope.slideData = data;
-            }).error(function() {
-                console.log("error loading slides");
-            });
-            var editor = ace.edit("editor");
-            editor.getSession().setMode("ace/mode/html");
-            var editingSlide = null;
-            $scope.initializeEditor = function(slide) {
-                editor.getSession().setValue(slide.html);
-                editingSlide = slide;
-                $('body').addClass('noscroll');
-                $('overlay').css('display', 'block');
-                $('overlay').css('opacity', '1.0');
-                $('overlay slide-editor').css('display', 'block');
-            };
+    module.controller('SlideEditorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
+        function($scope, $rootScope, slideAdminService) {
             $scope.closeEditor = function() {
                 $('overlay slide-editor').css('display', 'none');
                 $('overlay').css('opacity', '0.0');
@@ -706,9 +688,13 @@
             };
             $scope.saveEditorChanges = function() {
                 console.log("Saving editor changes");
-                var thingy = editor.getSession().getValue();
-                console.log(thingy);
-                console.log(editingSlide);
+                var newHtml = slideAdminService.editor.getSession().getValue();
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
+                        var updatedSlide = $rootScope.slideData[i];
+                        updatedSlide.html = newHtml;
+                    }
+                }
                 $scope.closeEditor();
             };
             $('overlay').click(function(e) {
@@ -718,15 +704,46 @@
             });
         }
     ]);
+
+    module.controller('SlideAdminCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
+        function($scope, $rootScope, slideAdminService) {
+            $scope.slidesLoaded = false;
+            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                $scope.slidesLoaded = true;
+                $rootScope.slideData = $scope.slideData = data;
+            }).error(function() {
+                console.log("error loading slides");
+            });
+            $scope.initializeEditor = function(slide) {
+                slideAdminService.editor.getSession().setValue(slide.html);
+                slideAdminService.editingSlide = slide;
+                $('body').addClass('noscroll');
+                $('overlay').css('display', 'block');
+                $('overlay').css('opacity', '1.0');
+                $('overlay slide-editor').css('display', 'block');
+            };
+            $scope.saveSlide = function(slideId) {
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideId) {
+                        slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
+                            console.log("slide updated");
+                        }).error(function() {
+                            console.log("error updating slide");
+                        });
+                    }
+                }
+            }
+        }
+    ]);
     module.controller('OfficerAdminCtrl', ['$scope', 'OfficersSvc', 'OfficersAdminSvc',
         function($scope, officersSvc, officersAdminSvc) {
-        $scope.officersLoaded = false;
-        officersSvc.getOfficers().success(function(data, status, headers, config) {
-            $scope.officerData = data["200"];
-            $scope.officersLoaded = true;
-        }).error(function() {
-            console.log("error loading officers");
-        });
+            $scope.officersLoaded = false;
+            officersSvc.getOfficers().success(function(data, status, headers, config) {
+                $scope.officerData = data["200"];
+                $scope.officersLoaded = true;
+            }).error(function() {
+                console.log("error loading officers");
+            });
         }
     ]);
     module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc',

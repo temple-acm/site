@@ -76,6 +76,16 @@
                     data: slideData
                 });
             };
+            this.updateSlide = function(updatedSlide) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/updateSlide',
+                    data: updatedSlide
+                });
+            }
+            this.editor = ace.edit("editor");
+            this.editor.getSession().setMode("ace/mode/html");
+            this.editingSlide = null;
         }
     ]);
 

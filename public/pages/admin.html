@@ -114,8 +114,8 @@
                                 <span>Image url:</span><input class="form-control" placeholder="{{slide.image}}"></input>
                                 <span>HTML:</span><textarea readonly class="form-control" ng-click="initializeEditor(slide)">{{slide.html}}</textarea>
                                 <div class="slide-action-buttons">
-                                    <a class="btn btn-danger" ng-click="removeSlide()">Remove Slide</a>
-                                    <a class="btn btn-update" ng-click="updateSlide()">Save Changes</a>
+                                    <a class="btn btn-danger" ng-click="removeSlide(slide.id)">Remove Slide</a>
+                                    <a class="btn btn-update" ng-click="updateSlide(slide.id)">Save Changes</a>
                                 </div>
                             </div>
                         </div>
@@ -215,12 +215,12 @@
                 <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
             </footer>
 
-            <overlay ng-controller="SlideAdminCtrl">
+            <overlay ng-controller="SlideEditorCtrl">
                 <div id="slide-editor">
                     <div id="editor" class="empty">
                     </div>
 
-                    <button class="btn" style="display: block;" ng-click="saveEditorChanges(slide)">
+                    <button class="btn" style="display: block;" ng-click="saveEditorChanges()">
                         <i class="fa fa-floppy-o"></i>
                     </button>
                 </div>
