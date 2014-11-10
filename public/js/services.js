@@ -83,6 +83,13 @@
                     data: updatedSlide
                 });
             }
+            this.removeSlide = function(slideId) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/removeSlide',
+                    data: slideId
+                });
+            };
             this.editor = ace.edit("editor");
             this.editor.getSession().setMode("ace/mode/html");
             this.editingSlide = null;

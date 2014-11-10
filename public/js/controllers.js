@@ -691,7 +691,7 @@
                 var newHtml = slideAdminService.editor.getSession().getValue();
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
-                        var updatedSlide = $rootScope.slideData[i];
+                        var updatedSlide = $rootScope.slideData[i]; //TODO: why does this trigger an update the original DOM. Have I misunderstood how javascript treats this assignment?
                         updatedSlide.html = newHtml;
                     }
                 }
@@ -733,6 +733,17 @@
                     }
                 }
             }
+            $scope.removeSlide = function(slideId) {
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideId) {
+                        slideAdminService.removeSlide(slideId).success(function(data, status, headers, config) {
+                            console.log("slide removed"); // TODO: remove
+                        }).error(function() {
+                            console.log("error removing slide"); //TODO: remove
+                        });
+                    }
+                }
+            };
         }
     ]);
     module.controller('OfficerAdminCtrl', ['$scope', 'OfficersSvc', 'OfficersAdminSvc',
