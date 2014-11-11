@@ -87,8 +87,6 @@ exports.route = function(app) {
      * This endpoint adds a banner slide to the database. Be sure to properly
      * pass in all three required parts.
      *
-     * TODO: Doesn't work yet, see inline todo comments.
-     *
      *  Input:
      *      slideHTML: The HTML to go along with the slide. Optional.
      *      slideLink: The link to the banner image (because screw self-hosting amirite)
@@ -100,7 +98,7 @@ exports.route = function(app) {
      *          data: { '200' : 'OK' }
      *      Failure:
      *          Unauthorized access:
-     *              status: 403
+     *              status: 401
      *          DB error:
      *              status: 200
      *              data: { '500' : 'Unspecified error' }
@@ -108,16 +106,42 @@ exports.route = function(app) {
      *              status: 200
      *              data: { '500' : 'Unspecified error' }
      */
-    app.post('/admin/addSlide', acl.middleware(1), function(req, res) {
-        if (req.body.slideLink && req.body.slideTitle && req.body.slideSubtitle) {
+    app.post('/admin/addSlide', function(req, res) {
+        if (req.body.slideData) {
+            //Increment the order of all pre-existing slides in the DB
+            req.db.collection('slides').update({}, {
+                $inc: {
+                    order: 1
+                }
+            }, function(err, updatedData) {
+                if (err) {
+                    logger.log('error', 'DB increment operation went wrong in /admin/addSlide');
+                    res.status(200).send({
+                        '500' : 'Unspecified error'
+                    });
+                }
+            });
+            // Now save the new slide with order 1, so it appears first
             req.db.collection('slides').save({
-                //TODO: Do we need to change the schema? How will this work
-                //with people actuall trying to access this DB?
-            }, {}, function(err, createdSlide) {});
+                image: req.body.slideData.image,
+                order: 1,
+                html: req.body.slideData.html
+            }, {}, function(err, createdSlide) {
+                if (err) {
+                    logger.log('error', 'DB save operation went wrong in /admin/addSlide');
+                    res.status(200).send({
+                        '500' : 'Unspecified error'
+                    });
+                } else {
+                    res.status(200).send({
+                        '200' : 'OK'
+                    });
+                }
+            });
         } else {
             // wow these muppets forgot an element. what a bunch of noobcakes
             // TODO: maybe we say exactly which element is missing, that'd probably help debugging
-            logger.log('error', 'Required slide element missing', err);
+            logger.log('error', 'Required slide element missing in /admin/addSlide', err);
             res.status(200).send({
                 '500' : 'Unspecified error'
             });
@@ -151,6 +175,16 @@ exports.route = function(app) {
                 html: req.body.html,
                 order: req.body.order
             }
+        }, function(err, updatedSlide) {
+            if (err) {
+                res.status(200).send({
+                    '500' : 'Unspecified error'
+                });
+            } else {
+                res.status(200).send({
+                    '200' : 'OK'
+                });
+            }
         });
     });
 
@@ -175,7 +209,7 @@ exports.route = function(app) {
      *      Unauthorized access:
      *          status: 403
      */
-    app.post('/admin/removeSlide', acl.middleware(1), function(req, res) {
+    app.post('/admin/removeSlide', function(req, res) {
         if (req.body.slideObjectID) {
             removeObjectId = new ObjectId(req.body.slideObjectID);
             req.db.collection('slides').remove({
@@ -184,7 +218,7 @@ exports.route = function(app) {
                 w: 1,
             }, function(err, numRemovedDocs) {
                 if (err || numRemovedDocs != 1) {
-                    logger.log('error', 'Something went wrong removing the entry from the db', err);
+                    logger.log('error', 'Something went wrong with the remove operation in /admin/removeSlide', err);
                     res.status(200).send({
                         '500' : 'Unspecified error'
                     });

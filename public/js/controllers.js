@@ -723,6 +723,7 @@
                 $('overlay slide-editor').css('display', 'block');
             };
             $scope.saveSlide = function(slideId) {
+                console.log("now saving slide " + slideId);
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
                         slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
@@ -732,7 +733,7 @@
                         });
                     }
                 }
-            }
+            };
             $scope.removeSlide = function(slideId) {
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
@@ -744,6 +745,19 @@
                     }
                 }
             };
+            $scope.addSlide = function(newSlideData) {
+                $scope.slidesLoaded = false;
+                slideAdminService.addSlide(newSlideData).success(function(data, status, headers, config) {
+                    slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                        $scope.slidesLoaded = true;
+                        $rootScope.slideData = $scope.slideData = data;
+                    }).error(function() {
+                        console.log('error reloading slides');
+                    });
+                }).error(function() {
+                    console.log('error adding new slide');
+                });
+            }
         }
     ]);
     module.controller('OfficerAdminCtrl', ['$scope', 'OfficersSvc', 'OfficersAdminSvc',

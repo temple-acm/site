@@ -111,11 +111,11 @@
                                 <div class="slide-image-container">
                                     <img class="slide-image" ng-src={{slide.image}} />
                                 </div>
-                                <span>Image url:</span><input class="form-control" placeholder="{{slide.image}}"></input>
+                                <span>Image url:</span><input class="form-control" placeholder="{{slide.image}}" ng-model="slide.image"></input>
                                 <span>HTML:</span><textarea readonly class="form-control" ng-click="initializeEditor(slide)">{{slide.html}}</textarea>
                                 <div class="slide-action-buttons">
-                                    <a class="btn btn-danger" ng-click="removeSlide(slide.id)">Remove Slide</a>
-                                    <a class="btn btn-update" ng-click="updateSlide(slide.id)">Save Changes</a>
+                                    <a class="btn btn-danger" ng-click="removeSlide(slide._id)">Remove Slide</a>
+                                    <a class="btn btn-update" ng-click="saveSlide(slide._id)">Save Changes</a>
                                 </div>
                             </div>
                         </div>
