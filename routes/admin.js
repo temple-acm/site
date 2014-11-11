@@ -29,8 +29,13 @@ exports.route = function(app) {
      *          Unauthorized access:
      *              status: 403
      */
-    app.get('/admin/getSlide', acl.middleware(1), function(req, res) {
-        if (req.body.slideOrderNum) {
+    app.get('/admin/getSlide', acl.middleware(1), function(err, req, res, next) {
+        if (err) {
+            console.log('error', 'Unauthorized access to endpoint /admin/getSlide');
+            res.status(401).send({
+                '401' : 'Unauthorized'
+            });
+        } else if (req.body.slideOrderNum) {
             req.db.collection('slides').findOne({
                 order: req.body.slideOrderNum
             }, {
