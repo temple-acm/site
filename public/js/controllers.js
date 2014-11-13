@@ -723,13 +723,12 @@
                 $('overlay slide-editor').css('display', 'block');
             };
             $scope.saveSlide = function(slideId) {
-                console.log("now saving slide " + slideId);
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
                         slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
-                            console.log("slide updated");
+                            toastr.success("Slide updated!");
                         }).error(function() {
-                            console.log("error updating slide");
+                            toastr.error("Error updating slide.");
                         });
                     }
                 }
@@ -738,9 +737,9 @@
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
                         slideAdminService.removeSlide(slideId).success(function(data, status, headers, config) {
-                            console.log("slide removed"); // TODO: remove
+                            toastr.success("Slide removed!");
                         }).error(function() {
-                            console.log("error removing slide"); //TODO: remove
+                            toastr.error("Error removing slide.");
                         });
                     }
                 }
@@ -751,11 +750,12 @@
                     slideAdminService.getAllSlides().success(function(data, status, headers, config) {
                         $scope.slidesLoaded = true;
                         $rootScope.slideData = $scope.slideData = data;
+                        toastr.success("New slide successfully added!");
                     }).error(function() {
-                        console.log('error reloading slides');
+                        toastr.error("Error reloading slides.");
                     });
                 }).error(function() {
-                    console.log('error adding new slide');
+                    toastr.error("Error adding new slide.");
                 });
             }
         }
