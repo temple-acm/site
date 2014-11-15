@@ -112,12 +112,14 @@ exports.route = function(app) {
      *              data: { '500' : 'Unspecified error' }
      */
     app.post('/admin/addSlide', function(req, res) {
-        if (req.body.slideData) {
+        if (req.body.image && req.body.html) {
             //Increment the order of all pre-existing slides in the DB
             req.db.collection('slides').update({}, {
                 $inc: {
                     order: 1
                 }
+            }, {
+                multi: true
             }, function(err, updatedData) {
                 if (err) {
                     logger.log('error', 'DB increment operation went wrong in /admin/addSlide');
@@ -128,9 +130,9 @@ exports.route = function(app) {
             });
             // Now save the new slide with order 1, so it appears first
             req.db.collection('slides').save({
-                image: req.body.slideData.image,
+                image: req.body.image,
                 order: 1,
-                html: req.body.slideData.html
+                html: req.body.html
             }, {}, function(err, createdSlide) {
                 if (err) {
                     logger.log('error', 'DB save operation went wrong in /admin/addSlide');
@@ -146,7 +148,7 @@ exports.route = function(app) {
         } else {
             // wow these muppets forgot an element. what a bunch of noobcakes
             // TODO: maybe we say exactly which element is missing, that'd probably help debugging
-            logger.log('error', 'Required slide element missing in /admin/addSlide', err);
+            logger.log('error', 'Required slide element missing in /admin/addSlide');
             res.status(200).send({
                 '500' : 'Unspecified error'
             });

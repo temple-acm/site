@@ -691,7 +691,7 @@
                 var newHtml = slideAdminService.editor.getSession().getValue();
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
-                        var updatedSlide = $rootScope.slideData[i]; //TODO: why does this trigger an update the original DOM. Have I misunderstood how javascript treats this assignment?
+                        var updatedSlide = $rootScope.slideData[i]; //TODO: why does this trigger an update in the DOM. Have I misunderstood how javascript treats this assignment?
                         updatedSlide.html = newHtml;
                     }
                 }
@@ -744,13 +744,17 @@
                     }
                 }
             };
-            $scope.addSlide = function(newSlideData) {
+            $scope.addSlide = function() {
                 $scope.slidesLoaded = false;
+                var newSlideData = {
+                    image: 'https://i.imgur.com/jwJoau0.jpg',
+                    html: "<h1>We're the Temple ACM, and we <3 technology.</h1>"
+                }
                 slideAdminService.addSlide(newSlideData).success(function(data, status, headers, config) {
                     slideAdminService.getAllSlides().success(function(data, status, headers, config) {
                         $scope.slidesLoaded = true;
                         $rootScope.slideData = $scope.slideData = data;
-                        toastr.success("New slide successfully added!");
+                        toastr.success("New slide created!");
                     }).error(function() {
                         toastr.error("Error reloading slides.");
                     });
