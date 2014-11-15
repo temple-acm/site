@@ -734,10 +734,18 @@
                 }
             };
             $scope.removeSlide = function(slideId) {
+                $scope.slidesLoaded = false;
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
-                        slideAdminService.removeSlide(slideId).success(function(data, status, headers, config) {
-                            toastr.success("Slide removed!");
+                        var idJson = { "id" : slideId };
+                        slideAdminService.removeSlide(idJson).success(function(data, status, headers, config) {
+                            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                                $rootScope.slideData = $scope.slideData = data;
+                                $scope.slidesLoaded = true;
+                                toastr.success("Slide removed!");
+                            }).error(function() {
+                                toastr.error("Error reloading slides.");
+                            });
                         }).error(function() {
                             toastr.error("Error removing slide.");
                         });

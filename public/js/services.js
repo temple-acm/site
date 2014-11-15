@@ -82,7 +82,7 @@
                     url: '/admin/updateSlide',
                     data: updatedSlide
                 });
-            }
+            };
             this.removeSlide = function(slideId) {
                 return $http({
                     method: 'POST',

@@ -198,7 +198,9 @@ exports.route = function(app) {
     /*
      * This endpoint removes a banner slide from the database.
      * It takes as its single argument an ObjectID corresponding to the slide
-     * entry that is to be deleted.
+     * entry that is to be deleted. It then removes that slide from the collection
+     * and decrements the order field of every slide afterwards, to ensure consistent
+     * ordering.
      *
      *  Output:
      *      slideObjectID: The ObjectID of the slide to be deleted.
@@ -217,21 +219,53 @@ exports.route = function(app) {
      *          status: 403
      */
     app.post('/admin/removeSlide', function(req, res) {
-        if (req.body.slideObjectID) {
-            removeObjectId = new ObjectId(req.body.slideObjectID);
-            req.db.collection('slides').remove({
+        if (req.body.id) {
+            removeObjectId = new ObjectId(req.body.id);
+            req.db.collection('slides').find({
                 _id: removeObjectId
             }, {
-                w: 1,
-            }, function(err, numRemovedDocs) {
-                if (err || numRemovedDocs != 1) {
-                    logger.log('error', 'Something went wrong with the remove operation in /admin/removeSlide', err);
+                order: 1
+            }, function(err, removedIndex) {
+                if (err) {
+                    logger.log('error', 'Cannot find slide with specified ID in /admin/removeSlide', err);
                     res.status(200).send({
                         '500' : 'Unspecified error'
                     });
                 } else {
-                    res.status(200).send({
-                        '200' : 'OK'
+                    req.db.collection('slides').remove({
+                        _id: removeObjectId
+                    }, {
+                        w: 1,
+                    }, function(err, numRemovedDocs) {
+                        if (err || numRemovedDocs != 1) {
+                            logger.log('error', 'Something went wrong with the remove operation in /admin/removeSlide', err);
+                            res.status(200).send({
+                                '500' : 'Unspecified error'
+                            });
+                        } else {
+                            req.db.collection('slides').update({
+                                order: {
+                                    $gte: removedIndex.fields.order
+                                }
+                            }, {
+                                $inc: {
+                                    order: -1
+                                }
+                            }, {
+                                multi: true
+                            }, function(err, numUpdatedDocs) {
+                                if (err) {
+                                    logger.log('error', 'Something wrong with the decrement operation in /admin/removeSlide', err);
+                                    res.status(200).send({
+                                        '500': 'Unspecified error'
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        '200' : 'OK'
+                                    });
+                                }
+                            });
+                        }
                     });
                 }
             });
