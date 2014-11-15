@@ -712,7 +712,7 @@
                 $scope.slidesLoaded = true;
                 $rootScope.slideData = $scope.slideData = data;
             }).error(function() {
-                console.log("error loading slides");
+                toastr.error("Error loading slides.");
             });
             $scope.initializeEditor = function(slide) {
                 slideAdminService.editor.getSession().setValue(slide.html);
