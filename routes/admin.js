@@ -299,10 +299,11 @@ exports.route = function(app) {
      *              status: 200
      *              data: {'500' : 'Unspecified error' }
      */
-    app.post('/admin/removeOfficer', acl.middleware(1), function(req, res) {
-        if (req.body.accountName) {
+    app.post('/admin/removeOfficer', function(req, res) {
+        if (req.body.id) {
+            var removeObjectId = new ObjectId(req.body.id);
             req.db.collection('users').update({
-                userName: accountName
+                _id: removeObjectId
             }, {
                 $unset: {
                     officer: ""
@@ -311,14 +312,14 @@ exports.route = function(app) {
                 multi: false
             }, function(err) {
                 if (err) {
-                    logger.log('error', 'could not demote account ' + req.body.accountName, err);
+                    logger.log('error', 'could not demote account with ID ' + req.body.id, err);
                     res.status(200).send({
                         '500' : 'Unspecified error'
                     });
                 } else {
                     acl.removeUserRoles(req.body.accountName, 'admin', function(err) {
                         if (err) {
-                            logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
+                            logger.log('error', 'could not change acl for account with ID ' + req.body.id, err);
                             res.status(200).send({
                                 '500': 'Unspecified error'
                             });
@@ -330,7 +331,7 @@ exports.route = function(app) {
                 }
             });
         } else {
-            logger.log('error', 'Invalid account name ' + req.body.accountName + 'in /admin/removeOfficer');
+            logger.log('error', 'Invalid ObjectID in /admin/removeOfficer');
             res.status(200).send({
                 '500' : 'Unspecified error'
             });

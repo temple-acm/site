@@ -781,6 +781,29 @@
             }).error(function() {
                 console.log("error loading officers");
             });
+
+            $scope.removeOfficer = function(officerId) {
+                $scope.officersLoaded = false;
+                var officerIdData = { "id" : officerId };
+                officersAdminSvc.removeOfficer(officerIdData).success(function(data, status, headers, config) {
+                    if (data["200"]) {
+                        officersSvc.getOfficers().success(function(officerData, status, headers, config) {
+                            if (officerData["200"]) {
+                                $scope.officerData = officerData["200"];
+                                $scope.officersLoaded = true;
+                            } else {
+                                toastr.error("Error removing officer.");
+                            }
+                        }).error(function() {
+                            toastr.error("Error reloading officers.");
+                        });
+                    } else {
+                        toastr.error("Error removing officer.");
+                    }
+                }).error(function() {
+                    toastr.error("Error removing officer.");
+                });
+            };
         }
     ]);
     module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc',
