@@ -150,7 +150,7 @@
                                     <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
                                         <div style="display: table-cell; vertical-align: middle;">
                                             <h1>Promote an Officer</h1>
-                                            <a class="btn btn-default btn-lg" ng-click="promoteOfficer()">
+                                            <a class="btn btn-default btn-lg" ng-click="launchOfficerAdder()">
                                                 <i class="fa fa-child"></i>
                                             </a>
                                         </div>
@@ -215,7 +215,7 @@
                 <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
             </footer>
 
-            <overlay ng-controller="SlideEditorCtrl">
+            <overlay ng-controller="SlideEditorCtrl" id="slide-editor-overlay">
                 <div id="slide-editor">
                     <div id="editor" class="empty">
                     </div>
@@ -223,6 +223,45 @@
                     <button class="btn" style="display: block;" ng-click="saveEditorChanges()">
                         <i class="fa fa-floppy-o"></i>
                     </button>
+                </div>
+            </overlay>
+
+            <overlay id="officer-adder-overlay" ng-controller="OfficerAdderCtrl">
+                <div id="officer-adder">
+                    <div id="officer-adder-search-bar">
+                        Search: <input ng-model="searchText">
+                    </div>
+                    <br>
+                    <div id="member-scroll-list">
+                        <div id="table-head">
+                            <span class="name-header">Name</span>
+                            <span class="email-header">Email</span>
+                            <span class="promote-header">Promote</span>
+                        </div>
+                        <div id="table-body">
+                            <div class="table-member-container" ng-repeat="member in membersData | filter: memberFilterFn | filter:searchText">
+                                <div class="transformable" ng-class="{'small':isSmall, 'big':!isSmall}" ng-click="isSmall = !isSmall">
+                                    <div class="table-member-name">
+                                        <span>{{member.firstName}} {{member.lastName}}</span>
+                                    </div>
+                                    <div class="table-member-email">
+                                        <span>{{member.email}}</span>
+                                    </div>
+                                    <div class="table-member-promote-button">
+                                        <button class="btn" ng-click="$event.stopPropagation(); addOfficer(member)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </button>
+                                    </div>
+                                    <div class="table-member-bio">
+                                        <textarea class="form-control" ng-click="$event.stopPropagation()" ng-model="member.bio" rows="4" cols="30">{{member.bio}}</textarea>
+                                    </div>
+                                    <div class="table-member-title">
+                                        <input class="form-control" ng-click="$event.stopPropagation()" ng-model="member.title" type="text" placeholder="Enter title here..."></input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </overlay>
 

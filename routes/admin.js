@@ -317,14 +317,6 @@ exports.route = function(app) {
                         '500' : 'Unspecified error'
                     });
                 } else {
-                    acl.removeUserRoles(req.body.accountName, 'admin', function(err) {
-                        if (err) {
-                            logger.log('error', 'could not change acl for account with ID ' + req.body.id, err);
-                            res.status(200).send({
-                                '500': 'Unspecified error'
-                            });
-                        }
-                    });
                     res.status(200).send({
                         '200' : 'OK'
                     });
@@ -345,9 +337,7 @@ exports.route = function(app) {
      * TODO: Access control? First pass at implementation using acl module
      *
      *  Input:
-     *      accountName: the username of the account to elevate
-     *      title: their title
-     *      bio: an updated bio. Optional.
+     *      The object representation of the member to be promoted.
      *  Output:
      *      Success:
      *          status: 200
@@ -360,25 +350,26 @@ exports.route = function(app) {
      *              status: 403
      *          Invalid information:
      *              status: 200
-     *              data: { "500" : "Invalid information" }
+     *              data: { "500" : "Unspecified error" }
      */
-    app.post('/admin/addOfficer', acl.middleware(1), function(req, res) {
-        if (req.body.accountName && req.body.accountTitle) {
-            if (req.body.accountBio) {
+    app.post('/admin/addOfficer', function(req, res) {
+        if (req.body._id && req.body.title) {
+            var accountObjectId = new ObjectId(req.body._id);
+            if (req.body.bio) {
                 req.db.collection('users').update({
-                    userName: req.body.accountName
+                    _id : accountObjectId
                 }, {
                     $set: {
-                        title: req.body.accountTitle,
+                        title: req.body.title,
                         officer: true,
-                        bio: req.body.accountBio
+                        bio: req.body.bio
                     }
                 }, {
                     multi: false,
                     upsert: true
                 }, function(err) {
                     if (err) {
-                        logger.log('error', 'could not mark user ' + req.body.accountName + ' as officer', err);
+                        logger.log('error', 'could not mark user with id ' + req.body._id + ' as officer', err);
                         res.status(200).send({
                             '500': 'Unspecified error'
                         });
@@ -390,10 +381,10 @@ exports.route = function(app) {
                 });
             } else {
                 req.db.collection('users').update({
-                    userName: accountName
+                    _id : accountObjectId
                 }, {
                     $set: {
-                        title: accountTitle,
+                        title: title,
                         officer: true
                     }
                 }, {
@@ -401,12 +392,12 @@ exports.route = function(app) {
                     upsert: true // TODO: Check if this is necessary
                 }, function(err) {
                     if (err) {
-                        logger.log('error', 'could not mark user ' + req.body.accountName + ' as officer', err);
+                        logger.log('error', 'could not mark user with ID ' + req.body._id + ' as officer', err);
                         res.status(200).send({
                             '500': 'Unspecified error'
                         });
                     } else {
-                        acl.addUserRoles(req.body.accountName, 'admin', function(err) {
+                        acl.addUserRoles(req.body._id, 'admin', function(err) {
                             if (err) {
                                 logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
                                 res.status(200).send({
@@ -421,9 +412,9 @@ exports.route = function(app) {
                 });
             }
         } else {
-            logger.log('error', 'Invalid information sent.');
+            logger.error('Invalid information sent.');
             res.status(200).send({
-                '500' : 'Invalid information'
+                '500' : 'Unspecified error'
             });
         }
     });
@@ -448,6 +439,7 @@ exports.route = function(app) {
         req.db.collection('users').find({}, {
             firstName: 1,
             lastName: 1,
+            bio: 1,
             email: 1,
             officer: 1
         }).toArray(function(err, members) {
@@ -455,7 +447,7 @@ exports.route = function(app) {
                 logger.log('error', 'Error retrieving db data for getMembers(): ' + err);
                 res.status(200).send({'500': 'Unspecified Error'});
             } else {
-                res.status(200).send(members);
+                res.status(200).send({'200' : members });
             }
         });
     });

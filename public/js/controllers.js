@@ -681,9 +681,9 @@
     module.controller('SlideEditorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
         function($scope, $rootScope, slideAdminService) {
             $scope.closeEditor = function() {
-                $('overlay slide-editor').css('display', 'none');
-                $('overlay').css('opacity', '0.0');
-                $('overlay').css('display', 'none');
+                $('#slide-editor-overlay').css('display', 'none');
+                $('#slide-editor-overlay').css('opacity', '0.0');
+                //$('#slide-editor-overlay').css('display', 'none');
                 $('body').removeClass('noscroll');
             };
             $scope.saveEditorChanges = function() {
@@ -718,9 +718,9 @@
                 slideAdminService.editor.getSession().setValue(slide.html);
                 slideAdminService.editingSlide = slide;
                 $('body').addClass('noscroll');
-                $('overlay').css('display', 'block');
-                $('overlay').css('opacity', '1.0');
-                $('overlay slide-editor').css('display', 'block');
+                $('#slide-editor-overlay').css('display', 'block');
+                $('#slide-editor-overlay').css('opacity', '1.0');
+                //$('#slide-editor-overlay').css('display', 'block');
             };
             $scope.saveSlide = function(slideId) {
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
@@ -772,14 +772,84 @@
             }
         }
     ]);
-    module.controller('OfficerAdminCtrl', ['$scope', 'OfficersSvc', 'OfficersAdminSvc',
-        function($scope, officersSvc, officersAdminSvc) {
+
+    module.controller('OfficerAdderCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc', 'MembersAdminSvc', 
+        function($scope, $rootScope, officersAdminSvc, membersAdminSvc) {
+            $rootScope.officersChanged = false;
+            $scope.officersChanged = false;
+
+            $scope.addOfficer = function(officerData) {
+                $scope.officersChanged = true;
+                officersAdminSvc.addOfficer(officerData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success("Officer promoted!");
+                    } else {
+                        toastr.error("Error promoting officer.");
+                    }
+                }).error(function() {
+                    toastr.error("Error promoting officer.");
+                });
+            };
+
+            $scope.memberFilterFn = function(member) {
+                if (member.officer && member.officer == true) {
+                    return false;
+                }
+                return true;
+            }
+
+            membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+                if (data['200']) {
+                    $scope.membersData = data['200'];
+                } else {
+                    toastr.error("Error loading member list.");
+                }
+            }).error(function() {
+                toastr.error("Error loading member list.");
+            });
+            $scope.closeOfficerAdder = function() {
+                $('#officer-adder-overlay').css('opacity', '0.0');
+                $('#officer-adder-overlay').css('display', 'none');
+                $('body').removeClass('noscroll');
+            };
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    if ($scope.officersChanged == true) {
+                        $rootScope.officersChanged = true;
+                        $rootScope.$digest();
+                    }
+                    $scope.closeOfficerAdder();
+                }
+            });
+        }
+    ]);
+    // TODO: Inquire after best practices regarding triggering a function here based on a state change in another
+    // controller.
+    module.controller('OfficerAdminCtrl', ['$scope', '$rootScope', 'OfficersSvc', 'OfficersAdminSvc',
+        function($scope, $rootScope, officersSvc, officersAdminSvc) {
             $scope.officersLoaded = false;
             officersSvc.getOfficers().success(function(data, status, headers, config) {
                 $scope.officerData = data["200"];
                 $scope.officersLoaded = true;
             }).error(function() {
                 console.log("error loading officers");
+            });
+
+            $scope.launchOfficerAdder = function() {
+                $('body').addClass('noscroll');
+                $('#officer-adder-overlay').css('display', 'block');
+                $('#officer-adder-overlay').css('opacity', '1.0');
+            };
+
+            $rootScope.$watch("officersChanged", function(newValue, oldValue) {
+                $scope.officersLoaded = false;
+                officersSvc.getOfficers().success(function(data, status, headers, config) {
+                    $scope.officerData = data["200"];
+                    $scope.officersLoaded = true;
+                    $rootScope.officersChanged = false;
+                }).error(function() {
+                    console.log("error loading officers");
+                });
             });
 
             $scope.removeOfficer = function(officerId) {
@@ -810,7 +880,7 @@
         function($scope, membersAdminSvc) {
             $scope.membersLoaded = false;
             membersAdminSvc.getMembers().success(function(data, status, headers, config) {
-                $scope.loadedMembers = data;
+                $scope.loadedMembers = data["200"];
                 $scope.membersLoaded = true;
             }).error(function() {
                 console.log("error loading members");

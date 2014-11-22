@@ -84,3 +84,112 @@ section#officersAdmin {
         }
     }
 }
+
+#officer-adder {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 500px;
+    margin-top: -250px;
+    margin-left: -400px;
+
+    background-color: @officersColor;
+    padding: 20px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+
+    input {
+        color: #000;
+        margin-bottom: 3px;
+    }
+
+    #member-scroll-list {
+        height: 400px;
+        overflow-y: scroll;
+
+        #table-head {
+            .name-header {
+                display: inline-block;
+                width: 60%;
+            }
+
+            .email-header {
+                display: inline-block;
+                width: 28%;
+            }
+
+            .promote-header {
+                display: inline-block;
+                width: 10%;
+            }
+        }
+
+        #table-body {
+
+            textarea {
+                color: #000;
+            }
+
+            .table-member-container {
+                overflow: hidden;
+                display: block;
+                padding-top: 8px;
+                padding-bottom: 8px;
+
+                .transformable {
+                    -webkit-transition: height 500ms ease-in-out;
+                    -moz-transition: height 500ms ease-in-out;
+                    -o-transition: height 500ms ease-in-out;
+                    -ms-transition: height 500ms ease-in-out;
+                    transition: height 500ms ease-in-out;
+                    font-size: 14px;
+                }
+
+                .small {
+                    height: 145px;
+                }
+
+                .big {
+                    height: 26px;
+                }
+
+                .table-member-name {
+                    display: inline-block;
+                    width: 50%;
+                }
+
+                .table-member-bio {
+                    display: inline-block;
+                    width: 50%;
+
+                    textarea {
+                        width: 75%;
+                    }
+                }
+
+                .table-member-title {
+                    display: inline-block;
+                    position: relative;
+                    top: -72px;
+                    width: 38%;
+
+                    input {
+                        width: 75%;
+                    }
+                }
+
+                .table-member-email {
+                    display: inline-block;
+                    width: 38%;
+                }
+
+                .table-member-promote-button {
+                    display: inline-block;
+                    width: 10%;
+                }
+            }
+        }
+    }
+}
