@@ -683,7 +683,6 @@
             $scope.closeEditor = function() {
                 $('#slide-editor-overlay').css('display', 'none');
                 $('#slide-editor-overlay').css('opacity', '0.0');
-                //$('#slide-editor-overlay').css('display', 'none');
                 $('body').removeClass('noscroll');
             };
             $scope.saveEditorChanges = function() {
@@ -691,7 +690,7 @@
                 var newHtml = slideAdminService.editor.getSession().getValue();
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
-                        var updatedSlide = $rootScope.slideData[i]; //TODO: why does this trigger an update in the DOM. Have I misunderstood how javascript treats this assignment?
+                        var updatedSlide = $rootScope.slideData[i];
                         updatedSlide.html = newHtml;
                     }
                 }
@@ -823,8 +822,6 @@
             });
         }
     ]);
-    // TODO: Inquire after best practices regarding triggering a function here based on a state change in another
-    // controller.
     module.controller('OfficerAdminCtrl', ['$scope', '$rootScope', 'OfficersSvc', 'OfficersAdminSvc',
         function($scope, $rootScope, officersSvc, officersAdminSvc) {
             $scope.officersLoaded = false;
@@ -876,15 +873,68 @@
             };
         }
     ]);
-    module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc',
-        function($scope, membersAdminSvc) {
+
+    module.controller('MemberEditorCtrl', ['$scope', 'MembersAdminSvc', '$rootScope',
+        function($scope, membersAdminSvc, $rootScope) {
+            $scope.member = membersAdminSvc.editingMember;
+
+            $scope.closeMemberEditor = function() {
+                $('#member-change-overlay').css('opacity', '0.0');
+                $('#member-change-overlay').css('display', 'none');
+                $('body').removeClass('noscroll');
+            };
+
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    $scope.closeMemberEditor();
+                }
+            });
+
+            $scope.saveMember = function(memberData) {
+                membersAdminSvc.updateMember(memberData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success("Member data updated!");
+                    } else {
+                        toastr.error("Error updating member data.");
+                    }
+                }).error(function() {
+                    toastr.error("Error updating member data.");
+                });
+            };
+        }
+    ]);
+
+    module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc', '$rootScope',
+        function($scope, membersAdminSvc, $rootScope) {
             $scope.membersLoaded = false;
+
             membersAdminSvc.getMembers().success(function(data, status, headers, config) {
-                $scope.loadedMembers = data["200"];
-                $scope.membersLoaded = true;
+                if (data["200"]) {
+                    $scope.loadedMembers = data["200"];
+                    $scope.membersLoaded = true;
+                } else {
+                    toastr.error("Error loading members.");
+                }
             }).error(function() {
                 console.log("error loading members");
             });
+
+            $scope.launchMemberEditor = function(memberData) {
+                membersAdminSvc.getMember(memberData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        membersAdminSvc.editingMember = data['200'];
+                        $('body').addClass('noscroll');
+                        $('#member-change-overlay').css('display', 'block');
+                        $('#member-change-overlay').css('opacity', '1.0');
+                    } else {
+                        $scope.membersLoaded = false;
+                        toastr.error("Error retrieving members.");
+                    }
+                }).error(function() {
+                    $scope.membersLoaded = false;
+                    toastr.error("Error retrieving members.");
+                });
+            }
         }
     ]);
 })(angular.module('controllers', ['services']), window._$_app);

@@ -199,7 +199,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <button class="btn">
+                                        <button class="btn" ng-click="launchMemberEditor(member)">
                                             <i class="fa fa-pencil-square-o"></i>
                                         </button>
                                     </td>
@@ -261,6 +261,33 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </overlay>
+
+            <overlay id="member-change-overlay" ng-controller="MemberEditorCtrl">
+                <div id="member-editor">
+                    <h4>Profile of {{member.firstName}} {{member.lastName}}</h4>
+                    <br>
+                    Officer Status: {{member.officer}}
+                    Payment status: {{member.paid}}
+                    <br>
+                    <div id="member-information">
+                        Email address: <input class="form-control" ng-model="member.email" type="text" placeholder="{{member.email}}"></input>
+                        Github: <input class="form-control" ng-model="member.github" type="text" placeholder="{{member.github}}"></input>
+                        Twitter: <input class="form-control" ng-model="member.twitter" type="text" placeholder="{{member.twitter}}"></input>
+                        Facebook <input class="form-control" ng-model="member.facebook" type="text" placeholder="{{member.facebook}}"></input>
+                        <br>
+                        Bio: <textarea class="form-control" ng-model="member.bio">{{member.bio}}</textarea>
+                        Major:
+                        Student level:
+                        <br>
+                        ACM Student ID: <input class="form-control" ng-model="member.membership" type="text" placeholder="{{member.membership}}"></input>
+                    </div>
+                    <div id="member-save-buttons">
+                        <button class="btn btn-lg" style="display: block;">
+                            Save Changes
+                        </button>
                     </div>
                 </div>
             </overlay>

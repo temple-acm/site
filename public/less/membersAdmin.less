@@ -16,3 +16,27 @@ section#membersAdmin {
     }
 
 }
+
+#member-editor {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 800px;
+    height: 900px;
+
+    margin-top: -450px;
+    margin-left: -400px;
+
+    background-color: darken(@membersColor, 52%);
+    padding: 20px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+
+    #member-information {
+        input {
+            color: #000;
+            margin-bottom: 3px;
+        }
+    }
+}

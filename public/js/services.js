@@ -123,6 +123,14 @@
                     url: '/admin/getMembers',
                 });
             };
+            this.getMember = function(member) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/getMember',
+                    data: member
+                });
+            }
+            this.editingMember = null;
         }
     ]);
 	// Service that handles events
