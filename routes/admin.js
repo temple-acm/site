@@ -596,9 +596,9 @@ exports.route = function(app) {
      *      status: 200
      *      data: { "500": err } where "err" is the error message.
      */
-    app.get('/admin/export/csv', acl.middleware(1), function(err, req, res, next) {
+    app.get('/admin/export/csv', function(req, res) {
         var hexId = new ObjectId(req.session.passport.user).toHexString();
-        acl.IsAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/export/csv blocked.');
                 res.status(401).send({
