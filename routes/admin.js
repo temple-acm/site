@@ -4,10 +4,19 @@
 
 var passport = require('passport'),
     logger = require('../util/log'),
-    acl = require('acl'),
-    ObjectId = require('mongodb').ObjectID;
+    node_acl = require('acl'),
+    ObjectId = require('mongodb').ObjectID,
+    MongoClient = require('mongodb').MongoClient,
+    acl;
 
-acl = new acl(new acl.memoryBackend()); // TODO: This needs to be changed to mongo backend in prod
+var url = process.env.TUACM_MONGO_URL;
+
+logger.log('info', 'Connecting to acl backend...');
+MongoClient.connect(url, function(err, db) {
+    var aclBackend = new node_acl.mongodbBackend(db);
+    acl = new node_acl(aclBackend);
+    logger.log('info', 'ACL backend initialized.');
+});
 
 exports.route = function(app) {
     /*
@@ -31,7 +40,7 @@ exports.route = function(app) {
      */
     app.get('/admin/getSlide', acl.middleware(1), function(err, req, res, next) {
         if (err) {
-            console.log('error', 'Unauthorized access to endpoint /admin/getSlide');
+            logger.log('error', 'Unauthorized access to endpoint /admin/getSlide');
             res.status(401).send({
                 '401' : 'Unauthorized'
             });
@@ -74,16 +83,26 @@ exports.route = function(app) {
      *      status: 403
      */
     app.get('/admin/allSlides', function(req, res) {
-        req.db.collection('slides').find({}, {
-            'sort': [[ 'order', 'asc' ]]
-        }).toArray(function(err, data) {
-            if (err) {
-                console.log('error', 'Error retrieving slides from database: ' + err);
-                res.status(200).send({
-                    '500': 'Unspecified error'
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to endpoint /admin/allSlides blocked');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
                 });
             } else {
-                res.status(200).send(data);
+                req.db.collection('slides').find({}, {
+                    'sort': [[ 'order', 'asc' ]]
+                }).toArray(function(err, data) {
+                    if (err) {
+                        console.log('error', 'Error retrieving slides from database: ' + err);
+                        res.status(200).send({
+                            '500': 'Unspecified error'
+                        });
+                    } else {
+                        res.status(200).send(data);
+                    }
+                });
             }
         });
     });
@@ -112,47 +131,57 @@ exports.route = function(app) {
      *              data: { '500' : 'Unspecified error' }
      */
     app.post('/admin/addSlide', function(req, res) {
-        if (req.body.image && req.body.html) {
-            //Increment the order of all pre-existing slides in the DB
-            req.db.collection('slides').update({}, {
-                $inc: {
-                    order: 1
-                }
-            }, {
-                multi: true
-            }, function(err, updatedData) {
-                if (err) {
-                    logger.log('error', 'DB increment operation went wrong in /admin/addSlide');
-                    res.status(200).send({
-                        '500' : 'Unspecified error'
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                console.log('error', 'Unauthorized access to /admin/addSlide blocked');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
+            } else {
+                if (req.body.image && req.body.html) {
+                    //Increment the order of all pre-existing slides in the DB
+                    req.db.collection('slides').update({}, {
+                        $inc: {
+                            order: 1
+                        }
+                    }, {
+                        multi: true
+                    }, function(err, updatedData) {
+                        if (err) {
+                            logger.log('error', 'DB increment operation went wrong in /admin/addSlide');
+                            res.status(200).send({
+                                '500' : 'Unspecified error'
+                            });
+                        }
                     });
-                }
-            });
-            // Now save the new slide with order 1, so it appears first
-            req.db.collection('slides').save({
-                image: req.body.image,
-                order: 1,
-                html: req.body.html
-            }, {}, function(err, createdSlide) {
-                if (err) {
-                    logger.log('error', 'DB save operation went wrong in /admin/addSlide');
-                    res.status(200).send({
-                        '500' : 'Unspecified error'
+                    // Now save the new slide with order 1, so it appears first
+                    req.db.collection('slides').save({
+                        image: req.body.image,
+                        order: 1,
+                        html: req.body.html
+                    }, {}, function(err, createdSlide) {
+                        if (err) {
+                            logger.log('error', 'DB save operation went wrong in /admin/addSlide');
+                            res.status(200).send({
+                                '500' : 'Unspecified error'
+                            });
+                        } else {
+                            res.status(200).send({
+                                '200' : 'OK'
+                            });
+                        }
                     });
                 } else {
+                    // wow these muppets forgot an element. what a bunch of noobcakes
+                    // TODO: maybe we say exactly which element is missing, that'd probably help debugging
+                    logger.log('error', 'Required slide element missing in /admin/addSlide');
                     res.status(200).send({
-                        '200' : 'OK'
+                        '500' : 'Unspecified error'
                     });
                 }
-            });
-        } else {
-            // wow these muppets forgot an element. what a bunch of noobcakes
-            // TODO: maybe we say exactly which element is missing, that'd probably help debugging
-            logger.log('error', 'Required slide element missing in /admin/addSlide');
-            res.status(200).send({
-                '500' : 'Unspecified error'
-            });
-        }
+            }
+        });
     });
 
     /*
@@ -172,24 +201,34 @@ exports.route = function(app) {
      *          data: { '500' : 'Unspecified error' }
      */
     app.post('/admin/updateSlide', function(req, res) {
-        slideObjectId = new ObjectId(req.body._id);
-        req.db.collection('slides').update({
-            _id: slideObjectId
-        },
-        { $set:
-            {
-                image: req.body.image,
-                html: req.body.html,
-                order: req.body.order
-            }
-        }, function(err, updatedSlide) {
-            if (err) {
-                res.status(200).send({
-                    '500' : 'Unspecified error'
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized acess to /admin/updateSlide blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
                 });
             } else {
-                res.status(200).send({
-                    '200' : 'OK'
+                slideObjectId = new ObjectId(req.body._id);
+                req.db.collection('slides').update({
+                    _id: slideObjectId
+                },
+                { $set:
+                    {
+                        image: req.body.image,
+                        html: req.body.html,
+                        order: req.body.order
+                    }
+                }, function(err, updatedSlide) {
+                    if (err) {
+                        res.status(200).send({
+                            '500' : 'Unspecified error'
+                        });
+                    } else {
+                        res.status(200).send({
+                            '200' : 'OK'
+                        });
+                    }
                 });
             }
         });
@@ -219,63 +258,73 @@ exports.route = function(app) {
      *          status: 403
      */
     app.post('/admin/removeSlide', function(req, res) {
-        if (req.body.id) {
-            removeObjectId = new ObjectId(req.body.id);
-            req.db.collection('slides').find({
-                _id: removeObjectId
-            }, {
-                order: 1
-            }, function(err, removedIndex) {
-                if (err) {
-                    logger.log('error', 'Cannot find slide with specified ID in /admin/removeSlide', err);
-                    res.status(200).send({
-                        '500' : 'Unspecified error'
-                    });
-                } else {
-                    req.db.collection('slides').remove({
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/removeSlide blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
+            } else {
+                if (req.body.id) {
+                    removeObjectId = new ObjectId(req.body.id);
+                    req.db.collection('slides').find({
                         _id: removeObjectId
                     }, {
-                        w: 1,
-                    }, function(err, numRemovedDocs) {
-                        if (err || numRemovedDocs != 1) {
-                            logger.log('error', 'Something went wrong with the remove operation in /admin/removeSlide', err);
+                        order: 1
+                    }, function(err, removedIndex) {
+                        if (err) {
+                            logger.log('error', 'Cannot find slide with specified ID in /admin/removeSlide', err);
                             res.status(200).send({
                                 '500' : 'Unspecified error'
                             });
                         } else {
-                            req.db.collection('slides').update({
-                                order: {
-                                    $gte: removedIndex.fields.order
-                                }
+                            req.db.collection('slides').remove({
+                                _id: removeObjectId
                             }, {
-                                $inc: {
-                                    order: -1
-                                }
-                            }, {
-                                multi: true
-                            }, function(err, numUpdatedDocs) {
-                                if (err) {
-                                    logger.log('error', 'Something wrong with the decrement operation in /admin/removeSlide', err);
+                                w: 1,
+                            }, function(err, numRemovedDocs) {
+                                if (err || numRemovedDocs != 1) {
+                                    logger.log('error', 'Something went wrong with the remove operation in /admin/removeSlide', err);
                                     res.status(200).send({
-                                        '500': 'Unspecified error'
+                                        '500' : 'Unspecified error'
                                     });
                                 } else {
-                                    res.status(200).send({
-                                        '200' : 'OK'
+                                    req.db.collection('slides').update({
+                                        order: {
+                                            $gte: removedIndex.fields.order
+                                        }
+                                    }, {
+                                        $inc: {
+                                            order: -1
+                                        }
+                                    }, {
+                                        multi: true
+                                    }, function(err, numUpdatedDocs) {
+                                        if (err) {
+                                            logger.log('error', 'Something wrong with the decrement operation in /admin/removeSlide', err);
+                                            res.status(200).send({
+                                                '500': 'Unspecified error'
+                                            });
+                                        } else {
+                                            res.status(200).send({
+                                                '200' : 'OK'
+                                            });
+                                        }
                                     });
                                 }
                             });
                         }
                     });
+                } else {
+                    // wow how do you mess this up
+                    logger.log('error', 'slide ObjectID not present', err);
+                    res.status(200).send({
+                        '500' : 'Unspecified error'
+                    });
                 }
-            });
-        } else {
-            // wow how do you mess this up
-            logger.log('error', 'slide ObjectID not present', err);
-            res.status(200).send({
-                '500' : 'Unspecified error'
-            });
-        }
+            }
+        });
     });
 
     /*
@@ -300,34 +349,44 @@ exports.route = function(app) {
      *              data: {'500' : 'Unspecified error' }
      */
     app.post('/admin/removeOfficer', function(req, res) {
-        if (req.body.id) {
-            var removeObjectId = new ObjectId(req.body.id);
-            req.db.collection('users').update({
-                _id: removeObjectId
-            }, {
-                $unset: {
-                    officer: ""
-                }
-            }, {
-                multi: false
-            }, function(err) {
-                if (err) {
-                    logger.log('error', 'could not demote account with ID ' + req.body.id, err);
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/removeOfficer blocked');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
+            } else {
+                if (req.body.id) {
+                    var removeObjectId = new ObjectId(req.body.id);
+                    req.db.collection('users').update({
+                        _id: removeObjectId
+                    }, {
+                        $unset: {
+                            officer: ""
+                        }
+                    }, {
+                        multi: false
+                    }, function(err) {
+                        if (err) {
+                            logger.log('error', 'could not demote account with ID ' + req.body.id, err);
+                            res.status(200).send({
+                                '500' : 'Unspecified error'
+                            });
+                        } else {
+                            res.status(200).send({
+                                '200' : 'OK'
+                            });
+                        }
+                    });
+                } else {
+                    logger.log('error', 'Invalid ObjectID in /admin/removeOfficer');
                     res.status(200).send({
                         '500' : 'Unspecified error'
                     });
-                } else {
-                    res.status(200).send({
-                        '200' : 'OK'
-                    });
                 }
-            });
-        } else {
-            logger.log('error', 'Invalid ObjectID in /admin/removeOfficer');
-            res.status(200).send({
-                '500' : 'Unspecified error'
-            });
-        }
+            }
+        });
     });
 
     /*
@@ -353,70 +412,132 @@ exports.route = function(app) {
      *              data: { "500" : "Unspecified error" }
      */
     app.post('/admin/addOfficer', function(req, res) {
-        if (req.body._id && req.body.title) {
-            var accountObjectId = new ObjectId(req.body._id);
-            if (req.body.bio) {
-                req.db.collection('users').update({
-                    _id : accountObjectId
-                }, {
-                    $set: {
-                        title: req.body.title,
-                        officer: true,
-                        bio: req.body.bio
-                    }
-                }, {
-                    multi: false,
-                    upsert: true
-                }, function(err) {
-                    if (err) {
-                        logger.log('error', 'could not mark user with id ' + req.body._id + ' as officer', err);
-                        res.status(200).send({
-                            '500': 'Unspecified error'
-                        });
-                    } else {
-                        res.status(200).send({
-                            '200': 'OK'
-                        });
-                    }
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+        if (err || isAllowed === false) {
+            logger.log('error', 'Unauthorized access to /admin/addOfficer blocked.');
+            res.status(401).send({
+                '401' : 'Unauthorized'
+            });
+        } else {
+            if (req.body._id && req.body.title) {
+                var accountObjectId = new ObjectId(req.body._id);
+                if (req.body.bio) {
+                    req.db.collection('users').update({
+                        _id : accountObjectId
+                    }, {
+                        $set: {
+                            title: req.body.title,
+                            officer: true,
+                            bio: req.body.bio
+                        }
+                    }, {
+                        multi: false,
+                        upsert: true
+                    }, function(err) {
+                        if (err) {
+                            logger.log('error', 'could not mark user with id ' + req.body._id + ' as officer', err);
+                            res.status(200).send({
+                                '500': 'Unspecified error'
+                            });
+                        } else {
+                            console.log("Now adding to acl admin role");
+                            acl.allow('admin', 'admin', '*');
+                            acl.addUserRoles(req.body._id, 'admin', function(err) {
+                                if (err) {
+                                    logger.log('error', 'Could not change ACL for account with id ' + req.body._id, err);
+                                    res.status(200).send({
+                                        '500' : 'Unspecified error'
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        '200' : 'OK'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    req.db.collection('users').update({
+                        _id : accountObjectId
+                    }, {
+                        $set: {
+                            title: title,
+                            officer: true
+                        }
+                    }, {
+                        multi: false,
+                        upsert: true // TODO: Check if this is necessary
+                    }, function(err) {
+                        if (err) {
+                            logger.log('error', 'could not mark user with ID ' + req.body._id + ' as officer', err);
+                            res.status(200).send({
+                                '500': 'Unspecified error'
+                            });
+                        } else {
+                            console.log("Now doing my acl addUserRoles thing");
+                            acl.allow('admin', 'admin', '*');
+                            acl.addUserRoles(req.body._id, 'admin', function(err) {
+                                if (err) {
+                                    logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
+                                    res.status(200).send({
+                                        '500' : 'Unspecified error'
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        '200' : 'OK'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            } else {
+                logger.error('Invalid information sent.');
+                res.status(200).send({
+                    '500' : 'Unspecified error'
+                });
+            }
+        }
+        });
+    });
+
+    /*
+     * This endpoint sends back all the fields for a particular member, accessed by
+     * ObjectID.
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { '200' : member data object }
+     *  Error:
+     *      Database error:
+     *          status: 200
+     *          data: {'500' : 'Unspecified error' }
+     *      Access forbidden:
+     *          status: 402
+     */
+    app.post('/admin/getMember', function(req, res) {
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/getMember blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
                 });
             } else {
-                req.db.collection('users').update({
-                    _id : accountObjectId
-                }, {
-                    $set: {
-                        title: title,
-                        officer: true
-                    }
-                }, {
-                    multi: false,
-                    upsert: true // TODO: Check if this is necessary
-                }, function(err) {
+                var accountObjectId = new ObjectId(req.body._id)
+                req.db.collection('users').find({
+                    _id: accountObjectId
+                }).toArray(function(err, member) {
                     if (err) {
-                        logger.log('error', 'could not mark user with ID ' + req.body._id + ' as officer', err);
-                        res.status(200).send({
-                            '500': 'Unspecified error'
-                        });
+                        logger.log('error', 'Error retrieving member object in getMember(): ' + err);
+                        res.status(200).send({'500' : 'Unspecified error'});
                     } else {
-                        acl.addUserRoles(req.body._id, 'admin', function(err) {
-                            if (err) {
-                                logger.log('error', 'could not change acl for account ' + req.body.accountName, err);
-                                res.status(200).send({
-                                    '500' : 'Unspecified error'
-                                });
-                            }
-                        });
-                        res.status(200).send({
-                            '200' : 'OK'
-                        });
+                        res.status(200).send({'200' : member});
                     }
                 });
             }
-        } else {
-            logger.error('Invalid information sent.');
-            res.status(200).send({
-                '500' : 'Unspecified error'
-            });
-        }
+        });
     });
 
     /*
@@ -436,18 +557,28 @@ exports.route = function(app) {
      *          status: 402
      */
     app.get('/admin/getMembers', function(req, res) {
-        req.db.collection('users').find({}, {
-            firstName: 1,
-            lastName: 1,
-            bio: 1,
-            email: 1,
-            officer: 1
-        }).toArray(function(err, members) {
-            if (err) {
-                logger.log('error', 'Error retrieving db data for getMembers(): ' + err);
-                res.status(200).send({'500': 'Unspecified Error'});
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/getMembers blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
             } else {
-                res.status(200).send({'200' : members });
+                req.db.collection('users').find({}, {
+                    firstName: 1,
+                    lastName: 1,
+                    bio: 1,
+                    email: 1,
+                    officer: 1
+                }).toArray(function(err, members) {
+                    if (err) {
+                        logger.log('error', 'Error retrieving db data for getMembers(): ' + err);
+                        res.status(200).send({'500': 'Unspecified Error'});
+                    } else {
+                        res.status(200).send({'200' : members });
+                    }
+                });
             }
         });
     });
@@ -465,26 +596,36 @@ exports.route = function(app) {
      *      status: 200
      *      data: { "500": err } where "err" is the error message.
      */
-    app.get('/admin/export/csv', acl.middleware(1), function(req, res) {
-        req.db.collection('users').find({}, {
-            firstName: 1,
-            lastName: 1,
-            email: 1,
-            membership: 1
-        }).toArray(function(err, members) {
-            if (err) {
-                logger.log('error', err);
-                res.status(500).send('Error retrieving members for CSV');
+    app.get('/admin/export/csv', acl.middleware(1), function(err, req, res, next) {
+        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        acl.IsAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/export/csv blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
             } else {
-                // Build the CSV
-                var csv = 'First Name,Last Name,Email,Member Number\n';
-                members.forEach(function(member, i) {
-                    csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
-                    if (i === members.length - 1) {
-                        // We're done
-                        res.status(200).type('text/csv').set({
-                            'Content-Disposition': 'attachment; filename="members.csv"',
-                        }).send(csv);
+                req.db.collection('users').find({}, {
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    membership: 1
+                }).toArray(function(err, members) {
+                    if (err) {
+                        logger.log('error', err);
+                        res.status(500).send('Error retrieving members for CSV');
+                    } else {
+                        // Build the CSV
+                        var csv = 'First Name,Last Name,Email,Member Number\n';
+                        members.forEach(function(member, i) {
+                            csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
+                            if (i === members.length - 1) {
+                                // We're done
+                                res.status(200).type('text/csv').set({
+                                    'Content-Disposition': 'attachment; filename="members.csv"',
+                                }).send(csv);
+                            }
+                        });
                     }
                 });
             }
