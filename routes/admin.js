@@ -19,54 +19,6 @@ MongoClient.connect(url, function(err, db) {
 });
 
 exports.route = function(app) {
-    /*
-     * This endpoint fetches a single slide's data from the database.
-     *
-     *  Input:
-     *      order: the ordering number of the slide to be fetched.
-     *  Output:
-     *      Success:
-     *          status: 200
-     *          data: JSON document representing the slide
-     *      Failure:
-     *          Slide num not present for call:
-     *              status: 200
-     *              data: { '500' : 'Unspecified error' }
-     *          DB error:
-     *              status: 200
-     *              data: { '500' : 'Unspecified error' }
-     *          Unauthorized access:
-     *              status: 403
-     */
-    app.get('/admin/getSlide', acl.middleware(1), function(err, req, res, next) {
-        if (err) {
-            logger.log('error', 'Unauthorized access to endpoint /admin/getSlide');
-            res.status(401).send({
-                '401' : 'Unauthorized'
-            });
-        } else if (req.body.slideOrderNum) {
-            req.db.collection('slides').findOne({
-                order: req.body.slideOrderNum
-            }, {
-                limit: 1
-            }, function(err, slideDoc) {
-                if (err) {
-                    logger.log('error', 'DB query gone wrong in getSlide', err);
-                    res.status(200).send({
-                        '500' : 'Unspecified Error'
-                    });
-                } else {
-                    res.status(200).json(slideDoc);
-                }
-            });
-        } else {
-            //how do you mess this up it's literally one number
-            logger.log('error', 'Slide number missing in call to getSlide', err);
-            res.status(200).send({
-                '500' : 'Unspecified error'
-            });
-        }
-    });
 
     /*
      * This endpoint simply gives you all the slides present in the backend 
