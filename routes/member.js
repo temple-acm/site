@@ -5,8 +5,9 @@ var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 var emailUtil = require('../util/email'),
 	logger = require('../util/log');
+    acl = require('acl');
 
-/*************************** PASSPORT CONFIGURATION ***************************/
+//-------------------------- PASSPORT CONFIGURATION --------------------------//
 
 // Setting up passport strategy (used for authentication)
 passport.use('local', new LocalStrategy({
@@ -48,7 +49,7 @@ passport.deserializeUser(function(req, id, done) {
 	});
 });
 
-/******************************* MODULE HELPERS *******************************/
+//------------------------------ MODULE HELPERS ------------------------------//
 
 var SALT_FACTOR = 10;
 var EMAIL_REGEX = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i;
@@ -63,7 +64,7 @@ var passwordResetToken = function() {
 	return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 };
 
-/******************************** MEMBER CONFIG *******************************/
+//------------------------------- MEMBER CONFIG ------------------------------//
 
 exports.configure = function(app) {
 	// Attach passport to express app
@@ -71,7 +72,7 @@ exports.configure = function(app) {
 	app.use(passport.session());
 };
 
-/******************************** MEMBER ROUTES *******************************/
+//------------------------------- MEMBER ROUTES ------------------------------//
 
 exports.route = function(app) {
 	// Check if a user name is free
@@ -262,7 +263,14 @@ exports.route = function(app) {
 									firstName: createdUser.firstName,
 									lastName: createdUser.lastName
 								};
-
+                                // Ah, more nested callbacks.
+                                acl.allow(createdUser.userName, 'members', function(err) {
+                                    if (err) {
+                                        res.status(200).json({
+                                            '500' : 'Error saving new user'
+                                        });
+                                    }
+                                });
 								res.status(200).json({
 									'200': strippedUser
 								});
@@ -443,7 +451,7 @@ exports.route = function(app) {
 					res.status(200).send({
 						'500': 'There was an internal error while updating the user password'
 					});
-					logger.log('error', 'could not mark user paid', err);
+					logger.log('error', 'could not reset password', err);
 				} else {
 					res.status(200).send({
 						'200': 'password was successfully reset'
@@ -523,47 +531,4 @@ exports.route = function(app) {
 		});
 	});
 
-	/*
-	 * This endpoint exports our members list to CSV. You must be logged in to do this.
-	 * The CSV is organized such that the columns of the document are denoted First Name,
-	 * Last Name, Email, Member Number.
-	 *
-	 * Output:
-	 *  Success:
-	 *      status: 200
-	 *      data: the CSV of members
-	 *      user objects.
-	 *  Error:
-	 *      status: 200
-	 *      data: { "500": err } where "err" is the error message.
-	 */
-	app.get('/members/export/csv', function(req, res) {
-		if (req.user && req.user[0].officer) {
-			req.db.collection('users').find({}, {
-				firstName: 1,
-				lastName: 1,
-				email: 1,
-				membership: 1
-			}).toArray(function(err, members) {
-				if (err) {
-					logger.log('error', err);
-					res.status(500).send('Error retrieving members for CSV');
-				} else {
-					// Build the CSV
-					var csv = 'First Name,Last Name,Email,Member Number\n';
-					members.forEach(function(member, i) {
-						csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
-						if (i === members.length - 1) {
-							// We're done
-							res.status(200).type('text/csv').set({
-								'Content-Disposition': 'attachment; filename="members.csv"',
-							}).send(csv);
-						}
-					});
-				}
-			});
-		} else {
-			res.status(403).send();
-		}
-	});
 };

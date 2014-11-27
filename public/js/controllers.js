@@ -677,4 +677,264 @@
 			};
 		}
 	]);
+    // Adding on this monstrosity, we now move on to dealing with admin stuff
+    module.controller('SlideEditorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
+        function($scope, $rootScope, slideAdminService) {
+            $scope.closeEditor = function() {
+                $('#slide-editor-overlay').css('display', 'none');
+                $('#slide-editor-overlay').css('opacity', '0.0');
+                $('body').removeClass('noscroll');
+            };
+            $scope.saveEditorChanges = function() {
+                console.log("Saving editor changes");
+                var newHtml = slideAdminService.editor.getSession().getValue();
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
+                        var updatedSlide = $rootScope.slideData[i];
+                        updatedSlide.html = newHtml;
+                    }
+                }
+                $scope.closeEditor();
+            };
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    $scope.closeEditor();
+                }
+            });
+        }
+    ]);
+
+    module.controller('SlideAdminCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
+        function($scope, $rootScope, slideAdminService) {
+            $scope.slidesLoaded = false;
+            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                $scope.slidesLoaded = true;
+                $rootScope.slideData = $scope.slideData = data;
+            }).error(function() {
+                toastr.error("Error loading slides.");
+            });
+            $scope.initializeEditor = function(slide) {
+                slideAdminService.editor.getSession().setValue(slide.html);
+                slideAdminService.editingSlide = slide;
+                $('body').addClass('noscroll');
+                $('#slide-editor-overlay').css('display', 'block');
+                $('#slide-editor-overlay').css('opacity', '1.0');
+                //$('#slide-editor-overlay').css('display', 'block');
+            };
+            $scope.saveSlide = function(slideId) {
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideId) {
+                        slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
+                            toastr.success("Slide updated!");
+                        }).error(function() {
+                            toastr.error("Error updating slide.");
+                        });
+                    }
+                }
+            };
+            $scope.removeSlide = function(slideId) {
+                $scope.slidesLoaded = false;
+                for (var i = 0; i < $rootScope.slideData.length; i++) {
+                    if ($rootScope.slideData[i]._id == slideId) {
+                        var idJson = { "id" : slideId };
+                        slideAdminService.removeSlide(idJson).success(function(data, status, headers, config) {
+                            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                                $rootScope.slideData = $scope.slideData = data;
+                                $scope.slidesLoaded = true;
+                                toastr.success("Slide removed!");
+                            }).error(function() {
+                                toastr.error("Error reloading slides.");
+                            });
+                        }).error(function() {
+                            toastr.error("Error removing slide.");
+                        });
+                    }
+                }
+            };
+            $scope.addSlide = function() {
+                $scope.slidesLoaded = false;
+                var newSlideData = {
+                    image: 'https://i.imgur.com/jwJoau0.jpg',
+                    html: "<h1>We're the Temple ACM, and we <3 technology.</h1>"
+                }
+                slideAdminService.addSlide(newSlideData).success(function(data, status, headers, config) {
+                    slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                        $scope.slidesLoaded = true;
+                        $rootScope.slideData = $scope.slideData = data;
+                        toastr.success("New slide created!");
+                    }).error(function() {
+                        toastr.error("Error reloading slides.");
+                    });
+                }).error(function() {
+                    toastr.error("Error adding new slide.");
+                });
+            }
+        }
+    ]);
+
+    module.controller('OfficerAdderCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc', 'MembersAdminSvc', 
+        function($scope, $rootScope, officersAdminSvc, membersAdminSvc) {
+            $rootScope.officersChanged = false;
+            $scope.officersChanged = false;
+
+            $scope.addOfficer = function(officerData) {
+                $scope.officersChanged = true;
+                officersAdminSvc.addOfficer(officerData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success("Officer promoted!");
+                    } else {
+                        toastr.error("Error promoting officer.");
+                    }
+                }).error(function() {
+                    toastr.error("Error promoting officer.");
+                });
+            };
+
+            $scope.memberFilterFn = function(member) {
+                if (member.officer && member.officer == true) {
+                    return false;
+                }
+                return true;
+            }
+
+            membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+                if (data['200']) {
+                    $scope.membersData = data['200'];
+                } else {
+                    toastr.error("Error loading member list.");
+                }
+            }).error(function() {
+                toastr.error("Error loading member list.");
+            });
+            $scope.closeOfficerAdder = function() {
+                $('#officer-adder-overlay').css('opacity', '0.0');
+                $('#officer-adder-overlay').css('display', 'none');
+                $('body').removeClass('noscroll');
+            };
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    if ($scope.officersChanged == true) {
+                        $rootScope.officersChanged = true;
+                        $rootScope.$digest();
+                    }
+                    $scope.closeOfficerAdder();
+                }
+            });
+        }
+    ]);
+    module.controller('OfficerAdminCtrl', ['$scope', '$rootScope', 'OfficersSvc', 'OfficersAdminSvc',
+        function($scope, $rootScope, officersSvc, officersAdminSvc) {
+            $scope.officersLoaded = false;
+            officersSvc.getOfficers().success(function(data, status, headers, config) {
+                $scope.officerData = data["200"];
+                $scope.officersLoaded = true;
+            }).error(function() {
+                console.log("error loading officers");
+            });
+
+            $scope.launchOfficerAdder = function() {
+                $('body').addClass('noscroll');
+                $('#officer-adder-overlay').css('display', 'block');
+                $('#officer-adder-overlay').css('opacity', '1.0');
+            };
+
+            $rootScope.$watch("officersChanged", function(newValue, oldValue) {
+                $scope.officersLoaded = false;
+                officersSvc.getOfficers().success(function(data, status, headers, config) {
+                    $scope.officerData = data["200"];
+                    $scope.officersLoaded = true;
+                    $rootScope.officersChanged = false;
+                }).error(function() {
+                    console.log("error loading officers");
+                });
+            });
+
+            $scope.removeOfficer = function(officerId) {
+                $scope.officersLoaded = false;
+                var officerIdData = { "id" : officerId };
+                officersAdminSvc.removeOfficer(officerIdData).success(function(data, status, headers, config) {
+                    if (data["200"]) {
+                        officersSvc.getOfficers().success(function(officerData, status, headers, config) {
+                            if (officerData["200"]) {
+                                $scope.officerData = officerData["200"];
+                                $scope.officersLoaded = true;
+                            } else {
+                                toastr.error("Error removing officer.");
+                            }
+                        }).error(function() {
+                            toastr.error("Error reloading officers.");
+                        });
+                    } else {
+                        toastr.error("Error removing officer.");
+                    }
+                }).error(function() {
+                    toastr.error("Error removing officer.");
+                });
+            };
+        }
+    ]);
+
+    module.controller('MemberEditorCtrl', ['$scope', 'MembersAdminSvc', '$rootScope',
+        function($scope, membersAdminSvc, $rootScope) {
+            $scope.member = membersAdminSvc.editingMember;
+
+            $scope.closeMemberEditor = function() {
+                $('#member-change-overlay').css('opacity', '0.0');
+                $('#member-change-overlay').css('display', 'none');
+                $('body').removeClass('noscroll');
+            };
+
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    $scope.closeMemberEditor();
+                }
+            });
+
+            $scope.saveMember = function(memberData) {
+                membersAdminSvc.updateMember(memberData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success("Member data updated!");
+                    } else {
+                        toastr.error("Error updating member data.");
+                    }
+                }).error(function() {
+                    toastr.error("Error updating member data.");
+                });
+            };
+        }
+    ]);
+
+    module.controller('MemberAdminCtrl', ['$scope', 'MembersAdminSvc', '$rootScope',
+        function($scope, membersAdminSvc, $rootScope) {
+            $scope.membersLoaded = false;
+
+            membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+                if (data["200"]) {
+                    $scope.loadedMembers = data["200"];
+                    $scope.membersLoaded = true;
+                } else {
+                    toastr.error("Error loading members.");
+                }
+            }).error(function() {
+                console.log("error loading members");
+            });
+
+            $scope.launchMemberEditor = function(memberData) {
+                membersAdminSvc.getMember(memberData).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        membersAdminSvc.editingMember = data['200'];
+                        $('body').addClass('noscroll');
+                        $('#member-change-overlay').css('display', 'block');
+                        $('#member-change-overlay').css('opacity', '1.0');
+                    } else {
+                        $scope.membersLoaded = false;
+                        toastr.error("Error retrieving members.");
+                    }
+                }).error(function() {
+                    $scope.membersLoaded = false;
+                    toastr.error("Error retrieving members.");
+                });
+            }
+        }
+    ]);
 })(angular.module('controllers', ['services']), window._$_app);
