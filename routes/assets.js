@@ -13,7 +13,7 @@ if (process.env.TUACM_DEV) {
 	RECRUITING_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'recruiting.html');
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.html');
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.html');
-    ADMIN_PATH=path.join(__dirname, '..', 'public', 'dist', 'admin.html' );
+    ADMIN_PATH=path.join(__dirname, '..', 'public', 'dist', 'admin-beta.html' );
 } else {
 	// Production
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.min.html');

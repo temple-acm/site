@@ -704,75 +704,7 @@
         }
     ]);
 
-    module.controller('SlideAdminCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
-        function($scope, $rootScope, slideAdminService) {
-            $scope.slidesLoaded = false;
-            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
-                $scope.slidesLoaded = true;
-                $rootScope.slideData = $scope.slideData = data;
-            }).error(function() {
-                toastr.error("Error loading slides.");
-            });
-            $scope.initializeEditor = function(slide) {
-                slideAdminService.editor.getSession().setValue(slide.html);
-                slideAdminService.editingSlide = slide;
-                $('body').addClass('noscroll');
-                $('#slide-editor-overlay').css('display', 'block');
-                $('#slide-editor-overlay').css('opacity', '1.0');
-                //$('#slide-editor-overlay').css('display', 'block');
-            };
-            $scope.saveSlide = function(slideId) {
-                for (var i = 0; i < $rootScope.slideData.length; i++) {
-                    if ($rootScope.slideData[i]._id == slideId) {
-                        slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
-                            toastr.success("Slide updated!");
-                        }).error(function() {
-                            toastr.error("Error updating slide.");
-                        });
-                    }
-                }
-            };
-            $scope.removeSlide = function(slideId) {
-                $scope.slidesLoaded = false;
-                for (var i = 0; i < $rootScope.slideData.length; i++) {
-                    if ($rootScope.slideData[i]._id == slideId) {
-                        var idJson = { "id" : slideId };
-                        slideAdminService.removeSlide(idJson).success(function(data, status, headers, config) {
-                            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
-                                $rootScope.slideData = $scope.slideData = data;
-                                $scope.slidesLoaded = true;
-                                toastr.success("Slide removed!");
-                            }).error(function() {
-                                toastr.error("Error reloading slides.");
-                            });
-                        }).error(function() {
-                            toastr.error("Error removing slide.");
-                        });
-                    }
-                }
-            };
-            $scope.addSlide = function() {
-                $scope.slidesLoaded = false;
-                var newSlideData = {
-                    image: 'https://i.imgur.com/jwJoau0.jpg',
-                    html: "<h1>We're the Temple ACM, and we <3 technology.</h1>"
-                }
-                slideAdminService.addSlide(newSlideData).success(function(data, status, headers, config) {
-                    slideAdminService.getAllSlides().success(function(data, status, headers, config) {
-                        $scope.slidesLoaded = true;
-                        $rootScope.slideData = $scope.slideData = data;
-                        toastr.success("New slide created!");
-                    }).error(function() {
-                        toastr.error("Error reloading slides.");
-                    });
-                }).error(function() {
-                    toastr.error("Error adding new slide.");
-                });
-            }
-        }
-    ]);
-
-    module.controller('OfficerAdderCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc', 'MembersAdminSvc', 
+    module.controller('OfficerAdderCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc', 'MembersAdminSvc',
         function($scope, $rootScope, officersAdminSvc, membersAdminSvc) {
             $rootScope.officersChanged = false;
             $scope.officersChanged = false;
