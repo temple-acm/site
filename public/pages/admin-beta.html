@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Temple University chapter of the Association for Computing Machinery (ACM).">
+        <meta name="author" content="Sandile Keswa, Steven Heyen, Sri Ramanujam">
+        <meta name="keywords" content="temple, acm, computer, science, college, university">
+
+        <title>Temple ACM Admin Panel</title>
+        <!-- Custom CSS -->
+        <link href="/static/dist/admin{{.css}}" rel="stylesheet">
+        <!-- Custom Fonts: Font Awesome (for icons), Roboto (for text), Montserrat (for headings) -->
+        <link href="/static/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/mode-html.js"></script>
+    </head>
+    <body data-ng-controller="MainCtrl">
+        <sidenav></sidenav>
+        <div id="main">
+            <div id="header">{{currentPageTitle}}</div>
+            <div class="divider top"></div>
+            <div id="content" data-ng-switch data-on="currentPage">
+                <div class="content-switch-case" data-ng-switch-when="/profile">
+                    <ng-include data-src="'/static/dist/admin-profile.partial.html'"></ng-include>
+                </div>
+                <div class="content-switch-case" data-ng-switch-when="/slides">
+                    <ng-include data-src="'/static/dist/admin-slides.partial.html'"></ng-include>
+                </div>
+                <div class="content-switch-case" data-ng-switch-when="/officers">
+                    <ng-include data-src="'/static/dist/admin-officers.partial.html'"></ng-include>
+                </div>
+                <div class="content-switch-case" data-ng-switch-when="/exports">
+                    <ng-include data-src="'/static/dist/admin-exports.partial.html'"></ng-include>
+                </div>
+                <div class="content-switch-case" data-ng-switch-when="/members">
+                    <ng-include data-src="'/static/dist/admin-members.partial.html'"></ng-include>
+                </div>
+                <div class="content-switch-case" data-ng-switch-default>
+                    <ng-include data-src="'/static/dist/admin-404.partial.html'"></ng-include>
+                </div>
+            </div>
+            <div class="divider bottom"></div>
+            <div id="footer">Copyright Temple ACM &copy; 2014 - 2015</div>
+        </div>
+        <!-- Script Declarations -->
+        <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/static/vendor/angular/angular.min.js"></script>
+        <script src="/static/vendor/toastr/toastr.min.js"></script>
+        <script src="/static/dist/admin{{.js}}"></script>
+    </body>
+</html>
