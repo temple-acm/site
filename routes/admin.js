@@ -21,8 +21,8 @@ MongoClient.connect(url, function(err, db) {
 exports.route = function(app) {
 
     /*
-     * This endpoint simply gives you all the slides present in the backend 
-     * database. 
+     * This endpoint simply gives you all the slides present in the backend
+     * database.
      *
      * Output:
      *  Success:
@@ -35,7 +35,12 @@ exports.route = function(app) {
      *      status: 403
      */
     app.get('/admin/allSlides', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to endpoint /admin/allSlides blocked');
@@ -61,13 +66,11 @@ exports.route = function(app) {
 
     /*
      * This endpoint adds a banner slide to the database. Be sure to properly
-     * pass in all three required parts.
+     * pass in the two required parts.
      *
      *  Input:
-     *      slideHTML: The HTML to go along with the slide. Optional.
-     *      slideLink: The link to the banner image (because screw self-hosting amirite)
-     *      slideTitle: The title of the slide
-     *      slideSubtitle: The subtitle of the slide
+     *      html: The HTML to go along with the slide.
+     *      image: The link to the banner image (because screw self-hosting amirite)
      *  Output:
      *      Success:
      *          status: 200
@@ -83,10 +86,15 @@ exports.route = function(app) {
      *              data: { '500' : 'Unspecified error' }
      */
     app.post('/admin/addSlide', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
-                console.log('error', 'Unauthorized access to /admin/addSlide blocked');
+                logger.log('error', 'Unauthorized access to /admin/addSlide blocked');
                 res.status(401).send({
                     '401' : 'Unauthorized'
                 });
@@ -153,7 +161,12 @@ exports.route = function(app) {
      *          data: { '500' : 'Unspecified error' }
      */
     app.post('/admin/updateSlide', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized acess to /admin/updateSlide blocked.');
@@ -161,27 +174,33 @@ exports.route = function(app) {
                     '401' : 'Unauthorized'
                 });
             } else {
-                slideObjectId = new ObjectId(req.body._id);
-                req.db.collection('slides').update({
-                    _id: slideObjectId
-                },
-                { $set:
-                    {
-                        image: req.body.image,
-                        html: req.body.html,
-                        order: req.body.order
-                    }
-                }, function(err, updatedSlide) {
-                    if (err) {
-                        res.status(200).send({
-                            '500' : 'Unspecified error'
-                        });
-                    } else {
-                        res.status(200).send({
-                            '200' : 'OK'
-                        });
-                    }
-                });
+                if (req.body.image && req.body.html && req.body.order && req.body._id) {
+                    slideObjectId = new ObjectId(req.body._id);
+                    req.db.collection('slides').update({
+                        _id: slideObjectId
+                    },
+                    { $set:
+                        {
+                            image: req.body.image,
+                            html: req.body.html,
+                            order: req.body.order
+                        }
+                    }, function(err, updatedSlide) {
+                        if (err) {
+                            res.status(200).send({
+                                '500' : 'Unspecified error'
+                            });
+                        } else {
+                            res.status(200).send({
+                                '200' : 'OK'
+                            });
+                        }
+                    });
+                } else {
+                    res.status(500).send({
+                        '500' : 'Unspecified error'
+                    });
+                }
             }
         });
     });
@@ -193,8 +212,8 @@ exports.route = function(app) {
      * and decrements the order field of every slide afterwards, to ensure consistent
      * ordering.
      *
-     *  Output:
-     *      slideObjectID: The ObjectID of the slide to be deleted.
+     *  Input:
+     *      id: The ObjectID of the slide to be deleted.
      *  Output:
      *      Success:
      *          status: 200
@@ -210,7 +229,12 @@ exports.route = function(app) {
      *          status: 403
      */
     app.post('/admin/removeSlide', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/removeSlide blocked.');
@@ -285,7 +309,7 @@ exports.route = function(app) {
      * TODO: access control beyond basic officer checking
      *
      *  Input:
-     *      accountName: the username of the account to demote
+     *      id: the ObjectID of the account to demote
      *  Output:
      *      Success:
      *          status: 200
@@ -295,13 +319,19 @@ exports.route = function(app) {
      *              status: 200
      *              data: {'500' : 'Unspecified error' }
      *          Unauthorized access:
-     *              status: 403
+     *              status: 401
+     *              data: {'401' : 'Unauthorized'}
      *          Invalid account name:
      *              status: 200
      *              data: {'500' : 'Unspecified error' }
      */
     app.post('/admin/removeOfficer', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/removeOfficer blocked');
@@ -364,7 +394,12 @@ exports.route = function(app) {
      *              data: { "500" : "Unspecified error" }
      */
     app.post('/admin/addOfficer', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
         if (err || isAllowed === false) {
             logger.log('error', 'Unauthorized access to /admin/addOfficer blocked.');
@@ -414,7 +449,7 @@ exports.route = function(app) {
                         _id : accountObjectId
                     }, {
                         $set: {
-                            title: title,
+                            title: req.body.title,
                             officer: true
                         }
                     }, {
@@ -466,10 +501,15 @@ exports.route = function(app) {
      *          status: 200
      *          data: {'500' : 'Unspecified error' }
      *      Access forbidden:
-     *          status: 402
+     *          status: 401
      */
     app.post('/admin/getMember', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/getMember blocked.');
@@ -477,7 +517,13 @@ exports.route = function(app) {
                     '401' : 'Unauthorized'
                 });
             } else {
-                var accountObjectId = new ObjectId(req.body._id)
+                try {
+                    var accountObjectId = new ObjectId(req.body._id);
+                } catch(err) {
+                    logger.log("error", 'Invalid ObjectID in /admin/getMember');
+                    res.status(200).send({'500' : 'Unspecified error'});
+                    return;
+                }
                 req.db.collection('users').find({
                     _id: accountObjectId
                 }).toArray(function(err, member) {
@@ -485,7 +531,11 @@ exports.route = function(app) {
                         logger.log('error', 'Error retrieving member object in getMember(): ' + err);
                         res.status(200).send({'500' : 'Unspecified error'});
                     } else {
-                        res.status(200).send({'200' : member});
+                        if (member.length > 0) {
+                            res.status(200).send({'200' : member});
+                        } else {
+                            res.status(200).send({'500' : 'Unspecified error'});
+                        }
                     }
                 });
             }
@@ -509,7 +559,12 @@ exports.route = function(app) {
      *          status: 402
      */
     app.get('/admin/getMembers', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/getMembers blocked.');
@@ -534,6 +589,70 @@ exports.route = function(app) {
             }
         });
     });
+
+    /*
+     * This endpoint takes in an object corresponding to a member's information and updates their
+     * corresponding object in the backend database. It is absolutely naive; all
+     * verification that data is correct should be done on the client-side.
+     *
+     * Output:
+     *  Success:
+     *      status: 200
+     *      data: { '200' : 'OK' }
+     *  Error:
+     *      Database error:
+     *          status: 200
+     *          data: { '500' : 'Unspecified error' }
+     *      Access forbidden:
+     *          status: 401
+     *          data: { '401' : 'Unauthorized' }
+     */
+    app.post('/admin/updateMember', function(req, res) {
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
+        acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
+            if (err || isAllowed === false) {
+                logger.log('error', 'Unauthorized access to /admin/updateMember blocked.');
+                res.status(401).send({
+                    '401' : 'Unauthorized'
+                });
+            } else {
+                var memberObjectId = new ObjectId(req.body._id);
+                req.db.collection('users').update({
+                    _id: memberObjectId
+                },
+                { $set:
+                    { // there must be a better way
+                        email: req.body.email,
+                        github: req.body.github,
+                        twitter: req.body.twitter,
+                        facebook: req.body.facebook,
+                        bio: req.body.bio,
+                        major: req.body.major,
+                        studentLevel: req.body.studentLevel,
+                        membership: req.body.membership,
+                        picture: req.body.picture
+                    }
+                }, {
+                    upsert: true
+                }, function(err, updatedMember) {
+                    if (err) {
+                        logger.log('Error updating member information in /admin/updateMember', err);
+                        res.status(200).send({
+                            '500' : 'Unspecified error'
+                        });
+                    } else {
+                        res.status(200).send({'200' : 'OK' });
+                    }
+                });
+            }
+        });
+    });
+
     /*
      * This endpoint exports our members list to CSV. You must be logged in to do this.
      * The CSV is organized such that the columns of the document are denoted First Name,
@@ -549,7 +668,12 @@ exports.route = function(app) {
      *      data: { "500": err } where "err" is the error message.
      */
     app.get('/admin/export/csv', function(req, res) {
-        var hexId = new ObjectId(req.session.passport.user).toHexString();
+        if (req.session.passport !== undefined) {
+            var hexId = new ObjectId(req.session.passport.user).toHexString();
+        } else {
+            res.status(401).send({'401' : 'Unauthorized'});
+            return;
+        }
         acl.isAllowed(hexId, 'admin', '*', function(err, isAllowed) {
             if (err || isAllowed === false) {
                 logger.log('error', 'Unauthorized access to /admin/export/csv blocked.');

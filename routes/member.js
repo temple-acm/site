@@ -314,6 +314,7 @@ exports.route = function(app) {
 			} else {
 				req.logIn(user, function(err) {
 					if (err) {
+                        logger.log('error', 'Login error: ' + err);
 						return res.status(200).json({
 							'401': 'Unspecified login error'
 						});
