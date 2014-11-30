@@ -34,6 +34,30 @@ html, body {
         padding-top: 20px;
     }
 
+    #header-buttons {
+        position: absolute;
+        top: 0px;
+        right: 40px;
+        padding-top: 12px;
+
+        .header-button {
+            padding: 5px 15px;
+            color: #666666;
+            background: white;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+            float: right;
+            margin-left: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: box-shadow 100ms;
+
+            &:active {
+                box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+
     .divider {
         position: absolute;
         left: 40px;

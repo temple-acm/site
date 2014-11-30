@@ -60,6 +60,8 @@
             this.editor = ace.edit('editor');
             this.editor.getSession().setMode('ace/mode/html');
             this.editingSlide = null;
+            this.creator = ace.edit('new-slide-html');
+            this.creator.getSession().setMode('ace/mode/html');
         }
     ]);
 

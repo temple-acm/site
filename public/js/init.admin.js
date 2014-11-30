@@ -5,4 +5,14 @@
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['site']);
     });
+    // Setup toastr
+    toastr.options = {
+      'debug': false,
+      'positionClass': 'toast-bottom-right',
+      'onclick': null,
+      'fadeIn': 300,
+      'fadeOut': 300,
+      'timeOut': 2000,
+      'extendedTimeOut': 1000
+    };
 })(window._$_app);

@@ -2,7 +2,7 @@
     // Create app if it does not already exist
     if (!app) app = window._$_app = angular.module('site', ['directives', 'services', 'controllers']);
     // The main controller
-    module.controller('MainCtrl', ['$scope', function($scope) {
+    module.controller('MainCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
         // Navigation related scope functions
         $scope.titleOfPage          = function(page) {
             switch (page) {
@@ -25,6 +25,15 @@
         };
         $scope.returnToHomePage     = function() {
             window.location.href = '/';
+        };
+
+        // Header buttons and stuff
+        $scope.emitPlusClicked      = function() {
+            console.log('emit plus');
+            $rootScope.$broadcast('header-button-plus-clicked');
+        };
+        $scope.emitRefreshClicked   = function() {
+            $rootScope.$broadcast('header-button-refresh-clicked');
         };
 
         // React to hash url changing
@@ -72,14 +81,15 @@
             }).error(function() {
                 toastr.error("Error loading slides.");
             });
+
             $scope.initializeEditor = function(slide) {
                 slideAdminService.editor.getSession().setValue(slide.html);
                 slideAdminService.editingSlide = slide;
                 $('body').addClass('noscroll');
                 $('#slide-editor-overlay').css('display', 'block');
                 $('#slide-editor-overlay').css('opacity', '1.0');
-                //$('#slide-editor-overlay').css('display', 'block');
             };
+
             $scope.saveSlide = function(slideId) {
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
@@ -128,6 +138,19 @@
                     toastr.error("Error adding new slide.");
                 });
             }
+
+            // Listen for app-wide events
+            $scope.$on('header-button-refresh-clicked', function(event) {
+                if ($scope.currentPage === '/slides') {
+                    $scope.slidesLoaded = false;
+                    slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                        $scope.slidesLoaded = true;
+                        $rootScope.slideData = $scope.slideData = data;
+                    }).error(function() {
+                        toastr.error('Error loading slides.');
+                    });
+                }
+            });
         }
     ]);
     // Adding on this monstrosity, we now move on to dealing with admin stuff
@@ -149,6 +172,57 @@
                 }
                 $scope.closeEditor();
             };
+            $('overlay').click(function(e) {
+                if (e.target == this) {
+                    $scope.closeEditor();
+                }
+            });
+        }
+    ]);
+    // Handles new slides
+    module.controller('SlideCreatorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
+        function($scope, $rootScope, slideAdminService) {
+            var editor = slideAdminService.creator;
+
+            $scope.closeEditor = function() {
+                $('#slide-creator-overlay').css('display', 'none');
+                $('#slide-creator-overlay').css('opacity', '0.0');
+                $('body').removeClass('noscroll');
+            };
+
+            $scope.creationPending = false;
+
+            $scope.finishCreatingSlide = function() {
+                var newHtml = editor.getSession().getValue();
+                $scope.creationPending = true;
+                slideAdminService.addSlide({
+                    image: $scope.imageUrl,
+                    html: newHtml
+                }).success(function(data, status, headers, config) {
+                    $scope.creationPending = false;
+                    $scope.emitRefreshClicked();
+                    $scope.closeEditor();
+                }).error(function() {
+                    $scope.creationPending = false;
+                    toastr.error('Error adding new slide.');
+                });
+            };
+
+            $scope.openEditor = function() {
+                $scope.imageUrl = '';
+                editor.getSession().setValue('');
+                $('body').addClass('noscroll');
+                $('#slide-creator-overlay').css('display', 'block');
+                $('#slide-creator-overlay').css('opacity', '1.0');
+            };
+
+            // Listen for app-wide events
+            $scope.$on('header-button-plus-clicked', function(event) {
+                if ($scope.currentPage === '/slides') {
+                    $scope.openEditor();
+                }
+            });
+
             $('overlay').click(function(e) {
                 if (e.target == this) {
                     $scope.closeEditor();
