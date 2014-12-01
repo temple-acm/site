@@ -60,8 +60,6 @@
             this.editor = ace.edit('editor');
             this.editor.getSession().setMode('ace/mode/html');
             this.editingSlide = null;
-            this.creator = ace.edit('new-slide-html');
-            this.creator.getSession().setMode('ace/mode/html');
         }
     ]);
 
@@ -79,6 +77,12 @@
                     method: 'POST',
                     url: '/admin/removeOfficer',
                     data: officerData
+                });
+            };
+            this.getAllOfficers = function() {
+                return $http({
+                    method: 'GET',
+                    url: '/members/officers'
                 });
             };
         }

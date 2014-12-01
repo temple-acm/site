@@ -30,4 +30,23 @@
             }
         };
     });
+    // Background image loading directive
+    module.directive('ngBgImg', function() {
+        return function(scope, element, attrs) {
+            attrs.$observe('ngBgImg', function(value) {
+                var args = {};
+                if (value && value !== '') {
+                    args['background-image'] = 'url(' + value + ')';
+                    args['background-size'] = 'cover';
+                } else if (attrs['default'] && attrs['default'] !== '') {
+                    args['background-image'] = 'url(' + attrs['default'] + ')';
+                    args['background-size'] = 'cover';
+                } else {
+                    args['background-color'] = '#bcbcbc';
+                }
+
+                element.css(args);
+            });
+        };
+    });
 })(angular.module('directives', []), window._$_app);

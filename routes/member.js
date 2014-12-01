@@ -484,7 +484,15 @@ exports.route = function(app) {
 					firstName: req.user[0].firstName,
 					lastName: req.user[0].lastName,
 					paid: req.user[0].paid || false,
-					picture: req.user[0].picture
+					picture: req.user[0].picture,
+					bio: req.user[0].bio,
+					github: req.user[0].github,
+					twitter: req.user[0].twitter,
+					facebook: req.user[0].facebook,
+					email: req.user[0].email,
+					major: req.user[0].major,
+					studentLevel: req.user[0].studentLevel,
+					membership: req.user[0].membership
 				}
 			});
 		} else {

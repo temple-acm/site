@@ -1,1 +1,74 @@
-<span>hello</span>
+<div id="profile" ng-controller="ProfileCtrl">
+    <div ng-hide="profileLoaded">
+        <div style="position: absolute; display: block; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px;">
+            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #222222; text-shadow: 0px 1px 0px white;"></i>
+        </div>
+    </div>
+    <div id="fields" ng-show="profileLoaded">
+        <div class="group">
+            <div class="label">First Name</div>
+            <input type="text" ng-model="user.firstName">
+        </div>
+        <div class="group">
+            <div class="label">Last Name</div>
+            <input type="text" ng-model="user.lastName">
+        </div>
+        <div class="group">
+            <div class="label">Email Address</div>
+            <input type="text" ng-model="user.email">
+        </div>
+        <div class="group">
+            <div class="label">Github</div>
+            <input type="text" ng-model="user.github">
+        </div>
+        <div class="group">
+            <div class="label">Twitter</div>
+            <input type="text" ng-model="user.twitter">
+        </div>
+        <div class="group">
+            <div class="label">Facebook</div>
+            <input type="text" ng-model="user.facebook">
+        </div>
+        <div class="group wide">
+            <div class="label">Bio</div>
+            <textarea type="text" ng-model="user.bio"></textarea>
+        </div>
+        <div class="group">
+            <div class="label">Major</div>
+            <div class="select-holder">
+                <select ng-model="user.major">
+                    <option>Information Science &amp; Technology</option>
+                    <option>Computer Science</option>
+                    <option>Computer Science &amp; Mathematics</option>
+                    <option>Engineering</option>
+                    <option>Management Information Systems</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="group">
+            <div class="label">Student Level</div>
+            <div class="select-holder">
+                <select ng-model="user.studentLevel">
+                    <option>Freshman</option>
+                    <option>Sophomore</option>
+                    <option>Junior</option>
+                    <option>Senior</option>
+                    <option>Senior+</option>
+                    <option>Graduate</option>
+                </select>
+            </div>
+        </div>
+        <div class="group">
+            <div class="label">Picture Url</div>
+            <input type="text" ng-model="user.picture">
+        </div>
+        <div class="group">
+            <div class="label">ACM Membership Number</div>
+            <input type="text" ng-model="user.membership">
+        </div>
+        <div class="button-wrapper">
+            <div class="button" ng-click="save()">Save Changes</div>
+        </div>
+    </div>
+</div>
