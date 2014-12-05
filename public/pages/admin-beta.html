@@ -12,6 +12,7 @@
         <!-- Custom CSS -->
         <link href="/static/dist/admin{{.css}}" rel="stylesheet">
         <!-- Custom Fonts: Font Awesome (for icons), Roboto (for text), Montserrat (for headings) -->
+        <link href="/static/vendor/toastr/toastr.min.css" rel="stylesheet" type="text/css">
         <link href="/static/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400' rel='stylesheet' type='text/css'>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
@@ -23,6 +24,10 @@
         <sidenav></sidenav>
         <div id="main">
             <div id="header">{{currentPageTitle}}</div>
+            <div id="header-buttons">
+                <div class="header-button" style="display: {{(currentPage !== '/profile' && currentPage !== '/exports' && currentPage !== '/members') ? 'block' : 'none'}}" data-ng-click="emitPlusClicked()"><i class="fa fa-plus"></i></div>
+                <div class="header-button" style="display: {{(currentPage !== '/profile' && currentPage !== '/exports') ? 'block' : 'none'}}" data-ng-click="emitRefreshClicked()"><i class="fa fa-refresh"></i></div>
+            </div>
             <div class="divider top"></div>
             <div id="content" data-ng-switch data-on="currentPage">
                 <div class="content-switch-case" data-ng-switch-when="/profile">

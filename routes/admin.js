@@ -148,7 +148,7 @@ exports.route = function(app) {
      * This endpoint updates a specific slide, referenced by ObjectID. It will
      * overwrite the database values for order, image, and html with the values
      * passed in, whatever they might be.
-     * 
+     *
      * Output:
      *  Success:
      *      status: 200
@@ -577,7 +577,8 @@ exports.route = function(app) {
                     lastName: 1,
                     bio: 1,
                     email: 1,
-                    officer: 1
+                    officer: 1,
+                    studentLevel: 1
                 }).toArray(function(err, members) {
                     if (err) {
                         logger.log('error', 'Error retrieving db data for getMembers(): ' + err);

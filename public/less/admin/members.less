@@ -1,0 +1,107 @@
+@import "../variables";
+@import "./mixins";
+
+#main #content #members {
+    #member-list {
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+
+        .list-header {
+            position: absolute;
+            top: 0px;
+            left: 40px;
+            right: 40px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            height: 30px;
+            border: 1px solid #dddddd;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            padding-right: 14px;
+            overflow: hidden;
+            background: #eeeeee;
+
+            .column {
+                .mixin-member-list-header;
+                width: 20%;
+            }
+        }
+
+        .list-body {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            right: 40px;
+            bottom: 10px;
+            overflow-y: scroll;
+            border-left: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            background: white;
+
+            .list-row {
+                box-sizing: border-box;
+                width: 100%;
+                border-bottom: 1px solid #dddddd;
+                height: 31px;
+
+                .column {
+                    width: 20%;
+                    box-sizing: border-box;
+                    float: left;
+                    height: 30px;
+                    padding: 8px;
+                    font-family: 'Roboto', sans-serif;
+                    font-size: 12px;
+                    color: #444444;
+
+                    &.student-level {
+                        text-align: center;
+                    }
+
+                    &.paid {
+                        text-transform: uppercase;
+                        text-align: center;
+                        font-weight: 700;
+
+                        &.red {
+                            color: white;
+                            background: @dark;
+                        }
+
+                        &.green {
+                            color: white;
+                            background: @greenish;
+                        }
+                    }
+
+                    &.actions {
+                        text-align: center;
+                    }
+
+                    .button {
+                        display: inline-block;
+                        width: 35px;
+                        color: #666;
+                        border-right: 1px solid #999;
+                        cursor: pointer;
+                        transition: color 500ms;
+
+                        &:last-child {
+                            border-right-width: 0px;
+                        }
+
+                        &:hover {
+                            color: #6695af;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,58 @@
+@import "./mixins";
+
+#main #content #profile {
+    #fields {
+        .group {
+            width: 33%;
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 10px;
+
+            &.wide {
+                width: 100%;
+            }
+
+            .label {
+                .mixin-label;
+
+                color: #666666;
+            }
+
+            input[type="text"],
+            textarea {
+                .mixin-input-text;
+
+                width: 100%;
+            }
+
+            .select-holder {
+                width: 100%;
+                margin-top: 14px;
+            }
+
+            select {
+                width: 100%;
+            }
+        }
+
+        .button-wrapper {
+            width: 100%;
+            padding: 20px 10px;
+            box-sizing: border-box;
+
+            .button {
+                .mixin-button;
+
+                background: #6695af;
+
+                &:hover {
+                    background: lighten(#6695af, 10%);
+                }
+
+                &:active {
+                    background: darken(#6695af, 10%);
+                }
+            }
+        }
+    }
+}
