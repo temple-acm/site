@@ -7,11 +7,10 @@
         <meta name="description" content="Temple University chapter of the Association for Computing Machinery (ACM).">
         <meta name="author" content="Sandile Keswa, Steven Heyen, Sri Ramanujam">
         <meta name="keywords" content="temple, acm, computer, science, college, university">
-        <meta name="google-site-verification" content="3mIsIqcgZPWJfrfi4xcz80O9nvcrmnKwukKmGYe-37Y" />
 
         <title>Temple ACM Admin Panel</title>
         <!-- Custom CSS -->
-        <link href="/static/dist/main{{.css}}" rel="stylesheet">
+        <link href="/static/dist/admin{{.css}}" rel="stylesheet">
         <!-- Custom Fonts: Font Awesome (for icons), Roboto (for text), Montserrat (for headings) -->
         <link href="/static/vendor/toastr/toastr.min.css" rel="stylesheet" type="text/css">
         <link href="/static/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -20,300 +19,43 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/mode-html.js"></script>
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
     </head>
-    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top"> <!-- data-ng-controller="AdminCtrl">  TODO: AdminCtrl -->
-        <viewport>
-            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" data-ng-controller="NavCtrl">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" ng-click="toggleMobileNavMenu()">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                    <a class="navbar-brand page-scroll" data-ng-click="scrollTo()">Temple ACM Administration Panel</a>
+    <body data-ng-controller="MainCtrl">
+        <sidenav></sidenav>
+        <div id="main">
+            <div id="header">{{currentPageTitle}}</div>
+            <div id="header-buttons">
+                <div class="header-button" style="display: {{(currentPage !== '/profile' && currentPage !== '/exports' && currentPage !== '/members') ? 'block' : 'none'}}" data-ng-click="emitPlusClicked()"><i class="fa fa-plus"></i></div>
+                <div class="header-button" style="display: {{(currentPage !== '/profile' && currentPage !== '/exports') ? 'block' : 'none'}}" data-ng-click="emitRefreshClicked()"><i class="fa fa-refresh"></i></div>
+            </div>
+            <div class="divider top"></div>
+            <div id="content" data-ng-switch data-on="currentPage">
+                <div class="content-switch-case" data-ng-switch-when="/profile">
+                    <ng-include data-src="'/static/dist/admin-profile.partial.html'"></ng-include>
                 </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-                    <ul class="nav navbar-nav">
-                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                        <li class="hidden">
-                            <a href="#page-top"></a>
-                        </li>
-                        <li>
-                            <a class="page-scroll link" data-section="slides">Slides</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll link" data-section="officers">Officers</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll link" data-section="exports">Exports</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll link" data-section="members">Members</a>
-                        </li>
-                        <!-- TODO: This section isn't necessary on this page, figure out how to remove without breaking layout. -->
-                        <li ng-if="!isLoggedIn">
-                            <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
-                        </li>
-                        <li ng-if="!isLoggedIn">
-                            <a id="sign-in" class="btn btn-primary" data-ng-href="#/login">Sign In</a>
-                        </li>
-                    </ul>
-                    <div style="display: none;" id="session-panel">
-                        <div class="picture" ng-bg-img="{{loggedInUser.picture}}" default="/static/img/default-avatar.jpg"></div>
-                        <div class="who" ng-class="{'not-paid': (!loggedInUser.paid)}">
-                            <span class="user">{{loggedInUser.userName}}</span>
-                            <span class="is-logged-in" ng-show="loggedInUser.paid">is logged in</span>
-                            <span class="not-paid" ng-hide="loggedInUser.paid">not paid</span>
-                        </div>
-                        <div class="sign-out">
-                            <a class="btn btn-default flat-right" ng-click="pay()" ng-hide="loggedInUser.paid">Pay</a>
-                            <a class="btn btn-danger" ng-click="logout()" ng-class="{'flat-left': (!loggedInUser.paid)}">Sign Out</a>
-                        </div>
-                    </div>
+                <div class="content-switch-case" data-ng-switch-when="/slides">
+                    <ng-include data-src="'/static/dist/admin-slides.partial.html'"></ng-include>
                 </div>
-                <!-- /.navbar-collapse -->
-            </nav>
-
-            <header>
-            <!-- So this is apparently necessary for the layout to hold and
-            the nav bar not to break, but unfortunately on an admin page it's useless.
-            TODO: Talk to Sandile about how to fix this properly. -->
-            </header>
-            <section id="slidesAdmin" data-ng-controller="SlideAdminCtrl">
-                <div class="row">
-                    <h2>Banner Slides</h2>
-                    <div style="width: 100%; display: block;" ng-hide="slidesLoaded">
-                        <div style="display: block; width: 100%; text-align: center;">
-                            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: block;" ng-show="slidesLoaded">
-                        <div class="slide-ad col-sm-3 col-xs-12">
-                            <div class="slide-ad-card">
-                                <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
-                                    <div style="display: table-cell; vertical-align: middle;">
-                                        <h1>Add A Slide</h1>
-                                        <a class="btn btn-default btn-lg" ng-click="addSlide()">
-                                            <span class="glyphicon glyphicon-plus" style="font-size: 250px"></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide-cardholder col-sm-3 col-xs-12" ng-repeat="slide in slideData">
-                            <div class="slide-card">
-                                <h5>Slide {{slide.order}}</h5>
-                                <div class="slide-image-container">
-                                    <img class="slide-image" ng-src={{slide.image}} />
-                                </div>
-                                <span>Image url:</span><input class="form-control" placeholder="{{slide.image}}" ng-model="slide.image"></input>
-                                <span>HTML:</span><textarea readonly class="form-control" ng-click="initializeEditor(slide)">{{slide.html}}</textarea>
-                                <div class="slide-action-buttons">
-                                    <a class="btn btn-danger" ng-click="removeSlide(slide._id)">Remove Slide</a>
-                                    <a class="btn btn-update" ng-click="saveSlide(slide._id)">Save Changes</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="content-switch-case" data-ng-switch-when="/officers">
+                    <ng-include data-src="'/static/dist/admin-officers.partial.html'"></ng-include>
                 </div>
-            </section>
-
-            <section id="officersAdmin" class="content-section" data-ng-controller="OfficerAdminCtrl">
-                <div class="row">
-                    <h2>Officers</h2>
-                    <div style="width: 100%; display: block;" ng-hide="officersLoaded">
-                        <div style="display: block; width: 100%; text-align: center;">
-                            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: block;" ng-show="officersLoaded">
-                        <div class="officer-cardholder col-md-3 col-sm-6 col-xs-12" ng-repeat="officer in officerData">
-                            <div class="officer-card">
-                                <div class="picture" ng-bg-img="{{officer.picture}}"></div>
-                                <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
-                                <input class="form-control" placeholder="Title: {{officer.title}}"></input>
-                                <textarea class="form-control">{{officer.bio}}</textarea>
-                                <div class="officer-admin-buttons">
-                                    <a class="btn btn-danger" ng-click="removeOfficer(officer._id)">Remove Officer</a>
-                                    <a class="btn btn-update" ng-click="updateOfficer()">Save Changes</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width: 100%; display: block;" ng-show="officersLoaded">
-                            <div class="officer-ad col-md-3 col-sm-6 col-xs-12">
-                                <div class="officer-ad-card">
-                                    <div style="display: table; height: 100%; width: 50%; margin-left: auto; margin-right: auto;">
-                                        <div style="display: table-cell; vertical-align: middle;">
-                                            <h1>Promote an Officer</h1>
-                                            <a class="btn btn-default btn-lg" ng-click="launchOfficerAdder()">
-                                                <i class="fa fa-child"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="content-switch-case" data-ng-switch-when="/exports">
+                    <ng-include data-src="'/static/dist/admin-exports.partial.html'"></ng-include>
                 </div>
-            </section>
-
-            <section id="exportsAdmin">
-                <h2>Data Exports</h2>
-                <div class="export-buttons">
-                    <a class="btn btn-default" href="/admin/export/csv">
-                        Export Member List as CSV
-                    </a>
+                <div class="content-switch-case" data-ng-switch-when="/members">
+                    <ng-include data-src="'/static/dist/admin-members.partial.html'"></ng-include>
                 </div>
-            </section>
-
-            <section id="membersAdmin" ng-controller="MemberAdminCtrl">
-                <h2>Member Administration</h2>
-                <div style="width: 100%; display: block;" ng-hide="membersLoaded">
-                    <div style="display: block; width: 100%; text-align: center;">
-                        <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #ffffff;"></i>
-                    </div>
+                <div class="content-switch-case" data-ng-switch-default>
+                    <ng-include data-src="'/static/dist/admin-404.partial.html'"></ng-include>
                 </div>
-                <div style="display: block;" ng-show="membersLoaded">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Officer</th>
-                                    <th>Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="member in loadedMembers">
-                                    <td>{{ member.firstName }} {{ member.lastName }}</td>
-                                    <td>{{ member.email }}</td>
-                                    <td>
-                                        <span ng-if="{{ member.officer }}">
-                                            ✓
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button class="btn" ng-click="launchMemberEditor(member)">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <footer>
-                <p class="copyright">Copyright &copy; Temple ACM 2014</p>
-                <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
-            </footer>
-
-            <overlay ng-controller="SlideEditorCtrl" id="slide-editor-overlay">
-                <div id="slide-editor">
-                    <div id="editor" class="empty">
-                    </div>
-
-                    <button class="btn" style="display: block;" ng-click="saveEditorChanges()">
-                        <i class="fa fa-floppy-o"></i>
-                    </button>
-                </div>
-            </overlay>
-
-            <overlay id="officer-adder-overlay" ng-controller="OfficerAdderCtrl">
-                <div id="officer-adder">
-                    <div id="officer-adder-search-bar">
-                        Search: <input ng-model="searchText">
-                    </div>
-                    <br>
-                    <div id="member-scroll-list">
-                        <div id="table-head">
-                            <span class="name-header">Name</span>
-                            <span class="email-header">Email</span>
-                            <span class="promote-header">Promote</span>
-                        </div>
-                        <div id="table-body">
-                            <div class="table-member-container" ng-repeat="member in membersData | filter: memberFilterFn | filter:searchText">
-                                <div class="transformable" ng-class="{'small':isSmall, 'big':!isSmall}" ng-click="isSmall = !isSmall">
-                                    <div class="table-member-name">
-                                        <span>{{member.firstName}} {{member.lastName}}</span>
-                                    </div>
-                                    <div class="table-member-email">
-                                        <span>{{member.email}}</span>
-                                    </div>
-                                    <div class="table-member-promote-button">
-                                        <button class="btn" ng-click="$event.stopPropagation(); addOfficer(member)">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </button>
-                                    </div>
-                                    <div class="table-member-bio">
-                                        <textarea class="form-control" ng-click="$event.stopPropagation()" ng-model="member.bio" rows="4" cols="30">{{member.bio}}</textarea>
-                                    </div>
-                                    <div class="table-member-title">
-                                        <input class="form-control" ng-click="$event.stopPropagation()" ng-model="member.title" type="text" placeholder="Enter title here..."></input>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </overlay>
-
-            <overlay id="member-change-overlay" ng-controller="MemberEditorCtrl">
-                <div id="member-editor">
-                    <h4>Profile of {{member.firstName}} {{member.lastName}}</h4>
-                    <br>
-                    Officer Status: {{member.officer}}
-                    Payment status: {{member.paid}}
-                    <br>
-                    <div id="member-information">
-                        Email address: <input class="form-control" ng-model="member.email" type="text" placeholder="{{member.email}}"></input>
-                        Github: <input class="form-control" ng-model="member.github" type="text" placeholder="{{member.github}}"></input>
-                        Twitter: <input class="form-control" ng-model="member.twitter" type="text" placeholder="{{member.twitter}}"></input>
-                        Facebook <input class="form-control" ng-model="member.facebook" type="text" placeholder="{{member.facebook}}"></input>
-                        <br>
-                        Bio: <textarea class="form-control" ng-model="member.bio">{{member.bio}}</textarea>
-                        Major:
-                        Student level:
-                        <br>
-                        ACM Student ID: <input class="form-control" ng-model="member.membership" type="text" placeholder="{{member.membership}}"></input>
-                    </div>
-                    <div id="member-save-buttons">
-                        <button class="btn btn-lg" style="display: block;">
-                            Save Changes
-                        </button>
-                    </div>
-                </div>
-            </overlay>
-
-            <!-- Javascript stuffs -->
-            <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
-            <script src="/static/vendor/jquery.easing/js/jquery.easing.min.js"></script>
-            <!-- Bootstrap 3.2.0 -->
-            <!-- <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script> -->
-            <!-- Angular 1.2.0 -->
-            <script src="/static/vendor/angular/angular.min.js"></script>
-            <!-- Toastr -->
-            <script src="/static/vendor/toastr/toastr.min.js"></script>
-            <!-- Google Maps API -->
-            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-            <!-- Google Analytics -->
-            <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-                ga('create', 'UA-54600601-1', 'auto');
-                ga('send', 'pageview');
-            </script>
-            <!-- Application JS -->
-            <script src="/static/dist/main{{.js}}"></script>
-        </viewport>
+            </div>
+            <div class="divider bottom"></div>
+            <div id="footer">Copyright Temple ACM &copy; 2014 - 2015</div>
+        </div>
+        <!-- Script Declarations -->
+        <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/static/vendor/angular/angular.min.js"></script>
+        <script src="/static/vendor/toastr/toastr.min.js"></script>
+        <script src="/static/dist/admin{{.js}}"></script>
     </body>
+</html>
