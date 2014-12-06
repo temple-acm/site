@@ -671,7 +671,6 @@ describe('Admin Functionality', function() {
                     membership: "2354234623",
                     officer: true,
                     paid: false,
-                    password: "$2a$10$RX/1iRGkg9rwfYgP656oAelAW7XD1Ze2xAmF7hGNiEVSaZ4D5Yn06",
                     picture: "https://lh4.googleusercontent.com/-NRh5VP7HBSU/UbWAQJ9eYTI/AAAAAAAAAU8/_L0ej4SZW34/s630-fcrop64=1,000023bbfc5e8bbb/snsd%2Btaeyeon%2Bhigh%2Bcut%2Bmagazine%2B%25282%2529.jpg",
                     studentLevel: "Junior",
                     title: "Resident Kpop Idol",
