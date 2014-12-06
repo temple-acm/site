@@ -482,6 +482,7 @@ exports.route = function(app) {
 			res.status(200).send({
 				'200': {
 					userName: req.user[0].userName,
+                    _id: req.user[0]._id,
 					firstName: req.user[0].firstName,
 					lastName: req.user[0].lastName,
 					paid: req.user[0].paid || false,

@@ -102,8 +102,27 @@
                     url: '/admin/getMember',
                     data: member
                 });
+            };
+            this.updateMember = function(member) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/updateMember',
+                    data: member
+                });
             }
             this.editingMember = null;
+        }
+    ]);
+
+    module.service('ProfileSvc', ['$http',
+        function($http) {
+            this.updateMember = function(member) {
+                return $http({
+                    method: 'POST',
+                    url: '/admin/updateMember',
+                    data: member
+                });
+            }
         }
     ]);
     // Service that handles events

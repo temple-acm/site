@@ -144,7 +144,7 @@
             });
         }
     ]);
-    // Adding on this monstrosity, we now move on to dealing with admin stuff
+
     module.controller('SlideEditorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
         function($scope, $rootScope, slideAdminService) {
             $scope.closeEditor = function() {
@@ -385,6 +385,47 @@
                 });
             };
 
+            // Member editing
+            $scope.editMemberData = function(memberId) {
+                $scope.memberLoaded = false;
+                var idObject = {'_id' : memberId};
+                membersAdminSvc.getMember(idObject).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        $scope.user = data['200'][0];
+                        $scope.memberLoaded = true;
+                        $('#member-edit-overlay').css('display', 'block');
+                        $('#member-edit-overlay').css('opacity', '1.0');
+                    } else {
+                        //server error
+                        toastr.error('Error loading member.');
+                    }
+                }).error(function() {
+                    //god knows what went wrong
+                    console.log("god knows what just went wrong");
+                    toastr.error('Error loading member.');
+                });
+            };
+
+            $scope.closeMemberOverlay = function() {
+                $('#member-edit-overlay').css('opacity', '0.0');
+                $('#member-edit-overlay').css('display', 'none');
+            };
+
+
+            $scope.save = function() {
+                membersAdminSvc.updateMember($scope.user).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success('Member profile updated.');
+                        $scope.closeMemberOverlay();
+                        refresh();
+                    } else {
+                        toastr.error('Error saving member.');
+                    }
+                }).error(function() {
+                    toastr.error('Error saving member.');
+                });
+            };
+
             // Listen for app-wide events
             $scope.$on('header-button-refresh-clicked', function(event) {
                 if ($scope.currentPage === '/members') {
@@ -393,11 +434,17 @@
             });
             // Do initial refresh
             refresh();
+
+            $('#main').on('click', '#member-edit-overlay', function(e) {
+                if (e.target == this) {
+                    $scope.closeMemberOverlay();
+                }
+            });
         }
     ]);
-    //
-    module.controller('ProfileCtrl', ['$scope', '$rootScope', 'LoginSvc',
-        function($scope, $rootScope, loginSvc) {
+
+    module.controller('ProfileCtrl', ['$scope', '$rootScope', 'LoginSvc', 'ProfileSvc',
+        function($scope, $rootScope, loginSvc, profileSvc) {
             $scope.profileLoaded = false;
             $scope.user = {};
 
@@ -413,7 +460,15 @@
             });
 
             $scope.save = function() {
-                toastr.success('Profile changes saved.');
+                profileSvc.updateMember($scope.user).success(function(data, status, headers, config) {
+                    if (data['200']) {
+                        toastr.success('Profile changes saved.');
+                    } else {
+                        toastr.error('Error saving profile. Make sure you are connected to the internet.');
+                    }
+                }).error(function() {
+                    toastr.error('Error saving profile. Make sure you are connected to the internet.');
+                });
             };
         }
     ]);

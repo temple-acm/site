@@ -19,12 +19,13 @@
                 <div class="column paid" data-ng-class="{green: member.paid, red: !(member.paid)}">{{member.paid ? 'yes' : 'no'}}</div>
                 <div class="column student-level">{{member.studentLevel}}</div>
                 <div class="column actions">
-                    <div class="button" data-ng-click="markMemberPaid(member)"><i class="fa fa-money"></i></div>
-                    <div class="button" data-ng-click="markMemberGraduated(member)"><i class="fa fa-graduation-cap"></i></div>
-                    <div class="button" data-ng-click="editMemberData(member)"><i class="fa fa-pencil"></i></div>
-                    <div class="button" data-ng-click="removeMember(member)"><i class="fa fa-times"></i></div>
+                    <div class="button" data-ng-click="markMemberPaid(member._id)"><i class="fa fa-money"></i></div>
+                    <div class="button" data-ng-click="markMemberGraduated(member._id)"><i class="fa fa-graduation-cap"></i></div>
+                    <div class="button" data-ng-click="editMemberData(member._id)"><i class="fa fa-pencil"></i></div>
+                    <div class="button" data-ng-click="removeMember(member._id)"><i class="fa fa-times"></i></div>
                 </div>
             </div>
         </div>
     </div>
+    <ng-include data-src="'/static/dist/admin-member-edit.partial.html'"></ng-include>
 </div>

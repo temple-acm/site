@@ -526,6 +526,21 @@ exports.route = function(app) {
                 }
                 req.db.collection('users').find({
                     _id: accountObjectId
+                }, {
+                    userName: 1,
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    paid: 1,
+                    picture: 1,
+                    bio: 1,
+                    github: 1,
+                    twitter: 1,
+                    facebook: 1,
+                    email: 1,
+                    major: 1,
+                    studentLevel: 1,
+                    membership: 1
                 }).toArray(function(err, member) {
                     if (err) {
                         logger.log('error', 'Error retrieving member object in getMember(): ' + err);
@@ -628,19 +643,21 @@ exports.route = function(app) {
                 },
                 { $set:
                     { // there must be a better way
-                        email: req.body.email,
+                        userName: req.body.userName,
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        paid: req.body.paid,
+                        picture: req.body.picture,
+                        bio: req.body.bio,
                         github: req.body.github,
                         twitter: req.body.twitter,
                         facebook: req.body.facebook,
-                        bio: req.body.bio,
+                        email: req.body.email,
                         major: req.body.major,
                         studentLevel: req.body.studentLevel,
-                        membership: req.body.membership,
-                        picture: req.body.picture
+                        membership: req.body.membership
                     }
-                }, {
-                    upsert: true
-                }, function(err, updatedMember) {
+                }, {}, function(err, updatedMember) {
                     if (err) {
                         logger.log('Error updating member information in /admin/updateMember', err);
                         res.status(200).send({
