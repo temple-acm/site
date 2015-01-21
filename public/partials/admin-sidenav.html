@@ -1,0 +1,48 @@
+<div id="sidenav">
+    <div id="logo" data-ng-click="returnToHomePage()"></div>
+    <div id="page-title">Admin Panel</div>
+    <div id="nav">
+        <div id="nav-links">
+            <div class="nav-link" data-ng-click="navToPage('/profile')" data-ng-class="{active: (currentPage === '/profile')}">
+                <div class="label">
+                    <i class="fa fa-user"></i>
+                    <div class="subpage-title">Profile</div>
+                </div>
+            </div>
+            <div class="nav-link" data-ng-click="navToPage('/slides')" data-ng-class="{active: (currentPage === '/slides')}">
+                <div class="label">
+                    <i class="fa fa-picture-o"></i>
+                    <div class="subpage-title">Slides</div>
+                </div>
+            </div>
+            <div class="nav-link" data-ng-click="navToPage('/officers')" data-ng-class="{active: (currentPage === '/officers')}">
+                <div class="label">
+                    <i class="fa fa-university"></i>
+                    <div class="subpage-title">Officers</div>
+                </div>
+            </div>
+            <div class="nav-link" data-ng-click="navToPage('/exports')" data-ng-class="{active: (currentPage === '/exports')}">
+                <div class="label">
+                    <i class="fa fa-tasks"></i>
+                    <div class="subpage-title">Exports</div>
+                </div>
+            </div>
+            <div class="nav-link" data-ng-click="navToPage('/members')" data-ng-class="{active: (currentPage === '/members')}">
+                <div class="label">
+                    <i class="fa fa-users"></i>
+                    <div class="subpage-title">Members</div>
+                </div>
+            </div>
+        </div>
+        <div id="session-panel" data-ng-class="{loading: !sessionInfoLoaded}">
+            <div class="loader">
+                <i class="fa fa-cog fa-spin"></i>
+            </div>
+            <div class="content">
+                <div id="profile-picture" style="background-image: {{session.picture ? ('url(' + session.picture + ')') : 'none'}};"></div>
+                <div id="user-full-name">{{session.firstName}} {{session.lastName}}</div>
+                <div id="logout-button" data-ng-click="logOut()" title="Sign out of your account"><i class="fa fa-sign-out"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
