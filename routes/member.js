@@ -5,6 +5,7 @@ var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 var emailUtil = require('../util/email'),
 	logger = require('../util/log');
+    acl = require('acl');
 
 //-------------------------- PASSPORT CONFIGURATION --------------------------//
 
@@ -262,7 +263,14 @@ exports.route = function(app) {
 									firstName: createdUser.firstName,
 									lastName: createdUser.lastName
 								};
-
+                                // Ah, more nested callbacks.
+                                acl.allow(createdUser.userName, 'members', function(err) {
+                                    if (err) {
+                                        res.status(200).json({
+                                            '500' : 'Error saving new user'
+                                        });
+                                    }
+                                });
 								res.status(200).json({
 									'200': strippedUser
 								});
@@ -306,6 +314,7 @@ exports.route = function(app) {
 			} else {
 				req.logIn(user, function(err) {
 					if (err) {
+                        logger.log('error', 'Login error: ' + err);
 						return res.status(200).json({
 							'401': 'Unspecified login error'
 						});
@@ -443,7 +452,7 @@ exports.route = function(app) {
 					res.status(200).send({
 						'500': 'There was an internal error while updating the user password'
 					});
-					logger.log('error', 'could not mark user paid', err);
+					logger.log('error', 'could not reset password', err);
 				} else {
 					res.status(200).send({
 						'200': 'password was successfully reset'
@@ -473,10 +482,19 @@ exports.route = function(app) {
 			res.status(200).send({
 				'200': {
 					userName: req.user[0].userName,
+                    _id: req.user[0]._id,
 					firstName: req.user[0].firstName,
 					lastName: req.user[0].lastName,
 					paid: req.user[0].paid || false,
-					picture: req.user[0].picture
+					picture: req.user[0].picture,
+					bio: req.user[0].bio,
+					github: req.user[0].github,
+					twitter: req.user[0].twitter,
+					facebook: req.user[0].facebook,
+					email: req.user[0].email,
+					major: req.user[0].major,
+					studentLevel: req.user[0].studentLevel,
+					membership: req.user[0].membership
 				}
 			});
 		} else {
@@ -523,47 +541,4 @@ exports.route = function(app) {
 		});
 	});
 
-	/*
-	 * This endpoint exports our members list to CSV. You must be logged in to do this.
-	 * The CSV is organized such that the columns of the document are denoted First Name,
-	 * Last Name, Email, Member Number.
-	 *
-	 * Output:
-	 *  Success:
-	 *      status: 200
-	 *      data: the CSV of members
-	 *      user objects.
-	 *  Error:
-	 *      status: 200
-	 *      data: { "500": err } where "err" is the error message.
-	 */
-	app.get('/members/export/csv', function(req, res) {
-		if (req.user && req.user[0].officer) {
-			req.db.collection('users').find({}, {
-				firstName: 1,
-				lastName: 1,
-				email: 1,
-				membership: 1
-			}).toArray(function(err, members) {
-				if (err) {
-					logger.log('error', err);
-					res.status(500).send('Error retrieving members for CSV');
-				} else {
-					// Build the CSV
-					var csv = 'First Name,Last Name,Email,Member Number\n';
-					members.forEach(function(member, i) {
-						csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
-						if (i === members.length - 1) {
-							// We're done
-							res.status(200).type('text/csv').set({
-								'Content-Disposition': 'attachment; filename="members.csv"',
-							}).send(csv);
-						}
-					});
-				}
-			});
-		} else {
-			res.status(403).send();
-		}
-	});
 };

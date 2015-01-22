@@ -22,18 +22,28 @@ var crypto = require('crypto');
 // Task responsible for less
 gulp.task('less', function() {
     // Build it
+    gulp.src(['public/less/admin.less'])
+        .pipe(less())
+        .pipe(gulp.dest('public/dist'));
+    gulp.src(['public/less/404.less'])
+        .pipe(less())
+        .pipe(gulp.dest('public/dist'));
     gulp.src(['public/less/main.less'])
         .pipe(less())
         .pipe(gulp.dest('public/dist'));
     gulp.src(['public/less/recruiting.less'])
         .pipe(less())
         .pipe(gulp.dest('public/dist'));
-    gulp.src(['public/less/404.less'])
-        .pipe(less())
-        .pipe(gulp.dest('public/dist'));
 });
 gulp.task('less-prod', function() {
     // Build it
+    gulp.src(['public/less/admin.less'])
+        .pipe(less())
+        .pipe(rename({
+            extname: '.min.css'
+        }))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('public/dist'));
     gulp.src(['public/less/main.less'])
         .pipe(less())
         .pipe(rename({
@@ -114,15 +124,24 @@ gulp.task('server', function() {
 // Task responsible for assembling js
 gulp.task('js', function() {
     // Build it
-    gulp.src('public/js/*.js')
+    gulp.src('public/js/*.main.js')
         .pipe(concat('main.js'))
+        .pipe(gulp.dest('public/dist'));
+    gulp.src('public/js/*.admin.js')
+        .pipe(concat('admin.js'))
         .pipe(gulp.dest('public/dist'));
 });
 gulp.task('js-prod', function() {
     // Build it
-    gulp.src('public/js/*.js')
+    gulp.src('public/js/*.main.js')
         .pipe(sourcemaps.init())
         .pipe(concat('main.min.js'))
+        .pipe(uglify())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('public/dist'));
+    gulp.src('public/js/*.admin.js')
+        .pipe(sourcemaps.init())
+        .pipe(concat('admin.min.js'))
         .pipe(uglify())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/dist'));
@@ -178,7 +197,7 @@ gulp.task('deploy', ['less-prod', 'js-prod', 'html-prod'], function() {});
 gulp.task('watch', ['server'], function() {
     livereload.listen();
     gulp.watch('public/js/*.js', ['js']).on('change', livereload.changed);
-    gulp.watch('public/less/*.less', ['less']).on('change', livereload.changed);
+    gulp.watch('public/less/**/*.less', ['less']).on('change', livereload.changed);
     gulp.watch('public/pages/*.html', ['html']).on('change', livereload.changed);;
     gulp.watch('public/partials/*.html', ['html']).on('change', livereload.changed);;
 });

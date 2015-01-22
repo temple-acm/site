@@ -1,0 +1,41 @@
+<section id="slidesAdmin" data-ng-controller="SlideAdminCtrl">
+    <div ng-hide="slidesLoaded">
+        <div style="position: absolute; display: block; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px;">
+            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #222222; text-shadow: 0px 1px 0px white;"></i>
+        </div>
+    </div>
+    <div style="width: 100%; display: block;" ng-show="slidesLoaded">
+        <div class="slide-cardholder" ng-repeat="slide in slideData">
+            <div class="slide-card">
+                <h5>Slide {{slide.order}}</h5>
+                <div class="slide-image-container">
+                    <img class="slide-image" ng-src={{slide.image}} />
+                </div>
+                <div class="label">Image url:</div>
+                <input class="form-control" placeholder="{{slide.image}}" ng-model="slide.image"></input>
+                <div class="label">HTML:</div>
+                <textarea readonly class="form-control" ng-click="initializeEditor(slide)">{{slide.html}}</textarea>
+                <div class="button red" ng-click="removeSlide(slide._id)">Remove Slide</div>
+                <div class="button blue" ng-click="saveSlide(slide._id)">Save Changes</div>
+            </div>
+        </div>
+    </div>
+</section>
+<overlay ng-controller="SlideEditorCtrl" id="slide-editor-overlay">
+    <div id="slide-editor">
+        <div id="editor" class="empty">
+        </div>
+
+        <div class="btn" ng-click="saveEditorChanges()">Save Changes</div>
+    </div>
+</overlay>
+<overlay ng-controller="SlideCreatorCtrl" id="slide-creator-overlay">
+    <div id="slide-creator">
+        <div class="label">Image url:</div>
+        <input class="form-control" ng-model="imageUrl"></input>
+        <div class="label">HTML:</div>
+        <div id="new-slide-html" class="empty"></div>
+
+        <div class="btn" ng-click="finishCreatingSlide()">Create New Slide</div>
+    </div>
+</overlay>

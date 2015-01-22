@@ -1,0 +1,287 @@
+@import "../variables";
+@import "./mixins";
+
+@officersColor: #6695af;
+
+#main #content #officersAdmin {
+    .officer-ad {
+        height: 570px;
+        padding: 10px;
+
+        .officer-ad-card {
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, 0.3);
+            height: 100%;
+
+            h1 {
+                font-size: 50px;
+                color: rgba(0, 0, 0, 0.45);
+                text-align: center;
+            }
+
+            .btn {
+                color: @officersColor;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                background-color: rgba(0, 0, 0, 0.45);
+                border-color: rgba(0, 0, 0, 0.1);
+
+                &:hover {
+                    color: #ffffff;
+                    background-color: rgba(0, 0, 0, 0.65);
+                }
+            }
+        }
+    }
+
+    h2 {
+        text-align: center;
+        color: lighten(@officersColor, 50%);
+    }
+
+    .officer-cardholder {
+        box-sizing: border-box;
+        width: 50%;
+        padding: 10px;
+        display: block;
+        float: left;
+
+        .officer-card {
+            display: block;
+            background-color: #fff;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            padding: 20px;
+            color: @officersColor;
+
+            .picture {
+                width: 120px;
+                height: 120px;
+                border-radius: 60px;
+                background-color: #ccc;
+                background-position: center;
+                margin: 0 auto;
+            }
+
+            h3 {
+                margin: 0px;
+                font-family: 'Montserrat', sans-serif;
+                text-transform: uppercase;
+                font-weight: 300;
+                text-align: center;
+                font-size: 14px;
+                margin-top: 20px;
+                letter-spacing: 1px;
+            }
+
+            .officer-image {
+                max-width: 100%;
+                height: 150px;
+                display: block;
+                border-radius: 4px;
+                margin: 10px auto;
+            }
+
+            .label {
+                .mixin-label;
+            }
+
+            .form-control {
+                .mixin-input-text;
+            }
+
+            textarea {
+                display: block;
+                margin-bottom: 13px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 110px;
+                color: black;
+                cursor: pointer;
+                outline: 0 none;
+            }
+
+            .button {
+                .mixin-button;
+                margin-top: 10px;
+
+                &.red {
+                    background: @dark;
+
+                    &:hover {
+                        background: lighten(@dark, 10%);
+                    }
+
+                    &:active {
+                        background: darken(@dark, 10%);
+                    }
+                }
+
+                &.blue {
+                    background: @officersColor;
+
+                    &:hover {
+                        background: lighten(@officersColor, 10%);
+                    }
+
+                    &:active {
+                        background: darken(@officersColor, 10%);
+                    }
+                }
+            }
+        }
+    }
+}
+
+#officer-editor {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 400px;
+    margin-top: -200px;
+    margin-left: -300px;
+
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    overflow: hidden;
+
+    .btn {
+        .mixin-button;
+        background: @officersColor;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        border-radius: 0px;
+
+        &:hover {
+            background: lighten(@officersColor, 10%);
+        }
+
+        &:active {
+            background: darken(@officersColor, 10%);
+        }
+    }
+
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 35px;
+        left: 0;
+    }
+}
+
+#officer-adder {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    margin-top: -220px;
+    margin-left: -250px;
+
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+
+    #office-adder-filter {
+        .mixin-input-text;
+    }
+
+    #member-list {
+        .list-header {
+            box-sizing: border-box;
+            margin-top: 10px;
+            height: 30px;
+            border: 1px solid #dddddd;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            padding-right: 14px;
+            overflow: hidden;
+            background: #eeeeee;
+
+            .name {
+                .mixin-member-list-header;
+
+                width: 80%;
+            }
+            .promote {
+                .mixin-member-list-header;
+
+                width: 20%;
+            }
+        }
+
+        .list-body {
+            overflow-y: scroll;
+            height: 300px;
+            border-left: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+
+            .list-row {
+                box-sizing: border-box;
+                width: 100%;
+                border-bottom: 1px solid #dddddd;
+                position: relative;
+                height: 31px;
+
+                .name {
+                    .mixin-member-list-body;
+
+                    left: 0px;
+                    right: 20%;
+                }
+
+                .promote {
+                    .mixin-member-list-body;
+
+                    border-left: 1px solid #dddddd;
+                    padding: 5px;
+                    left: 80%;
+                    right: 0px;
+
+                    &.is-officer {
+                        .button {
+                            background: @greenish;
+
+                            &:hover {
+                                background: lighten(@greenish, 10%);
+                            }
+
+                            &:active {
+                                background: darken(@greenish, 10%);
+                            }
+                        }
+                    }
+
+                    .button {
+                        .mixin-button;
+
+                        box-sizing: border-box;
+                        height: 100%;
+                        padding: 0px;
+                        padding-top: 2px;
+                        background: @officersColor;
+
+                        &:hover {
+                            background: lighten(@officersColor, 10%);
+                        }
+
+                        &:active {
+                            background: darken(@officersColor, 10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

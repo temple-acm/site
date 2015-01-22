@@ -1,0 +1,82 @@
+@import "./mixins";
+
+#member-edit {
+    background: white;
+    top: 50%;
+    left: 50%;
+    box-sizing: border-box;
+    width: 600px;
+    padding: 20px;
+    margin-left: -300px;
+    margin-top: -313px;
+    position: fixed;
+
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+    border-radius: 4px;
+    overflow: hidden;
+
+    #fields {
+        h5 {
+            font-family: Montserrat, sans-serif;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: 300;
+            color: #333;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+        .group {
+            width: 48%;
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 10px;
+
+            &.wide {
+                width: 100%;
+            }
+
+            .label {
+                .mixin-label;
+
+                color: #666666;
+            }
+
+            input[type="text"],
+            textarea {
+                .mixin-input-text;
+
+                width: 100%;
+            }
+
+            .select-holder {
+                width: 100%;
+                margin-top: 14px;
+            }
+
+            select {
+                width: 100%;
+            }
+        }
+
+        .button-wrapper {
+            width: 100%;
+            padding: 20px 10px;
+            box-sizing: border-box;
+
+            .button {
+                .mixin-button;
+
+                background: #6695af;
+
+                &:hover {
+                    background: lighten(#6695af, 10%);
+                }
+
+                &:active {
+                    background: darken(#6695af, 10%);
+                }
+            }
+        }
+    }
+}

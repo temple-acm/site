@@ -1,0 +1,38 @@
+<section id="officersAdmin" data-ng-controller="OfficerAdminCtrl">
+    <div ng-hide="officersLoaded">
+        <div style="position: absolute; display: block; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px;">
+            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #222222; text-shadow: 0px 1px 0px white;"></i>
+        </div>
+    </div>
+    <div style="width: 100%; display: block;" ng-show="officersLoaded">
+        <div class="officer-cardholder" ng-repeat="officer in officerData">
+            <div class="officer-card">
+                <div class="picture" ng-bg-img="{{officer.picture}}"></div>
+                <h3 class="name">{{officer.firstName}} {{officer.lastName}}</h3>
+                <div class="label">Title:</div>
+                <input class="form-control" value="{{officer.title}}"></input>
+                <div class="button red" ng-click="removeOfficer(officer)">Remove Officer</div>
+                <div class="button blue" ng-click="saveOfficer(officer)">Save Changes</div>
+            </div>
+        </div>
+    </div>
+</section>
+<overlay id="officer-adder-overlay" ng-controller="OfficerAdderCtrl">
+    <div id="officer-adder">
+        <input type="text" id="office-adder-filter" placeholder="Member Filter" ng-model="searchText">
+        <div id="member-list">
+            <div class="list-header">
+                <div class="name">Name</div>
+                <div class="promote">Promote</div>
+            </div>
+            <div class="list-body">
+                <div class="list-row" ng-repeat="member in membersData | filter: memberFilterFn | filter:searchText">
+                    <div class="name">{{member.firstName}} {{member.lastName}}</div>
+                    <div class="promote">
+                        <div class="button" data-ng-click="addOfficer(member)"><i class="fa" data-ng-class="{'fa-check': member.officer, 'fa-arrow-up': !(member.officer)}"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</overlay>

@@ -1,0 +1,31 @@
+<div id="members" data-ng-controller="MembersCtrl">
+    <div ng-hide="membersLoaded">
+        <div style="position: absolute; display: block; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px;">
+            <i class="fa fa-spin fa-cog" style="font-size: 100px; color: #222222; text-shadow: 0px 1px 0px white;"></i>
+        </div>
+    </div>
+    <div id="member-list" ng-show="membersLoaded">
+        <div class="list-header">
+            <div class="column">Name</div>
+            <div class="column">Email</div>
+            <div class="column">Paid</div>
+            <div class="column">Student Level</div>
+            <div class="column">Actions</div>
+        </div>
+        <div class="list-body">
+            <div class="list-row" ng-repeat="member in membersData">
+                <div class="column">{{member.firstName}} {{member.lastName}}</div>
+                <div class="column">{{member.email}}</div>
+                <div class="column paid" data-ng-class="{green: member.paid, red: !(member.paid)}">{{member.paid ? 'yes' : 'no'}}</div>
+                <div class="column student-level">{{member.studentLevel}}</div>
+                <div class="column actions">
+                    <div class="button" data-ng-click="markMemberPaid(member._id)"><i class="fa fa-money"></i></div>
+                    <div class="button" data-ng-click="markMemberGraduated(member._id)"><i class="fa fa-graduation-cap"></i></div>
+                    <div class="button" data-ng-click="editMemberData(member._id)"><i class="fa fa-pencil"></i></div>
+                    <div class="button" data-ng-click="removeMember(member._id)"><i class="fa fa-times"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-include data-src="'/static/dist/admin-member-edit.partial.html'"></ng-include>
+</div>

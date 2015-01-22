@@ -1,0 +1,209 @@
+@import "../variables";
+
+@sidenav-bg-color: #222222;
+
+#sidenav {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 100px;
+    overflow: hidden;
+    background: @sidenav-bg-color;
+
+    #logo {
+        opacity: 0.8;
+        cursor: pointer;
+        height: 50px;
+        width: 50px;
+        margin-top: 25px;
+        margin-left: 25px;
+        margin-bottom: 10px;
+        background-size: contain;
+        background-image: url(/static/img/acm-logo.png);
+        transition: opacity 500ms;
+
+        &:hover {
+            opacity: 1.0;
+        }
+    }
+
+    #page-title {
+        width: 75px;
+        margin: 0px auto;
+        text-align: center;
+        text-transform: uppercase;
+        color: #dddddd;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    #nav {
+        position: absolute;
+        top: 140px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+
+        #nav-links {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 170px;
+            border-top: 1px solid darken(@sidenav-bg-color, 25%);
+            border-bottom: 1px solid darken(@sidenav-bg-color, 25%);
+
+            .nav-link {
+                display: table;
+                cursor: pointer;
+                box-sizing: border-box;
+                text-align: center;
+                width: 100%;
+                height: 20%;
+                border-top: 1px solid lighten(@sidenav-bg-color, 8%);
+                border-bottom: 1px solid darken(@sidenav-bg-color, 25%);
+
+                &:last-child {
+                    border-bottom-width: 0px;
+                }
+
+                &.active {
+                    background: #eeeeee;
+                    box-shadow: 0px 0px 8px black;
+
+                    .label {
+                        color: @sidenav-bg-color;
+
+                        .fa {
+                            text-shadow: 0px 0px 4px white;
+                        }
+
+                        .subpage-title {
+                            text-shadow: 0px 0px 4px white;
+                        }
+                    }
+                }
+
+                .label {
+                    display: table-cell;
+                    vertical-align: middle;
+                    color: #999999;
+
+                    .fa {
+                        font-size: 28px;
+                        text-shadow: 0px 0px 8px black;
+                    }
+
+                    .subpage-title {
+                        margin-top: 6px;
+                        font-family: 'Montserrat', sans-serif;
+                        text-transform: uppercase;
+                        font-size: 12px;
+                        letter-spacing: 1px;
+                        text-shadow: 0px 0px 8px black;
+                    }
+                }
+            }
+        }
+
+        #session-panel {
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            height: 169px;
+            border-top: 1px solid lighten(@sidenav-bg-color, 8%);
+
+            &.loading {
+                .loader {
+                    top: 0px;
+                    opacity: 1.0;
+                }
+
+                .content {
+                    top: 170px;
+                    opacity: 0.0;
+                }
+            }
+
+            .loader {
+                position: absolute;
+                top: 170px;
+                left: 0px;
+                right: 0px;
+                height: 170px;
+                opacity: 0.0;
+                transition: top 1s ease-in, opacity 1s;
+
+                .fa {
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-left: -14px;
+                    margin-top: -16px;
+                    font-size: 32px;
+                    color: #dddddd;
+                }
+            }
+
+            .content {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                height: 170px;
+                opacity: 1.0;
+                transition: top 1s ease-out, opacity 1s;
+
+                #profile-picture {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 25px;
+                    margin-top: 25px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background: #dddddd;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    transition: background 500ms;
+                }
+
+                #user-full-name {
+                    width: 100%;
+                    margin-top: 10px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    color: #dddddd;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                }
+
+                #logout-button {
+                    position: absolute;
+                    bottom: 0px;
+                    left: 0px;
+                    right: 0px;
+                    padding: 7px 0px;
+                    background: #990000;
+                    text-align: center;
+                    text-transform: uppercase;
+                    color: #dddddd;
+                    font-family: 'Montserrat', sans-serif;
+                    letter-spacing: 1px;
+                    font-size: 17px;
+                    transition: background 500ms;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: lighten(#990000, 5%);
+                    }
+                }
+            }
+        }
+    }
+}
