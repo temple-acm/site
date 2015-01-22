@@ -67,7 +67,7 @@ var passwordResetToken = function() {
 
 //-------------------------ACL CONFIGURATION----------------------------------//
 
-MongoClient.connect(process.env.TUACM_URL, function(err, db) {
+MongoClient.connect(process.env.TUACM_MONGO_URL, function(err, db) {
     var aclBackend = new acl.mongodbBackend(db);
     acl = new acl(aclBackend);
     logger.log('info', 'ACL backend initialized in member.js.');
