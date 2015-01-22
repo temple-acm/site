@@ -1,6 +1,7 @@
 var passport = require('passport'),
 	bcrypt = require('bcrypt'),
 	async = require('async'),
+    MongoClient = require('mongodb').MongoClient,
 	ObjectId = require('mongodb').ObjectID,
 	LocalStrategy = require('passport-local').Strategy;
 var emailUtil = require('../util/email'),
@@ -63,6 +64,14 @@ var saltAndHash = function(password) {
 var passwordResetToken = function() {
 	return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 };
+
+//-------------------------ACL CONFIGURATION----------------------------------//
+
+MongoClient.connect(url, function(err, db) {
+    var aclBackend = new node_acl.mongodbBackend(db);
+    acl = new node_acl(aclBackend);
+    logger.log('info', 'ACL backend initialized in member.js.');
+});
 
 //------------------------------- MEMBER CONFIG ------------------------------//
 
@@ -264,7 +273,7 @@ exports.route = function(app) {
 									lastName: createdUser.lastName
 								};
                                 // Ah, more nested callbacks.
-                                acl.addUserRoles(createdUser.userName, 'members', function(err) {
+                                acl.allow(createdUser.userName, 'members', function(err) {
                                     if (err) {
                                         res.status(200).json({
                                             '500' : 'Error saving new user'

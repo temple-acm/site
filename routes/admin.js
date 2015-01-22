@@ -15,7 +15,7 @@ logger.log('info', 'Connecting to acl backend...');
 MongoClient.connect(url, function(err, db) {
     var aclBackend = new node_acl.mongodbBackend(db);
     acl = new node_acl(aclBackend);
-    logger.log('info', 'ACL backend initialized.');
+    logger.log('info', 'ACL backend initialized for admin.');
 });
 
 exports.route = function(app) {
