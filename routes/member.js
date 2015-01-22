@@ -273,7 +273,7 @@ exports.route = function(app) {
 									lastName: createdUser.lastName
 								};
                                 // Ah, more nested callbacks.
-                                acl.allow(createdUser.userName, 'members', function(err) {
+                                acl.addUserRoles(createdUser.userName, 'members', function(err) {
                                     if (err) {
                                         res.status(200).json({
                                             '500' : 'Error saving new user'
