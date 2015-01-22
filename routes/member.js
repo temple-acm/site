@@ -4,7 +4,7 @@ var passport = require('passport'),
 	ObjectId = require('mongodb').ObjectID,
 	LocalStrategy = require('passport-local').Strategy;
 var emailUtil = require('../util/email'),
-	logger = require('../util/log');
+	logger = require('../util/log'),
     acl = require('acl');
 
 //-------------------------- PASSPORT CONFIGURATION --------------------------//
