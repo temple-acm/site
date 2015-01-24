@@ -3,7 +3,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 //------------------------------ MODULE HELPERS ------------------------------//
 
-var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH, ROBOTS_PATH, RESET_PASSWORD_PAGE_PATH;
+var INDEX_PAGE_PATH, RECRUITING_PAGE_PATH, NOT_FOUND_PATH, ROBOTS_PATH, RESET_PASSWORD_PAGE_PATH, ADMIN_PATH, UNAUTHORIZED_PATH;
 
 // Set up robots.txt
 ROBOTS_PATH = path.join(__dirname, '..', 'public', 'robots.txt');
@@ -15,6 +15,7 @@ if (process.env.TUACM_DEV) {
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.html');
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.html');
     ADMIN_PATH=path.join(__dirname, '..', 'public', 'dist', 'admin.html' );
+	UNAUTHORIZED_PATH = path.join(__dirname, '..', 'public', 'dist', '401.html');
 } else {
 	// Production
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.min.html');
@@ -22,6 +23,7 @@ if (process.env.TUACM_DEV) {
 	RECRUITING_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'recruiting.min.html');
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.min.html');
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.min.html');
+	UNAUTHORIZED_PATH = path.join(__dirname, '..', 'public', 'dist', '401.min.html');
 }
 
 //------------------------------- ASSET ROUTES -------------------------------//
@@ -41,9 +43,7 @@ exports.route = function(app) {
 	app.get('/404', function(req, res) {
 		res.sendFile(NOT_FOUND_PATH);
 	});
-    // Admin testing. NOT FOR ACTUAL PROD USE SINCE THIS NEEDS INTEGRATING
-    // TODO: REPLACE WITH ACTUAL PROD USE
-    app.get('/admin', function(req, res) {
+    app.use('/admin*', function(req, res, next) {
         if (req.session.passport !== undefined && req.session.passport.user !== undefined) {
             var userId = new ObjectId(req.session.passport.user);
             req.db.collection('users').find({
@@ -52,17 +52,17 @@ exports.route = function(app) {
                 officer: 1
             }).toArray(function(err, data) {
                 if (err) {
-                    res.sendFile(INDEX_PAGE_PATH);
+                    res.status(401).sendFile(UNAUTHORIZED_PATH);
                 } else {
-                    if (data[0].officer == true) {
+                    if (data[0].officer === true || data[0].officer === 'true') { // DEBUG
                         res.sendFile(ADMIN_PATH);
                     } else {
-                        res.sendFile(INDEX_PAGE_PATH);
+                        res.status(401).sendFile(UNAUTHORIZED_PATH);
                     }
                 }
             });
         } else {
-            res.sendFile(INDEX_PAGE_PATH);
+            res.status(401).sendFile(UNAUTHORIZED_PATH);
         }
     });
 	// Password reset page
