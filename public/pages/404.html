@@ -1,48 +1,88 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=1024" />
+        <meta charset="utf-8">
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <title>Temple ACM | Page not found</title>
         <meta name="description" content="The Temple ACM recruitment presentation powered by impress.js and the power of javascript. Take that prezi." />
         <meta name="author" content="Sandile Keswa" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Temple University chapter of the Association for Computing Machinery (ACM).">
+        <meta name="author" content="Sandile Keswa, Ryan Yurkanin">
+        <meta name="google-site-verification" content="3mIsIqcgZPWJfrfi4xcz80O9nvcrmnKwukKmGYe-37Y" />
 
+        <title>Temple ACM | Page not found</title>
+
+        <link href="/static/dist/404{{.css}}" rel="stylesheet">
+        <link href="/static/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400' rel='stylesheet' type='text/css'>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-        <style>
-            body {
-                background: #9e1b34;
-                color: #fff;
-            }
-            div {
-                width: 400px;
-                height: 300px;
-                text-align: center;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin-left: -200px;
-                margin-top: -150px;
-            }
-            h1 {
-                font-weight: 100;
-                font-size: 200px;
-                margin: 0px;
-                font-family: 'Roboto', sans-serif;
-            }
-            h2 {
-                font-family: 'Montserrat', sans-serif;
-                text-transform: uppercase;
-                font-size: 36px;
-                margin-top: -25px;
-            }
-        </style>
+
     </head>
-    <body class="">
-        <div>
-            <h1>404</h1>
-            <h2>Page not found</h2>
-        </div>
+        <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-ng-controller="MainCtrl">
+        <viewport>
+            <!-- Navigation -->
+            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" data-ng-controller="NavCtrl">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" ng-click="toggleMobileNavMenu()">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand page-scroll" data-ng-click="scrollTo()">Temple ACM</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="about">About</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="events">Events</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="officers">Officers</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll link" data-section="contact">Contact</a>
+                        </li>
+                        <li ng-if="!isLoggedIn">
+                            <a id="register" class="btn btn-success" data-ng-href="#/register">Register</a>
+                        </li>
+                        <li ng-if="!isLoggedIn">
+                            <a id="sign-in" class="btn btn-primary" data-ng-href="#/login">Sign In</a>
+                        </li>
+                    </ul>
+                    <div style="display: none;" id="session-panel">
+                        <div class="picture" ng-bg-img="{{loggedInUser.picture}}" default="/static/img/default-avatar.jpg"></div>
+                        <div class="who" ng-class="{'not-paid': (!loggedInUser.paid)}">
+                            <span class="user">{{loggedInUser.userName}}</span>
+                            <span class="is-logged-in" ng-show="loggedInUser.paid">is logged in</span>
+                            <span class="not-paid" ng-hide="loggedInUser.paid">not paid</span>
+                        </div>
+                        <div class="sign-out">
+                            <a class="btn btn-default flat-right" ng-click="pay()" ng-hide="loggedInUser.paid">Pay</a>
+                            <a class="btn btn-danger" ng-click="logout()" ng-class="{'flat-left': (!loggedInUser.paid)}">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+    
+<div class = "message">
+    <h1 class = "topfour">
+        <p> "404"</p>
+    </h1>
+    <h2 class = "bottomfour">
+        <p>"You went too deep"</p>
+    </h2>
+</div>
+
+    <footer>
+        <p class="copyright">Copyright &copy; Temple ACM 2014</p>
+        <p class="powered-by">Powered by <a href="http://nodejs.org">Node.js</a></p>
+     </footer>
     </body>
 </html>

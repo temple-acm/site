@@ -1,0 +1,87 @@
+@import "../vendor/bootstrap/less/bootstrap.less";
+@import "variables.less";
+@import "nav.less";
+@import "footer.less";
+
+@media(min-width:@mobileWidth){
+
+
+    div.message{
+
+    background-image: url(/static/img/404.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 41px;
+
+        h2.bottomfour {
+            color: #494949;
+            position: absolute;
+            top: 240px;
+            left: 20px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 36px;
+        }
+        
+        h1.topfour{
+            color: #494949;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-weight: 100;
+            font-size: 200px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    }
+
+    footer{
+        
+        position: absolute;
+        bottom: 0px;
+    }
+
+
+
+
+    /*section#errorpage {
+        .container {
+            left:0;
+            bottom:0;
+            right:0;
+            top:0;
+        }
+            .container img {
+             background-repeat: no-repeat;
+             background-position: center center;
+             background-attachment: fixed;
+             -webkit-background-size: cover;
+             -moz-background-size: cover;
+             -o-background-size: cover;
+              background-size: cover;
+        }
+        .h1 {
+            font-weight: 100;
+            font-size: 200px;
+            margin: 0px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .h2 {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 36px;
+            margin-top: -25px;
+        }
+    }
+} 
+*/
+}
