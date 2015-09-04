@@ -5,7 +5,9 @@
 var passport = require('passport'),
     logger = require('../util/log'),
     ObjectId = require('mongodb').ObjectID,
-    MongoClient = require('mongodb').MongoClient;
+    MongoClient = require('mongodb').MongoClient,
+    sys = require('sys'),
+    exec = require('child_process').exec;
 
 exports.route = function(app) {
 
@@ -543,4 +545,30 @@ exports.route = function(app) {
             }
         });
     });
+
+    /*
+     * This endpoint sends emails to tuacm@temple.edu.
+     */
+    app.post('/admin/sendEmail', function(req, res) {
+        var emailUrl = "curl -s --user 'api:key-67d8f0d0a707a206f68ef4c9748e3ec1' " +
+            "https://api.mailgun.net/v3/sandbox955d68278dc043de932f0574330e5b69.mailgun.org/messages " +
+            "-F from='" + req.body.firstName + " <" + req.body.email + ">' " +
+            "-F to='Temple University ACM <tuacm@temple.edu>' " +
+            "-F subject='" + req.body.major + "' " +
+            "-F text='" + req.body.bio + "'";
+        console.log(emailUrl);
+        var child = exec(emailUrl, function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                res.status(200).send({
+                    '500' : 'Unspecified error'
+                });
+            }
+            else {
+                res.status(200).send({'200' : 'OK' });
+            }
+        });
+    });
+
 };

@@ -31,8 +31,9 @@
                 <div class="separator"></div>
             </div>
             <div class="col-md-12" style="float: left; text-align: center; margin-top: 15px;">
-                <button ng-click="submit(form)" class="btn btn-success btn-submit">Submit</button>
+                <button ng-click="submit()" class="btn btn-success btn-submit">Submit</button>
             </div>
+            <p ng-if="emailSent" style="text-align: center;">{{successMessage}}</p>
         </div>
     </form>
 </view>

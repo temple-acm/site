@@ -468,9 +468,29 @@
 		}
 	]);
 	// Email Controller
-	module.controller('EmailCtrl', ['$scope',
-		function() {
-			// TODO: Code that handles the "Email Us" form goes here
+	module.controller('EmailCtrl', ['$scope', '$rootScope', '$http',
+		function($scope, $rootScope, $http) {
+            $scope.emailSent = false;
+            $scope.successMessage = '';
+            $scope.user = {
+                firstName: '',
+                email: '',
+                major: 'Becoming a member',
+                bio: ''
+            };
+
+            $scope.submit = function () {
+                $http.post('/admin/sendEmail', $scope.user)
+                    .then(function (response) {
+                        $scope.successMessage = 'Thank you for your email! We will get back to you shortly.';
+                        $scope.emailSent = true;
+                        //location.href = '/';
+                    }, function (response) {
+                        $scope.successMessage = 'An error occured while sending the email, please try again later.';
+                        $scope.emailSent = true;
+                        console.log(response);
+                    });
+            };
 		}
 	]);
 	// Forgot Password Controller
