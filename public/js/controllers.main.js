@@ -480,14 +480,14 @@
             };
 
             $scope.submit = function () {
+                $scope.successMessage = 'Please wait, your email is being processed....';
+                $scope.emailSent = true;
+
                 $http.post('/admin/sendEmail', $scope.user)
                     .then(function (response) {
                         $scope.successMessage = 'Thank you for your email! We will get back to you shortly.';
-                        $scope.emailSent = true;
-                        //location.href = '/';
                     }, function (response) {
                         $scope.successMessage = 'An error occured while sending the email, please try again later.';
-                        $scope.emailSent = true;
                         console.log(response);
                     });
             };
