@@ -444,11 +444,11 @@
     ]);
 
     module.controller('ProfileCtrl', ['$scope', '$rootScope', 'LoginSvc', 'ProfileSvc',
-        function($scope, $rootScope, loginSvc, profileSvc) {
+        function($scope, $rootScope, LoginSvc, ProfileSvc) {
             $scope.profileLoaded = false;
             $scope.user = {};
 
-            loginSvc.isLoggedIn().success(function(data, status, headers, config) {
+            LoginSvc.isLoggedIn().success(function(data, status, headers, config) {
                 if (data['200']) {
                     $scope.user = data['200'];
                     $scope.profileLoaded = true;
@@ -460,7 +460,7 @@
             });
 
             $scope.save = function() {
-                profileSvc.updateMember($scope.user).success(function(data, status, headers, config) {
+                ProfileSvc.updateMember($scope.user).success(function(data, status, headers, config) {
                     if (data['200']) {
                         toastr.success('Profile changes saved.');
                     } else {
