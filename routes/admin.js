@@ -522,19 +522,18 @@ exports.route = function(app) {
      */
     app.get('/admin/export/csv', function(req, res) {
         req.db.collection('users').find({}, {
+		  lastName: 1,
             firstName: 1,
-            lastName: 1,
-            email: 1,
-            membership: 1
+            email: 1
         }).toArray(function(err, members) {
             if (err) {
                 logger.log('error', err);
                 res.status(500).send('Error retrieving members for CSV');
             } else {
                 // Build the CSV
-                var csv = 'First Name,Last Name,Email,Member Number\n';
+                var csv = 'Last Name,First Name,Email\n';
                 members.forEach(function(member, i) {
-                    csv += member.firstName + ',' + member.lastName + ',' + member.email + ',' + member.membership + '\n';
+                    csv += member.lastName + ',' + member.firstName + ',' + member.email + '\n';
                     if (i === members.length - 1) {
                         // We're done
                         res.status(200).type('text/csv').set({
