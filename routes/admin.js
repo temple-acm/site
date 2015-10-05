@@ -531,7 +531,7 @@ exports.route = function(app) {
                 res.status(500).send('Error retrieving members for CSV');
             } else {
                 // Build the CSV
-                var csv = 'Last Name,First Name,Email\n';
+                var csv = '';
                 members.forEach(function(member, i) {
                     csv += member.lastName + ',' + member.firstName + ',' + member.email + '\n';
                     if (i === members.length - 1) {
