@@ -82,9 +82,9 @@
 
     // The slide admin controller
     module.controller('SlideAdminCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
-        function($scope, $rootScope, slideAdminService) {
+        function($scope, $rootScope, SlideAdminSvc) {
             $scope.slidesLoaded = false;
-            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+            SlideAdminSvc.getAllSlides().success(function(data, status, headers, config) {
                 $scope.slidesLoaded = true;
                 $rootScope.slideData = $scope.slideData = data;
             }).error(function() {
@@ -92,8 +92,8 @@
             });
 
             $scope.initializeEditor = function(slide) {
-                slideAdminService.editor.getSession().setValue(slide.html);
-                slideAdminService.editingSlide = slide;
+                SlideAdminSvc.editor.getSession().setValue(slide.html);
+                SlideAdminSvc.editingSlide = slide;
                 $('body').addClass('noscroll');
                 $('#slide-editor-overlay').css('display', 'block');
                 $('#slide-editor-overlay').css('opacity', '1.0');
@@ -102,7 +102,7 @@
             $scope.saveSlide = function(slideId) {
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
-                        slideAdminService.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
+                        SlideAdminSvc.updateSlide($rootScope.slideData[i]).success(function(data, status, headers, config) {
                             toastr.success("Slide updated!");
                         }).error(function() {
                             toastr.error("Error updating slide.");
@@ -115,8 +115,8 @@
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
                     if ($rootScope.slideData[i]._id == slideId) {
                         var idJson = { "id" : slideId };
-                        slideAdminService.removeSlide(idJson).success(function(data, status, headers, config) {
-                            slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                        SlideAdminSvc.removeSlide(idJson).success(function(data, status, headers, config) {
+                            SlideAdminSvc.getAllSlides().success(function(data, status, headers, config) {
                                 $rootScope.slideData = $scope.slideData = data;
                                 $scope.slidesLoaded = true;
                                 toastr.success("Slide removed!");
@@ -134,7 +134,7 @@
             $scope.$on('header-button-refresh-clicked', function(event) {
                 if ($scope.currentPage === '/slides') {
                     $scope.slidesLoaded = false;
-                    slideAdminService.getAllSlides().success(function(data, status, headers, config) {
+                    SlideAdminSvc.getAllSlides().success(function(data, status, headers, config) {
                         $scope.slidesLoaded = true;
                         $rootScope.slideData = $scope.slideData = data;
                     }).error(function() {
@@ -146,7 +146,7 @@
     ]);
 
     module.controller('SlideEditorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
-        function($scope, $rootScope, slideAdminService) {
+        function($scope, $rootScope, SlideAdminSvc) {
             $scope.closeEditor = function() {
                 $('#slide-editor-overlay').css('display', 'none');
                 $('#slide-editor-overlay').css('opacity', '0.0');
@@ -154,9 +154,9 @@
             };
             $scope.saveEditorChanges = function() {
                 console.log("Saving editor changes");
-                var newHtml = slideAdminService.editor.getSession().getValue();
+                var newHtml = SlideAdminSvc.editor.getSession().getValue();
                 for (var i = 0; i < $rootScope.slideData.length; i++) {
-                    if ($rootScope.slideData[i]._id == slideAdminService.editingSlide._id) {
+                    if ($rootScope.slideData[i]._id == SlideAdminSvc.editingSlide._id) {
                         var updatedSlide = $rootScope.slideData[i];
                         updatedSlide.html = newHtml;
                     }
@@ -172,8 +172,8 @@
     ]);
     // Handles new slides
     module.controller('SlideCreatorCtrl', ['$scope', '$rootScope', 'SlideAdminSvc',
-        function($scope, $rootScope, slideAdminService) {
-            var editor = slideAdminService.creator = ace.edit('new-slide-html');
+        function($scope, $rootScope, SlideAdminSvc) {
+            var editor = SlideAdminSvc.creator = ace.edit('new-slide-html');
 
             $scope.closeEditor = function() {
                 $('#slide-creator-overlay').css('display', 'none');
@@ -186,7 +186,7 @@
             $scope.finishCreatingSlide = function() {
                 var newHtml = editor.getSession().getValue();
                 $scope.creationPending = true;
-                slideAdminService.addSlide({
+                SlideAdminSvc.addSlide({
                     image: $scope.imageUrl,
                     html: newHtml
                 }).success(function(data, status, headers, config) {
@@ -233,9 +233,9 @@
 
     // The officer admin controller
     module.controller('OfficerAdminCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc',
-        function($scope, $rootScope, officerAdminService) {
+        function($scope, $rootScope, OfficersAdminSvc) {
             $scope.officersLoaded = false;
-            officerAdminService.getAllOfficers().success(function(data, status, headers, config) {
+            OfficersAdminSvc.getAllOfficers().success(function(data, status, headers, config) {
                 if (data[200]) {
                     $rootScope.officerData = $scope.officerData = data[200];
                     $scope.officersLoaded = true;
@@ -249,7 +249,7 @@
             $scope.saveOfficer = function(officerId) {
                 for (var i = 0; i < $rootScope.officerData.length; i++) {
                     if ($rootScope.officerData[i]._id == officerId) {
-                        officerAdminService.updateOfficer($rootScope.officerData[i]).success(function(data, status, headers, config) {
+                        OfficersAdminSvc.updateOfficer($rootScope.officerData[i]).success(function(data, status, headers, config) {
                             toastr.success("Officer updated!");
                         }).error(function() {
                             toastr.error("Error updating officer.");
@@ -258,7 +258,7 @@
                 }
             };
             $scope.removeOfficer = function(officer) {
-                officerAdminService.removeOfficer({
+                OfficersAdminSvc.removeOfficer({
                     id: officer._id,
                     _id: officer._id
                 }).success(function(data, status, headers, config) {
@@ -273,7 +273,7 @@
             $scope.$on('header-button-refresh-clicked', function(event) {
                 if ($scope.currentPage === '/officers') {
                     $scope.officersLoaded = false;
-                    officerAdminService.getAllOfficers().success(function(data, status, headers, config) {
+                    OfficersAdminSvc.getAllOfficers().success(function(data, status, headers, config) {
                         if (data[200]) {
                             $rootScope.officerData = $scope.officerData = data[200];
                             $scope.officersLoaded = true;
@@ -289,10 +289,10 @@
     ]);
     // Office adding ui
     module.controller('OfficerAdderCtrl', ['$scope', '$rootScope', 'OfficersAdminSvc', 'MembersAdminSvc',
-        function($scope, $rootScope, officersAdminSvc, membersAdminSvc) {
+        function($scope, $rootScope, OfficersAdminSvc, MembersAdminSvc) {
             $scope.addOfficer = function(officerData) {
                 $scope.officersChanged = true;
-                officersAdminSvc.addOfficer({
+                OfficersAdminSvc.addOfficer({
                     _id: officerData._id,
                     title: 'Officer',
                     bio: officerData.bio
@@ -317,7 +317,7 @@
             };
 
             $scope.loadingMembers = true;
-            membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+            MembersAdminSvc.getMembers().success(function(data, status, headers, config) {
                 if (data['200']) {
                     $scope.membersData = data['200'];
                     $scope.loadingMembers = false;
@@ -370,10 +370,10 @@
 
     // Controls the member list
     module.controller('MembersCtrl', ['$scope', '$rootScope', 'MembersAdminSvc',
-        function($scope, $rootScope, membersAdminSvc) {
+        function($scope, $rootScope, MembersAdminSvc) {
             var refresh = function() {
                 $scope.membersLoaded = false;
-                membersAdminSvc.getMembers().success(function(data, status, headers, config) {
+                MembersAdminSvc.getMembers().success(function(data, status, headers, config) {
                     if (data['200']) {
                         $scope.membersData = data['200'];
                         $scope.membersLoaded = true;
@@ -389,7 +389,7 @@
             $scope.editMemberData = function(memberId) {
                 $scope.memberLoaded = false;
                 var idObject = {'_id' : memberId};
-                membersAdminSvc.getMember(idObject).success(function(data, status, headers, config) {
+                MembersAdminSvc.getMember(idObject).success(function(data, status, headers, config) {
                     if (data['200']) {
                         $scope.user = data['200'][0];
                         $scope.memberLoaded = true;
@@ -413,7 +413,7 @@
 
 
             $scope.save = function() {
-                membersAdminSvc.updateMember($scope.user).success(function(data, status, headers, config) {
+                MembersAdminSvc.updateMember($scope.user).success(function(data, status, headers, config) {
                     if (data['200']) {
                         toastr.success('Member profile updated.');
                         $scope.closeMemberOverlay();
