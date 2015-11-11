@@ -499,7 +499,8 @@ exports.route = function(app) {
 	/*
 	 * This endpoint retrieves the entries for all the active ACM officers from
 	 * the database. It does so by finding all entries in the 'users' collection
-	 * that have the boolean flag "officer" set to true.
+	 * that have the boolean flag "officer" set to true. Also remove the emails
+	 * from officers who have not chosen to have their email publicly accessible.
 	 *
 	 * Output:
 	 *  Success:
@@ -518,7 +519,9 @@ exports.route = function(app) {
 			lastName: 1,
 			picture: 1,
 			title: 1,
-			bio: 1
+			bio: 1,
+			email: 1,
+			emailme: 1
 		}).toArray(function(err, officers) {
 			if (err) {
 				logger.log('error', err);
@@ -526,6 +529,12 @@ exports.route = function(app) {
 					'500': "Error retrieving officers"
 				});
 			} else {
+				for (var i = 0; i < officers.length; i++) {
+					var officer = officers[i];
+					if (!officer.emailme) {
+						officer.email = "";
+					}
+				}
 				res.status(200).json({
 					'200': officers
 				});
