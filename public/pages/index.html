@@ -183,7 +183,7 @@
                                     <div class="bio">
                                         <p ng-bind-html="officer.bio"></p>
                                     </div>
-							 <a class="btn btn-default" role="button" ng-if="officer.emailme" href="mailto:{{officer.email}}">Email me</a>
+							 <a class="btn btn-default" role="button" ng-hide="!officer.emailme" href="mailto:{{officer.email}}">Email me</a>
                                 </div>
                             </div>
                             <div class="officer-ad {{adWidth}}">
