@@ -16,7 +16,6 @@ if (process.env.TUACM_DEV) {
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.html');
     ADMIN_PATH=path.join(__dirname, '..', 'public', 'dist', 'admin.html' );
 	UNAUTHORIZED_PATH = path.join(__dirname, '..', 'public', 'dist', '401.html');
-	APPLICATION_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'application.html');
 } else {
 	// Production
 	INDEX_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'index.min.html');
@@ -25,7 +24,6 @@ if (process.env.TUACM_DEV) {
 	NOT_FOUND_PATH = path.join(__dirname, '..', 'public', 'dist', '404.min.html');
 	RESET_PASSWORD_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'reset-password.min.html');
 	UNAUTHORIZED_PATH = path.join(__dirname, '..', 'public', 'dist', '401.min.html');
-	APPLICATION_PAGE_PATH = path.join(__dirname, '..', 'public', 'dist', 'application.min.html');
 }
 
 //------------------------------- ASSET ROUTES -------------------------------//
@@ -43,7 +41,7 @@ exports.route = function(app) {
 	});
 	// Application form page route
 	app.get('/apply', function(req, res) {
-		res.sendFile(APPLICATION_PAGE_PATH);
+		res.redirect('https://docs.google.com/a/temple.edu/forms/d/1gOPi9UaJr5R4zZjhLrKm5x6AgpLF_Byzyn438L6UTSc/viewform');
 	});
 	// The 404 page - so stangers may stare in adoration
 	app.get('/404', function(req, res) {
