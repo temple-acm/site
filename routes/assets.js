@@ -43,6 +43,10 @@ exports.route = function(app) {
 	app.get('/apply', function(req, res) {
 		res.redirect('https://docs.google.com/a/temple.edu/forms/d/1gOPi9UaJr5R4zZjhLrKm5x6AgpLF_Byzyn438L6UTSc/viewform');
 	});
+	// Officer election voting page route
+	app.get('/vote', function(req, res) {
+		res.redirect('https://docs.google.com/a/temple.edu/forms/d/1wBWku4ITabE0pyT2EPJPMtlqsegWbpLKjkiI7XenM_c/viewform');
+	});
 	// The 404 page - so stangers may stare in adoration
 	app.get('/404', function(req, res) {
 		res.sendFile(NOT_FOUND_PATH);
